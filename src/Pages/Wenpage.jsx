@@ -1,5 +1,6 @@
-import  { useState, useEffect } from 'react';
-import { Menu, X, Cpu, FolderKanban, Phone, Mail, MapPin, ChevronRight, Globe, Sprout } from 'lucide-react';
+import  { useState, useEffect  } from 'react';
+import { Menu, X, Cpu, FolderKanban, Phone, Mail, MapPin, ChevronRight, Globe, Sprout, } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 const heroImages = [
   "https://images.unsplash.com/photo-1625246333195-78d9c38ad449?auto=format&fit=crop&q=80&w=1920",
@@ -11,6 +12,7 @@ const heroImages = [
 function Webhome() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const navigate = useNavigate()
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -206,13 +208,14 @@ function Webhome() {
                 <h3 className="text-xl font-semibold mb-2 text-green-300">Verdant agri:- edu</h3>
                 <p className="text-gray-300"></p>
                 <div className='pt-6'>
-                <a
-                href="/intro"
+                <button
+
+                onClick={() => navigate("/intro")}
                 className="inline-flex items-center px-6 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors"
               >
                 Learn More
                 <ChevronRight className="ml-2 h-5 w-5" />
-              </a>
+              </button>
               </div>
               </div>
             </div>
