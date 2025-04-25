@@ -92,7 +92,7 @@ const Login = () => {
 
           <p className="mt-4 text-center text-gray-400">
             Dont have an account?{" "}
-            <a href="/signup" className="text-green-400 hover:text-green-300">Sign up now</a>
+            <a onClick={() =>"/signup"} className="text-green-400 hover:text-green-300">Sign up now</a>
           </p>
         </div>
       </div>
