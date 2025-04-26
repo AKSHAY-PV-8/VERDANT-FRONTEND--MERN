@@ -24,7 +24,7 @@ function Webhome() {
   return (
     <div className="min-h-screen min-w-screen bg-gray-900 text-gray-100">
       {/* Navigation */}
-      <nav className="fixed w-full bg-gray-900/90 backdrop-blur-sm z-50 border-b border-gray-800">
+      <nav className="fixed w-screen bg-gray-900/90 backdrop-blur-sm z-50 border-b border-gray-800">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
             <div className="flex items-center">
