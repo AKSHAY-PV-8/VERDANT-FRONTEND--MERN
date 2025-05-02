@@ -1,69 +1,90 @@
-
-import {LogIn,UserPlus} from 'lucide-react'
-// import Login from './Login'
-// import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
-
-
- 
-
-  
+import { LogIn, UserPlus, Menu } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+import { useState } from 'react';
 
 const IntroNav = () => {
-
-    const navigate = useNavigate();
-
-    // const [showLogin, setShowLogin] = useState(false)
+  const navigate = useNavigate();
+  const [isMobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   return (
-    <div>
-      <nav className="bg-gray-800 shadow-sm">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-2 h-15 items-center">
-            <div className="flex items-center">
-              <span className="ml-2 text-xl font-bold text-blue-100">VERDANT</span>
-            </div>
-            <div className="flex items-center justify-end space-x-4">
-            <button
-                onClick={() => navigate("/")}
-                className="flex items-center px-4 py-2 text-white hover:text-green-600 transition duration-200"
-              >
- 
-                Home
-              </button>
-              
-              <button
-                onClick={() => navigate("/login")}
-                className="flex items-center px-4 py-2 text-white hover:text-green-600 transition duration-200"
-              >
-                <LogIn className=" text-white h-5 w-5 mr-1" />
-                Login
-              </button>
-              <button
-                onClick={() => navigate("/signup")}
-                className="flex items-center px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition duration-200"
-              >
-                <UserPlus className="h-5 w-5 mr-1" />
-                Sign Up
-              </button>
-            </div>
-          </div>
-        </div>
-      </nav>
+    <nav className="bg-gray-800 shadow-sm">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex justify-between items-center h-16">
+          {/* Logo */}
+          <div className="flex-shrink-0 text-blue-100 text-xl font-bold">VERDANT</div>
 
-      {/* {showLogin && (
-        <div className="fixed inset-0 flex items-center justify-center">
-          <div className="bg-white p-4 rounded-md shadow-lg">
-            <Login />
-            <button onClick={() => setShowLogin(false)} className="mt-2 text-red-500">
-              Close
+          {/* Mobile Menu Button */}
+          <div className="md:hidden">
+            <button
+              onClick={() => setMobileMenuOpen(!isMobileMenuOpen)}
+              className="text-white focus:outline-none"
+            >
+              <Menu className="h-6 w-6" />
+            </button>
+          </div>
+
+          {/* Desktop Nav */}
+          <div className="hidden md:flex items-center space-x-4">
+            <button
+              onClick={() => navigate('/')}
+              className="text-white hover:text-green-600 transition px-3 py-2"
+            >
+              Home
+            </button>
+            <button
+              onClick={() => navigate('/login')}
+              className="flex items-center text-white hover:text-green-600 transition px-3 py-2"
+            >
+              <LogIn className="h-5 w-5 mr-1" />
+              Login
+            </button>
+            <button
+              onClick={() => navigate('/signup')}
+              className="flex items-center bg-green-600 hover:bg-green-700 text-white px-3 py-2 rounded-md transition"
+            >
+              <UserPlus className="h-5 w-5 mr-1" />
+              Sign Up
             </button>
           </div>
         </div>
-      )} */}
-   
-    </div>
-  )
-}
 
-export default IntroNav
+        {/* Mobile Nav Menu */}
+        {isMobileMenuOpen && (
+          <div className="md:hidden mt-2 space-y-2 pb-4">
+            <button
+              onClick={() => {
+                navigate('/');
+                setMobileMenuOpen(false);
+              }}
+              className="block w-full text-left text-white hover:text-green-600 transition px-4 py-2"
+            >
+              Home
+            </button>
+            <button
+              onClick={() => {
+                navigate('/login');
+                setMobileMenuOpen(false);
+              }}
+              className="flex items-center w-full text-left text-white hover:text-green-600 transition px-4 py-2"
+            >
+              <LogIn className="h-5 w-5 mr-1" />
+              Login
+            </button>
+            <button
+              onClick={() => {
+                navigate('/signup');
+                setMobileMenuOpen(false);
+              }}
+              className="flex items-center w-full text-left bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-md transition"
+            >
+              <UserPlus className="h-5 w-5 mr-1" />
+              Sign Up
+            </button>
+          </div>
+        )}
+      </div>
+    </nav>
+  );
+};
+
+export default IntroNav;

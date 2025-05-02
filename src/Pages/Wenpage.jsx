@@ -121,71 +121,51 @@ function Webhome() {
             <h2 className="text-3xl font-bold text-white mb-4">ABOUT US</h2>
             <p className="text-lg text-gray-300 uppercase">Verdant</p>
           </div> */}
-          <div className="grid md:grid-cols-2 gap-12 items-center">
 
-            
-            <div>
-              <div>
-                <img
-                  src="https://plus.unsplash.com/premium_photo-1678344170545-c3edef92a16e?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8YWdyaWN1bHR1cmV8ZW58MHx8MHx8fDA%3D"
-                  alt="Agricultural Education"
-                  className="rounded-lg shadow-xl mb-6"
-                />
-                <img
-                  src="https://images.unsplash.com/photo-1515150144380-bca9f1650ed9?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Nnx8YWdyaWN1bHR1cmV8ZW58MHx8MHx8fDA%3D"
-                  alt="Farmer Training"
-                  className="rounded-lg shadow-xl"
-                />
-              </div>
-            </div>
-            <div>
-                <img
-                  src="https://images.unsplash.com/photo-1492496913980-501348b61469?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8YWdyaWN1bHR1cmV8ZW58MHx8MHx8fDA%3D"
-                  alt="Agricultural Education"
-                  className="rounded-lg shadow-xl mb-6"
-                />
-                </div>
-            <div className="bg-gray-700 p-8 rounded-lg shadow-xl w-300">
+<div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+  <div className="space-y-6">
+    <img
+      src="https://plus.unsplash.com/premium_photo-1678344170545-c3edef92a16e?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8YWdyaWN1bHR1cmV8ZW58MHx8MHx8fDA%3D"
+      alt="Agricultural Education"
+      className="w-full h-auto rounded-lg shadow-xl"
+    />
+    <img
+      src="https://images.unsplash.com/photo-1515150144380-bca9f1650ed9?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Nnx8YWdyaWN1bHR1cmV8ZW58MHx8MHx8fDA%3D"
+      alt="Farmer Training"
+      className="w-full h-auto rounded-lg shadow-xl"
+    />
+  </div>
 
-              
-              <h3 className="text-2xl font-semibold mb-6 text-green-300">ABOUT US</h3>
-              <div className="space-y-6">
-                {/* <div className="flex items-start">
-                  <Plant className="h-6 w-6 text-green-400 mr-4 flex-shrink-0" />
-                  <div>
-                    <h4 className="font-semibold text-white mb-2">Modern Farming Techniques</h4>
-                    <p className="text-gray-300">Learn cutting-edge agricultural practices that maximize yield while maintaining sustainability.</p>
-                  </div>
-                </div> */}
-                <div className="flex items-start">
-                  <Sprout className="h-6 w-6 text-green-400 mr-4 flex-shrink-0" />
-                  <div>
-                    <h4 className="font-semibold text-3xl text-white mb-2">Welcome to verdant elevate</h4>
-                    <p className="text-gray-300">led by passionote agricultural graduates. We are your gateway to agricultural education and technology. One stop to your agri-related needs.
-                    </p>
-                  </div>
-                </div>
-                {/* <div className="flex items-start">
-                  <Globe className="h-6 w-6 text-green-400 mr-4 flex-shrink-0" />
-                  <div>
-                    <h4 className="font-semibold text-white mb-2">Global Best Practices</h4>
-                    <p className="text-gray-300">Access international farming techniques and adapt them to local conditions.</p>
-                  </div>
-                </div> */}
+  <div className="space-y-6">
+    <img
+      src="https://images.unsplash.com/photo-1492496913980-501348b61469?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8YWdyaWN1bHR1cmV8ZW58MHx8MHx8fDA%3D"
+      alt="Agricultural Education"
+      className="w-full h-auto rounded-lg shadow-xl"
+    />
 
-                <a
-                href="/intro"
-                className="inline-flex items-center px-6 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors"
-              >
-                Get Started Learning
-                <ChevronRight className="ml-2 h-5 w-5" />
-              </a>
-              </div>
-            </div>
+    <div className="bg-gray-700 p-6 sm:p-8 rounded-lg shadow-xl">
+      <h3 className="text-2xl font-semibold text-green-300 mb-4">ABOUT US</h3>
+      <div className="flex items-start space-x-4">
+        <Sprout className="h-6 w-6 text-green-400 flex-shrink-0 mt-1" />
+        <div>
+          <h4 className="text-xl font-bold text-white mb-2">Welcome to Verdant Elevate</h4>
+          <p className="text-gray-300">
+            Led by passionate agricultural graduates, we are your gateway to agricultural education and technology. One stop for all your agri-related needs.
+          </p>
+        </div>
+      </div>
+      <a
+        href="/intro"
+        className="mt-6 inline-flex items-center px-6 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors"
+      >
+        Get Started Learning
+        <ChevronRight className="ml-2 h-5 w-5" />
+      </a>
+    </div>
+  </div>
+</div>
 
 
-            
-          </div>
         </div>
       </section>
 

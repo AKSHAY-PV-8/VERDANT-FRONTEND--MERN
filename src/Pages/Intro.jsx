@@ -7,7 +7,7 @@ import { useNavigate } from 'react-router-dom';
 const Intro = () => {
   const navigate = useNavigate()
   return (
-    <div>
+    <div className='overflow-hidden'>
       <IntroNav />
       <section className="relative h-[600px]">
         <div className="absolute inset-0">
