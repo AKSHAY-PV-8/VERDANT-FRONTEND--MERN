@@ -11,10 +11,11 @@ const AttendExam = () => {
   const [result, setResult] = useState({ score: 0, answers: [] });
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [timeLeft, setTimeLeft] = useState(null);
+  const ServerURL = import.meta.env.VITE_SERVER_URL;
 
 
   useEffect(() => {
-    axios.get(`http://localhost:3000/api/examCourse/courses/${id}`)
+    axios.get(`${ServerURL}/api/examCourse/courses/${id}`)
       .then(res => {
         const exam = res.data.course.exams[examIndex];
         setExamData(exam);

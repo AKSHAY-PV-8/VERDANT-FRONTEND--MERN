@@ -9,10 +9,11 @@ const CourseDetail = () => {
   const [course, setCourse] = useState(null);
   const [expandedExamIndex, setExpandedExamIndex] = useState(null);
   const navigate = useNavigate();
+  const ServerURL = import.meta.env.VITE_SERVER_URL;
 
   useEffect(() => {
     axios
-      .get(`http://localhost:3000/api/examCourse/courses/${id}`)
+      .get(`${ServerURL}/api/examCourse/courses/${id}`)
       .then((res) => setCourse(res.data.course))
       .catch((err) => console.error(err));
   }, [id]);
