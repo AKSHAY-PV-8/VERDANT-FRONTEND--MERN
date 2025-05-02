@@ -36,10 +36,10 @@ function Webhome() {
             <div className="hidden md:block">
               <div className="flex items-center space-x-8">
                 <a href="#home" className="text-gray-300 hover:text-green-400 transition-colors">Home</a>
-                <a href="/intro" className="text-gray-300 hover:text-green-400 transition-colors">Education</a>
-                <a href="#technology" className="text-gray-300 hover:text-green-400 transition-colors">Technology</a>
+                <a onClick={() => {navigate("/intro")}} className="text-gray-300 hover:text-green-400 transition-colors">Education</a>
+                {/* <a href="#technology" className="text-gray-300 hover:text-green-400 transition-colors">Technology</a>
                 <a href="#projects" className="text-gray-300 hover:text-green-400 transition-colors">Projects</a>
-                <a href="#contact" className="text-gray-300 hover:text-green-400 transition-colors">Contact</a>
+                <a href="#contact" className="text-gray-300 hover:text-green-400 transition-colors">Contact</a> */}
               </div>
             </div>
 
@@ -102,7 +102,7 @@ function Webhome() {
                 <ChevronRight className="ml-2 h-5 w-5" />
               </a>
               <a
-                onClick={() => {"/advisors"}}
+                onClick={() => navigate("/advisors")}
                 className="inline-flex items-center px-6 py-3 bg-gray-800 text-white rounded-lg hover:bg-gray-700 transition-colors"
               >
                 About
