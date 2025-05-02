@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { BookDashed, BookOpen, FileText, GraduationCap, Menu, X } from "lucide-react";
+import {GraduationCap, Menu,} from "lucide-react";
+import NavBar from "../Components/Auth/NavBar";
 
 const Images = [
     { image: "https://images.unsplash.com/photo-1464226184884-fa280b87c399?auto=format&fit=crop&w=800&q=80" },
@@ -43,57 +44,9 @@ const Courses = () => {
     }, [userId]);
 
     return (
+      
         <div>
-        
-                  {isSidebarOpen && (
-        <div
-          className="fixed inset-0 bg-black bg-opacity-50 z-20 transition-opacity duration-300"
-          onClick={() => setIsSidebarOpen(false)}
-        />
-      )}
-
-      <div
-        id="sidebar"
-        className={`fixed inset-y-0 left-0 transform ${
-          isSidebarOpen ? 'translate-x-0' : '-translate-x-full'
-        } transition-transform duration-300 ease-in-out z-30 w-72 bg-white shadow-2xl`}
-      >
-        <div className="flex items-center justify-between p-6 border-b">
-          <div className="flex items-center space-x-3">
-            <span className="text-2xl font-bold text-gray-800">VERDANT</span>
-          </div>
-          <button
-            onClick={() => setIsSidebarOpen(false)}
-            className="p-2 rounded-full hover:bg-gray-100 transition-colors"
-          >
-            <X className="h-6 w-6 text-gray-600" />
-          </button>
-        </div>
-        <nav className="mt-6 px-3">
-          {[
-            { icon: BookOpen, text: 'Courses', link: '/course'},
-            { icon: FileText, text: 'Exams', link: '/examList' },
-            // { icon: PlusCircle, text: 'Create Course' , link: '/courseCreation'},
-            // { icon: PlusCircle, text: 'Create Exam', link: '/examCreation' },
-            { icon: BookDashed, text: 'Dashboard', link: '/dashboard' },
-            // { icon: LogOut, text: 'Logout' },
-          ].map((item, index) => (
-            <a
-              key={index}
-              href="#"
-              className="flex items-center px-4 py-3 my-1 rounded-xl text-gray-600 hover:bg-green-50 hover:text-green-700 transition-all duration-200 group"
-            >
-              <item.icon className="h-5 w-5 mr-3 group-hover:scale-110 transition-transform" />
-              <span onClick={() => navigate(item.link)} className="font-medium">{item.text}</span>
-              {item.badge && (
-                <span onClick={() => navigate(item.link)} className="ml-auto bg-green-100 text-green-600 px-2.5 py-1 rounded-full text-xs font-medium">
-                  {item.badge}
-                </span>
-              )}
-            </a>
-          ))}
-        </nav>
-      </div>
+          <NavBar/>
       <div className="min-h-screen bg-emerald-50 py-12 px-4 sm:px-6 lg:px-8">
 
       <div className="relative">
@@ -174,6 +127,7 @@ const Courses = () => {
         </div>
         </div>
         </div>
+        
     );
 };
 
