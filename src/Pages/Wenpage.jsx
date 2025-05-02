@@ -56,11 +56,11 @@ function Webhome() {
         {isMenuOpen && (
           <div className="md:hidden bg-gray-800 border-t border-gray-700">
             <div className="px-2 pt-2 pb-3 space-y-1">
-              <a href="/" className="block px-3 py-2 text-gray-300 hover:text-green-400">Home</a>
-              <a href="/intro" className="block px-3 py-2 text-gray-300 hover:text-green-400">Education</a>
-              <a href="#technology" className="block px-3 py-2 text-gray-300 hover:text-green-400">Technology</a>
+              <a onClick={() => navigate("/")} className="block px-3 py-2 text-gray-300 hover:text-green-400">Home</a>
+              <a onClick={() => navigate("/intro")} className="block px-3 py-2 text-gray-300 hover:text-green-400">Education</a>
+              {/* <a href="#technology" className="block px-3 py-2 text-gray-300 hover:text-green-400">Technology</a>
               <a href="#projects" className="block px-3 py-2 text-gray-300 hover:text-green-400">Projects</a>
-              <a href="#contact" className="block px-3 py-2 text-gray-300 hover:text-green-400">Contact</a>
+              <a href="#contact" className="block px-3 py-2 text-gray-300 hover:text-green-400">Contact</a> */}
             </div>
           </div>
         )}
