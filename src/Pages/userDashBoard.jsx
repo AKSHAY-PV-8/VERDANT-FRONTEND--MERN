@@ -1,4 +1,4 @@
-import {  BookOpen, ChevronRight, Home } from "lucide-react";
+import {  ChevronRight, Home } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import NavBar from "../Components/Auth/NavBar";
