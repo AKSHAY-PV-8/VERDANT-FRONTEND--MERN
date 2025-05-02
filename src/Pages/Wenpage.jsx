@@ -102,7 +102,7 @@ function Webhome() {
                 <ChevronRight className="ml-2 h-5 w-5" />
               </a>
               <a
-                href="/advisors"
+                onClick={() => {"/advisors"}}
                 className="inline-flex items-center px-6 py-3 bg-gray-800 text-white rounded-lg hover:bg-gray-700 transition-colors"
               >
                 About
