@@ -95,7 +95,7 @@ function Webhome() {
             </h3>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
               <a
-                href="#contact"
+                onClick={() => navigate("/intro")}
                 className="inline-flex items-center px-6 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors"
               >
                 Get Started
@@ -155,7 +155,7 @@ function Webhome() {
         </div>
       </div>
       <a
-        href="/intro"
+        onClick={() => navigate("/intro")}
         className="mt-6 inline-flex items-center px-6 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors"
       >
         Get Started Learning
