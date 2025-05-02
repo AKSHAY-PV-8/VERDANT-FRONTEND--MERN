@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import {GraduationCap, Menu,} from "lucide-react";
+import {GraduationCap,} from "lucide-react";
 import NavBar from "../Components/Auth/NavBar";
 
 const Images = [
@@ -19,7 +19,7 @@ const Courses = () => {
     const [enrolledCourses, setEnrolledCourses] = useState([]);
     const navigate = useNavigate();
     const userId = localStorage.getItem("userId");
-    const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+   
     const ServerURL = import.meta.env.VITE_SERVER_URL;
 
     useEffect(() => {
@@ -49,36 +49,6 @@ const Courses = () => {
           <NavBar/>
       <div className="min-h-screen bg-emerald-50 py-12 px-4 sm:px-6 lg:px-8">
 
-      <div className="relative">
-        <header className="bg-white shadow-sm sticky top-0 z-10">
-          <div className="max-w-7xl mx-auto">
-            <div className="flex items-center justify-between px-4 py-4">
-              <button
-                id="menu-button"
-                onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-                className="p-2 rounded-xl hover:bg-gray-100 transition-colors"
-              >
-                <Menu className="h-6 w-6 text-gray-600" />
-              </button>
-              <nav className="hidden md:flex items-center space-x-8">
-                <a href="/home" className="text-green-600 font-medium hover:text-green-700 transition-colors">Home</a>
-                <a href="/course" className="text-gray-600 hover:text-green-600 transition-colors">Course</a>
-                <a href="/examList" className="text-gray-600 hover:text-green-600 transition-colors">Exams</a>
-              </nav>
-              {/* <div className="flex items-center space-x-6">
-                <button className="relative p-2 hover:bg-gray-100 rounded-xl transition-colors">
-                  <Bell className="h-6 w-6 text-gray-600" />
-                  <span className="absolute top-2 right-2 h-2.5 w-2.5 bg-red-500 rounded-full ring-2 ring-white"></span>
-                </button>
-                <img
-                  src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=facearea&facepad=2&w=48&h=48&q=80"
-                  alt="User"
-                  className="h-10 w-10 rounded-full ring-2 ring-gray-200 hover:ring-green-400 transition-all cursor-pointer"
-                />
-              </div> */}
-            </div>
-          </div>
-        </header>
 
             <div className="max-w-7xl mx-auto text-center mb-12">
                 <h2 className="text-5xl font-bold text-gray-800 mb-4">Courses</h2>
@@ -126,7 +96,7 @@ const Courses = () => {
             </div>
         </div>
         </div>
-        </div>
+   
         
     );
 };
