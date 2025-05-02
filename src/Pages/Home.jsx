@@ -70,16 +70,16 @@ function HomePage() {
 }, []);
 
 
-const Images = [
-  { image: "https://images.unsplash.com/photo-1464226184884-fa280b87c399?auto=format&fit=crop&w=800&q=80" },
-  { image: "https://images.unsplash.com/photo-1625246333195-78d9c38ad449?auto=format&fit=crop&w=800&q=80" },
-  { image: "https://images.unsplash.com/photo-1576319155264-99536e0be1ee?auto=format&fit=crop&w=800&q=80" },
-  { image: "https://images.unsplash.com/photo-1472141521881-95d0e87e2e39?auto=format&fit=crop&w=800&q=80" },
-  { image: "https://images.unsplash.com/photo-1559935384-3b5b2e7a5204?auto=format&fit=crop&w=800&q=80" },
-  { image: "https://images.unsplash.com/photo-1561553873-e8491a564fd0?auto=format&fit=crop&w=800&q=80" },
-  { image: "https://images.unsplash.com/photo-1518531933037-91b2f5f229cc?auto=format&fit=crop&w=800&q=80" },
-  { image: "https://images.unsplash.com/photo-1495107334309-fcf20504a5ab?auto=format&fit=crop&w=800&q=80" }
-];
+// const Images = [
+//   { image: "https://images.unsplash.com/photo-1464226184884-fa280b87c399?auto=format&fit=crop&w=800&q=80" },
+//   { image: "https://images.unsplash.com/photo-1625246333195-78d9c38ad449?auto=format&fit=crop&w=800&q=80" },
+//   { image: "https://images.unsplash.com/photo-1576319155264-99536e0be1ee?auto=format&fit=crop&w=800&q=80" },
+//   { image: "https://images.unsplash.com/photo-1472141521881-95d0e87e2e39?auto=format&fit=crop&w=800&q=80" },
+//   { image: "https://images.unsplash.com/photo-1559935384-3b5b2e7a5204?auto=format&fit=crop&w=800&q=80" },
+//   { image: "https://images.unsplash.com/photo-1561553873-e8491a564fd0?auto=format&fit=crop&w=800&q=80" },
+//   { image: "https://images.unsplash.com/photo-1518531933037-91b2f5f229cc?auto=format&fit=crop&w=800&q=80" },
+//   { image: "https://images.unsplash.com/photo-1495107334309-fcf20504a5ab?auto=format&fit=crop&w=800&q=80" }
+// ];
 
 
 
@@ -403,7 +403,7 @@ const Images = [
           </div>
         </section>
 
-        <section id="courses" className="py-20 px-4">
+        {/* <section id="courses" className="py-20 px-4">
           <div className="max-w-7xl mx-auto">
             <h2 className="text-4xl font-bold mb-16">Top Rated Courses</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -422,11 +422,11 @@ const Images = [
                       <p className="text-gray-600 mb-4">{course.instructor}</p>
                       <div className="flex items-center justify-between">
                         <div className="flex items-center">
-                          {/* <Star className="w-5 h-5 text-yellow-400" /> */}
+                         
                           <span className="ml-1 font-medium">{course.rating}</span>
                         </div>
                         <div className="flex items-center text-gray-500">
-                          {/* <Users className="w-4 h-4 mr-1" /> */}
+                         
                           <span>{course.students}</span>
                         </div>
                       </div>
@@ -435,7 +435,7 @@ const Images = [
                 ))}
                 </div>
           </div>
-        </section>
+        </section> */}
 
         <section id="cta" className="py-20 bg-green-600">
           <div className="max-w-4xl mx-auto text-center px-4">
