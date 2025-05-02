@@ -23,7 +23,8 @@ const Courses = () => {
 
     useEffect(() => {
         // Fetch all courses
-        fetch(`${ServerURL}/api/course/courses`)
+        // fetch(`${ServerURL}/api/course/courses`)
+        fetch(`${ServerURL}/api/examCourse/courses`)
             .then(res => res.json())
             .then(data => setCourses(data.courses))
             .catch(err => console.error(err));
@@ -177,3 +178,4 @@ const Courses = () => {
 };
 
 export default Courses;
+ 

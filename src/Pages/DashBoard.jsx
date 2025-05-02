@@ -27,6 +27,8 @@ const AdminDashboard = () => {
   }, [navigate]);
 
   return (
+    <div>
+     
     <div className="flex h-screen bg-gray-900 text-white">
       {/* Sidebar */}
       <aside className="w-64 bg-gray-800 p-5 flex flex-col">
@@ -71,6 +73,7 @@ const AdminDashboard = () => {
           <p className="text-gray-400 text-center">{message}</p>
         </div>
       </main>
+    </div>
     </div>
   );
 };

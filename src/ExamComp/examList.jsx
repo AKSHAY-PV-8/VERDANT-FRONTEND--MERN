@@ -5,6 +5,7 @@ import { Autoplay, EffectCards } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/effect-cards";
 import { Star, Clock, ArrowRight, Brain } from "lucide-react";
+import NavBar from "../Components/Auth/NavBar";
 
 const images = [
     "https://images.unsplash.com/photo-1464226184884-fa280b87c399?auto=format&fit=crop&w=800&q=80",
@@ -51,6 +52,8 @@ const ExamList = () => {
     }, []);
 
     return (
+        <div>
+            <NavBar/>
         <div className="min-h-screen bg-gray-50 py-8">
             <header className="text-center">
                 <h1 className="text-5xl font-bold bg-gradient-to-r from-green-400 to-emerald-500 bg-clip-text text-transparent">
@@ -119,7 +122,15 @@ const ExamList = () => {
                 )}
             </div>
         </div>
+        </div>
     );
 };
 
 export default ExamList;
+
+
+
+
+
+
+

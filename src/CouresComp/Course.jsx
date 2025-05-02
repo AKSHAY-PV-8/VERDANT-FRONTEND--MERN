@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import {  CheckCircle, ArrowRight } from 'lucide-react';
 import { useParams, useNavigate } from "react-router-dom";
+import NavBar from "../Components/Auth/NavBar";
 
 const CourseDescription = () => {
     const [isHovered, setIsHovered] = useState(false);
@@ -15,7 +16,7 @@ const CourseDescription = () => {
     console.log("logged user",userId)
 
     useEffect(() => {
-        fetch(`${ServerURL}/api/course/courses/${id}`)
+        fetch(`${ServerURL}/api/examCourse/courses/${id}`)
             .then((res) => res.json())
             .then((data) => {
                 if (data.success) {
@@ -114,6 +115,8 @@ const CourseDescription = () => {
     }
 
     return (
+        <div>
+            <NavBar/>
         <div className="min-h-screen bg-gradient-to-b from-white to-green-50">
             <div className="max-w-6xl mx-auto px-4 py-12">
                 <div className="bg-white rounded-2xl shadow-lg overflow-hidden transition-transform duration-300 hover:scale-[1.02]">
@@ -135,40 +138,13 @@ const CourseDescription = () => {
                             </span>
                         </div>
 
-                        <h1 className="text-3xl font-bold text-gray-900 mb-4">
-                            {course.title}
-                        </h1>
-
-                        {/* <div className="flex items-center space-x-6 mb-8 text-gray-600">
-                            <div className="flex items-center">
-                                <Clock className="w-5 h-5 mr-2 text-green-600" />
-                                <span>{course.duration || "12 weeks"}</span>
-                            </div>
-                            <div className="flex items-center">
-                                <Users className="w-5 h-5 mr-2 text-green-600" />
-                                <span>{course.studentsEnrolled || "2,534 students"}</span>
-                            </div>
-                            <div className="flex items-center">
-                                <BookOpen className="w-5 h-5 mr-2 text-green-600" />
-                                <span>{course.modules || "24 modules"}</span>
-                            </div>  
-                            <div className="flex items-center">
-                                <Layers className="w-5 h-5 mr-2 text-green-600" />
-                                <span>{course.section ? course.section.length : 0} Sections</span>
-                            </div>
-                        </div> */}
-
-                        <div className="prose max-w-none mb-8">
-                            <p className="text-gray-600 leading-relaxed">
-                                {course.description || "No description available."}
-                            </p>
-                        </div>
+                    
 
                         <div className="grid grid-cols-2 gap-6 mb-8">
                             <div className="bg-green-50 p-6 rounded-xl">
                                 <h3 className="text-lg font-semibold text-gray-900 mb-4">What you will learn</h3>
-                                {course.section && course.section.length > 0 ? (
-                                    course.section.map((sec, index) => (
+                                {course.exams && course.exams.length > 0 ? (
+                                    course.exams.map((sec, index) => (
                                         <div key={index} className="flex items-center mb-3">
                                             <CheckCircle className="w-5 h-5 text-green-600 mr-3" />
                                             <span className="text-gray-700">{sec.sectionTitle}</span>
@@ -199,6 +175,7 @@ const CourseDescription = () => {
                                 </div>
                             </div>
                             <button
+                            // onClick={() => navigate(`/course/${id}`)}
                                 onClick={handlePayment}
                                 onMouseEnter={() => setIsHovered(true)}
                                 onMouseLeave={() => setIsHovered(false)}
@@ -211,6 +188,7 @@ const CourseDescription = () => {
                     </div>
                 </div>
             </div>
+        </div>
         </div>
     );
 }

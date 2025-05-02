@@ -1,16 +1,16 @@
 import { useEffect, useState } from "react";
-import { useParams} from "react-router-dom";
+import { useParams } from "react-router-dom";
 import axios from "axios";
 import { Timer } from "lucide-react";
+import NavBar from "../Components/Auth/NavBar";
 
 const ExamConduct = () => {
     const { examId } = useParams();
-    // const navigate = useNavigate();
     const [exam, setExam] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [answers, setAnswers] = useState({});
-    const [timeLeft, setTimeLeft] = useState(3600); // 1 hour in seconds
+    const [timeLeft, setTimeLeft] = useState(null);
     const [currentQuestion, setCurrentQuestion] = useState(0);
     const [score, setScore] = useState(null);
     const [correctAnswers, setCorrectAnswers] = useState([]);
@@ -19,23 +19,22 @@ const ExamConduct = () => {
     const [rankings, setRankings] = useState([]);
     const ServerURL = import.meta.env.VITE_SERVER_URL;
 
-        const fetchRankings = async () => {
-            try {
-                const response = await axios.get(`${ServerURL}/api/exam/ranking/${examId}`, {
-                    headers: { "Authorization": `Bearer ${localStorage.getItem("token")}` },
-                });
-
-                if (response.data.success) {
-                    setRankings(response.data.rankings);
-                    setShowRanking(true);
-                } else {
-                    alert("Failed to load rankings.");
-                }
-            } catch (error) {
-                console.error("Error fetching rankings:", error);
-                alert("Error fetching rankings.");
+    const fetchRankings = async () => {
+        try {
+            const response = await axios.get(`${ServerURL}/api/exam/ranking/${examId}`, {
+                headers: { "Authorization": `Bearer ${localStorage.getItem("token")}` },
+            });
+            if (response.data.success) {
+                setRankings(response.data.rankings);
+                setShowRanking(true);
+            } else {
+                alert("Failed to load rankings.");
             }
-        };
+        } catch (error) {
+            console.error("Error fetching rankings:", error);
+            alert("Error fetching rankings.");
+        }
+    };
 
     useEffect(() => {
         const fetchExam = async () => {
@@ -47,6 +46,7 @@ const ExamConduct = () => {
                 });
                 if (response.data.success) {
                     setExam(response.data.exam);
+                    setTimeLeft(response.data.exam.duration * 60); // duration in minutes -> seconds
                 } else {
                     throw new Error("Failed to fetch exam");
                 }
@@ -64,10 +64,14 @@ const ExamConduct = () => {
     };
 
     useEffect(() => {
-        if (timeLeft === 0) {
-            handleSubmit();
+        if (timeLeft === 0 && score === null) {
+            handleSubmit(true); // auto submit
         }
-        const timer = setInterval(() => setTimeLeft((prev) => (prev > 0 ? prev - 1 : 0)), 1000);
+        if (timeLeft === null) return;
+
+        const timer = setInterval(() => {
+            setTimeLeft((prev) => (prev > 0 ? prev - 1 : 0));
+        }, 1000);
         return () => clearInterval(timer);
     }, [timeLeft]);
 
@@ -75,14 +79,14 @@ const ExamConduct = () => {
         setAnswers({ ...answers, [index]: value });
     };
 
-    const handleSubmit = async () => {
-        const isConfirmed = window.confirm("Are you sure you want to submit the exam?");
-        if (!isConfirmed) return;
+    const handleSubmit = async (autoSubmit = false) => {
+        if (!autoSubmit) {
+            const isConfirmed = window.confirm("Are you sure you want to submit the exam?");
+            if (!isConfirmed) return;
+        }
 
         const token = localStorage.getItem("token");
-        const userId = localStorage.getItem("userId")
-
-        console.log("userID", userId)
+        const userId = localStorage.getItem("userId");
 
         if (!token) {
             alert("Session expired. Please log in again.");
@@ -97,15 +101,22 @@ const ExamConduct = () => {
         try {
             const response = await axios.post(
                 `${ServerURL}/api/exam/exams/${examId}/submit`,
-                { answers: Object.values(answers),
-                    userId: userId
-                 },
-                { headers: { "Authorization": `Bearer ${token}` } }
+                {
+                    answers: Object.values(answers),
+                    userId: userId,
+                },
+                {
+                    headers: { Authorization: `Bearer ${token}` },
+                }
             );
 
             if (response.data.success) {
                 setScore(response.data.totalMarks);
-                alert(`Exam Submitted Successfully! Your score: ${response.data.totalScore}`);
+                if (autoSubmit) {
+                    alert(`Time's up! Exam auto-submitted.\nYour score: ${response.data.totalScore}`);
+                } else {
+                    alert(`Exam Submitted Successfully! Your score: ${response.data.totalScore}`);
+                }
 
                 const wrongIndices = [];
                 response.data.correctAnswers.forEach((ans, index) => {
@@ -119,7 +130,7 @@ const ExamConduct = () => {
                 alert("Failed to submit exam. Try again.");
             }
         } catch (error) {
-            console.log(error)
+            console.log(error);
             alert("Error submitting exam. Please check your network or login again.");
         }
     };
@@ -128,13 +139,18 @@ const ExamConduct = () => {
     if (error) return <p className="text-red-500">{error}</p>;
 
     return (
+        <div>
+        <NavBar/>
         <div className="min-h-screen bg-gray-100 p-4">
             <div className="max-w-5xl mx-auto bg-white shadow-lg rounded-lg p-6">
                 <div className="flex justify-between items-center border-b pb-4">
                     <h2 className="text-xl font-bold text-blue-600">{exam.title}</h2>
                     <div className="text-red-600 font-semibold flex items-center space-x-2">
                         <Timer className="text-red-500" />
-                        <span>Time Left: {`${Math.floor(timeLeft / 60)}:${timeLeft % 60}`}</span>
+                        <span>
+                            Time Left: {String(Math.floor(timeLeft / 60)).padStart(2, "0")}:
+                            {String(timeLeft % 60).padStart(2, "0")}
+                        </span>
                     </div>
                 </div>
                 <div className="flex">
@@ -144,7 +160,12 @@ const ExamConduct = () => {
                             {exam.question.map((_, index) => (
                                 <button
                                     key={index}
-                                    className={`p-2 rounded-full ${wrongAnswers.includes(index) ? "bg-red-500 text-white" : answers[index] ? "bg-green-500 text-white" : "bg-gray-300"}`}
+                                    className={`p-2 rounded-full ${wrongAnswers.includes(index)
+                                            ? "bg-red-500 text-white"
+                                            : answers[index]
+                                                ? "bg-green-500 text-white"
+                                                : "bg-gray-300"
+                                        }`}
                                     onClick={() => setCurrentQuestion(index)}
                                 >
                                     {index + 1}
@@ -164,51 +185,54 @@ const ExamConduct = () => {
                                         checked={answers[currentQuestion] === opt}
                                         onChange={() => handleAnswer(currentQuestion, opt)}
                                         className="mr-2"
+                                        disabled={score !== null}
                                     />
                                     {opt}
                                 </label>
                             ))}
                         </div>
                     </div>
-                    
                 </div>
-                {/* Navigation Buttons */}
                 <div className="flex justify-between mt-6">
-                            <button
-                                className="bg-gray-300 px-4 py-2 rounded"
-                                disabled={currentQuestion === 0}
-                                onClick={() => setCurrentQuestion(currentQuestion - 1)}
-                            >
-                                Previous
-                            </button>
-                            <button
-                                className="bg-yellow-500 text-white px-4 py-2 rounded"
-                                onClick={handleClearSelection}
-                            >
-                                Clear
-                            </button>
-                            <button
-                                className="bg-blue-500 text-white px-4 py-2 rounded"
-                                disabled={currentQuestion === exam.question.length - 1}
-                                onClick={() => setCurrentQuestion(currentQuestion + 1)}
-                            >
-                                Next
-                            </button>
-                        </div>
-                <div className="mt-6 text-center">
-                    <button className="bg-red-500 text-white px-6 py-3 rounded-lg font-semibold" onClick={handleSubmit}>Submit Exam</button>
+                    <button
+                        className="bg-gray-300 px-4 py-2 rounded"
+                        disabled={currentQuestion === 0}
+                        onClick={() => setCurrentQuestion(currentQuestion - 1)}
+                    >
+                        Previous
+                    </button>
+                    <button className="bg-yellow-500 text-white px-4 py-2 rounded" onClick={handleClearSelection}>
+                        Clear
+                    </button>
+                    <button
+                        className="bg-blue-500 text-white px-4 py-2 rounded"
+                        disabled={currentQuestion === exam.question.length - 1}
+                        onClick={() => setCurrentQuestion(currentQuestion + 1)}
+                    >
+                        Next
+                    </button>
                 </div>
+                <div className="mt-6 text-center">
+                    <button
+                        className="bg-red-500 text-white px-6 py-3 rounded-lg font-semibold"
+                        onClick={() => handleSubmit(false)}
+                        disabled={score !== null}
+                    >
+                        Submit Exam
+                    </button>
+                </div>
+
                 {score !== null && (
                     <div className="mt-6 text-center bg-green-100 text-green-700 p-4 rounded-lg">
                         <h3 className="text-2xl font-bold">Your Score: {score}</h3>
                         <div className="mt-4 text-left">
                             <h4 className="text-lg font-semibold">Correct Answers:</h4>
                             {correctAnswers.map((ans, index) => (
-                                <p key={index} className="text-green-700">Q{index + 1}: {ans.correctAnswer}</p>
+                                <p key={index} className="text-green-700">
+                                    Q{index + 1}: {ans.correctAnswer}
+                                </p>
                             ))}
                         </div>
-
-
                         <div className="mt-6 text-center">
                             <button
                                 className="bg-green-500 text-white px-6 py-3 rounded-lg font-semibold"
@@ -216,23 +240,24 @@ const ExamConduct = () => {
                             >
                                 View Ranking List
                             </button>
-                        </div>    
+                        </div>
                     </div>
                 )}
 
-            {showRanking && (
-                <div className="mt-6 bg-gray-100 p-4 rounded-lg shadow-md">
-                    <h3 className="text-lg font-bold">Ranking List</h3>
-                    <ul className="mt-3">
-                        {rankings.map((rank, index) => (
-                            <li key={rank.user._id} className="py-2">
-                                <span className="font-semibold">{index + 1}. {rank.user.name}</span> - {rank.score} points
-                            </li>
-                        ))}
-                    </ul>
-                </div>
-            )}
+                {showRanking && (
+                    <div className="mt-6 bg-gray-100 p-4 rounded-lg shadow-md">
+                        <h3 className="text-lg font-bold">Ranking List</h3>
+                        <ul className="mt-3">
+                            {rankings.map((rank, index) => (
+                                <li key={rank.user._id} className="py-2">
+                                    <span className="font-semibold">{index + 1}. {rank.user.name}</span> - {rank.score} points
+                                </li>
+                            ))}
+                        </ul>
+                    </div>
+                )}
             </div>
+        </div>
         </div>
     );
 };

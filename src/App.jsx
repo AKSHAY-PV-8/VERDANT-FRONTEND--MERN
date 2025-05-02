@@ -17,6 +17,7 @@ import AdminDashboard from "./Pages/DashBoard";
 import Dashboard from "./Pages/userDashBoard";
 import AddAdvisor from "./Pages/AddAdvisors";
 import Advisors from "./Pages/AboutAdvisors";
+import AttendExam from "./CouresComp/CourseExamTake";
 
 
 
@@ -37,6 +38,7 @@ function App() {
         <Route path="/courseCreation" element={<CreateCourse/>} />
         <Route path="/course" element={<Courses/>} />
         <Route path="/course/:id" element={<CourseDetail />} />
+        <Route path="/attend-exam/:id/:examIndex" element={<AttendExam />} />
         <Route path="/courseDescription/:id" element={<CourseDescription />} />
         <Route path="/admin-dashboard" element={<AdminDashboard />} />
         <Route path="/dashboard" element={<Dashboard />} />

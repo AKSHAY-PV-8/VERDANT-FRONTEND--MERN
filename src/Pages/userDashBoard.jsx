@@ -1,6 +1,7 @@
 import {  BookOpen, ChevronRight, Home } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import NavBar from "../Components/Auth/NavBar";
 
 const Dashboard = () => {
     const [courses, setCourses] = useState([]);
@@ -27,6 +28,8 @@ const Dashboard = () => {
     }, [userId]);
 
     return (
+      <div>
+        <NavBar/>
         <div className="flex min-h-screen bg-gray-50">
       {/* Sidebar */}
       <div className="w-64 bg-white shadow-lg">
@@ -38,7 +41,7 @@ const Dashboard = () => {
           <nav className="space-y-2">
             {[
               { icon: Home, label: "Dashboard", id: "dashboard" },
-              { icon: BookOpen, label: "My Courses", id: "courses" },
+              
         
             ].map((item) => (
               <button
@@ -70,7 +73,7 @@ const Dashboard = () => {
         <div className="grid grid-cols-1 gap-6">
           {courses.map((course) => (
             <div
-              key={course.id}
+              key={course._id}
               className="bg-white rounded-xl shadow-sm hover:shadow-md transition-all p-6"
             >
               <div className="flex gap-6">
@@ -107,47 +110,8 @@ const Dashboard = () => {
         </div>
       </div>
     </div>
-        // <div className="flex h-screen bg-gray-100">
-        //     {/* Sidebar */}
-        //     <aside className="w-1/4 bg-white shadow-lg border-r p-6">
-        //         <h2 className="text-xl font-bold text-gray-700 mb-4">📌 Enrolled Courses</h2>
-        //         <ul className="space-y-3">
-        //             {courses.length === 0 ? (
-        //                 <p className="text-gray-500">No courses enrolled yet.</p>
-        //             ) : (
-        //                 courses.map(course => (
-        //                     <li 
-        //                         key={course._id} 
-        //                         className="p-3 bg-gray-200 rounded-lg shadow-sm hover:bg-gray-300 transition-all"
-        //                     >
-        //                         {course.title}
-        //                     </li>
-        //                 ))
-        //             )}
-        //         </ul>
-        //     </aside>
-
-        //     {/* Main Content */}
-        //     <div className="flex-1 p-8">
-        //         <h1 className="text-3xl font-extrabold text-gray-800 mb-6">📚 My Enrolled Courses</h1>
-
-        //         {courses.length === 0 ? (
-        //             <p className="text-lg text-gray-600">You havent enrolled in any courses yet.</p>
-        //         ) : (
-        //             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        //                 {courses.map(course => (
-        //                     <div 
-        //                         key={course._id} 
-        //                         className="p-6 bg-white rounded-xl shadow-md border hover:shadow-lg transition-all"
-        //                     >
-        //                         <h2 className="text-xl font-semibold text-gray-800">{course.title}</h2>
-        //                         <p className="text-gray-600 mt-2">{course.description}</p>
-        //                     </div>
-        //                 ))}
-        //             </div>
-        //         )}
-        //     </div>
-        // </div>
+    </div>
+     
     );
 };
 

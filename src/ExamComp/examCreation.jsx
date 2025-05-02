@@ -3,6 +3,7 @@ import { useState } from "react";
 const CreateExam = () => {
     const [title, setTitle] = useState("");
     const [negativeMarking, setNegativeMarking] = useState(0); // Store negative marking for the entire exam
+    const [duration, setDuration] = useState(0)
     const [questions, setQuestions] = useState([
         { question: "", option: ["", "", "", ""], answer: "", marks: 1 }
     ]);
@@ -72,6 +73,15 @@ const CreateExam = () => {
                     value={negativeMarking}
                     min="0"
                     onChange={(e) => setNegativeMarking(parseFloat(e.target.value))}
+                />
+
+                <input
+                    type="number"
+                    placeholder="Negative Marking"
+                    className="border border-red-300 p-3 rounded w-full mb-5 focus:ring focus:ring-red-200"
+                    value={duration}
+                    min="0"
+                    onChange={(e) => setDuration(parseFloat(e.target.value))}
                 />
 
                 {questions.map((q, index) => (
