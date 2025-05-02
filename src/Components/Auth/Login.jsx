@@ -9,14 +9,14 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const [success, setSuccess] = useState("");
   const [error, setError] = useState("");
-  const [loading, setLoading] = useState(false); // ✅ loading state
+  const [loading, setLoading] = useState(false);
   const ServerURL = import.meta.env.VITE_SERVER_URL;
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
     setSuccess("");
-    setLoading(true); // ✅ start loading
+    setLoading(true);
 
     try {
       const response = await axios.post(`${ServerURL}/api/auth/login`, {
@@ -31,24 +31,22 @@ const Login = () => {
       localStorage.setItem("user", JSON.stringify(user));
 
       setSuccess("Successfully Logged In");
+      setLoading(false);
 
-      // Delay just for user feedback
-      setTimeout(() => {
-        setLoading(false); // ✅ stop loading
-        if (user.isAdmin) {
-          navigate("/admin-dashboard");
-        } else {
-          navigate("/home");
-        }
-      }, 1000);
+      if (user.isAdmin) {
+        navigate("/admin-dashboard");
+      } else {
+        navigate("/home");
+      }
     } catch (err) {
-      setLoading(false); // ✅ stop loading on error
-      setError("Invalid email or password");
+      setLoading(false);
+      setError("Invalid email or password.");
+      console.log(err)
     }
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-900">
+    <div className="min-h-screen flex items-center justify-center bg-gray-900 px-4">
       <div className="w-full max-w-md bg-gray-800 p-8 rounded-lg shadow-lg">
         <h2 className="text-white text-2xl font-bold mb-6 text-center">Welcome Back!</h2>
 
@@ -90,15 +88,31 @@ const Login = () => {
             disabled={loading}
             className={`w-full py-2 font-semibold rounded-lg transition duration-200 
               ${loading ? "bg-green-400 cursor-not-allowed" : "bg-green-600 hover:bg-green-700"} 
-              text-white flex items-center justify-center`}
+              text-white flex items-center justify-center space-x-2`}
           >
-            {loading ? (
-              <svg className="animate-spin h-5 w-5 mr-2 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z"></path>
+            {loading && (
+              <svg
+                className="animate-spin h-5 w-5 text-white"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+              >
+                <circle
+                  className="opacity-25"
+                  cx="12"
+                  cy="12"
+                  r="10"
+                  stroke="currentColor"
+                  strokeWidth="4"
+                ></circle>
+                <path
+                  className="opacity-75"
+                  fill="currentColor"
+                  d="M4 12a8 8 0 018-8v8z"
+                ></path>
               </svg>
-            ) : null}
-            {loading ? "Signing In..." : "Sign In"}
+            )}
+            <span>{loading ? "Signing In..." : "Sign In"}</span>
           </button>
 
           {error && <p className="text-red-500 text-center">{error}</p>}
@@ -106,10 +120,13 @@ const Login = () => {
         </form>
 
         <p className="mt-4 text-center text-gray-400">
-          Don't have an account?{" "}
-          <button onClick={() => navigate("/signup")} className="text-green-400 hover:text-green-300 underline">
+          Don’t have an account?{" "}
+          <span
+            onClick={() => navigate("/signup")}
+            className="text-green-400 hover:text-green-300 cursor-pointer"
+          >
             Sign up now
-          </button>
+          </span>
         </p>
       </div>
     </div>
