@@ -52,7 +52,7 @@ const ExamList = () => {
     }, []);
 
     return (
-        <div>
+        <div className="overflow-hidden">
             <NavBar/>
         <div className="min-h-screen bg-gray-50 py-8">
             <header className="text-center">
