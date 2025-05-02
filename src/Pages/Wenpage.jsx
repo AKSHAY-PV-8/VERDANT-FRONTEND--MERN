@@ -35,7 +35,7 @@ function Webhome() {
             {/* Desktop Navigation */}
             <div className="hidden md:block">
               <div className="flex items-center space-x-8">
-                <a href="#home" className="text-gray-300 hover:text-green-400 transition-colors">Home</a>
+                <a onClick={() => navigate("/")} className="text-gray-300 hover:text-green-400 transition-colors">Home</a>
                 <a onClick={() => {navigate("/intro")}} className="text-gray-300 hover:text-green-400 transition-colors">Education</a>
                 {/* <a href="#technology" className="text-gray-300 hover:text-green-400 transition-colors">Technology</a>
                 <a href="#projects" className="text-gray-300 hover:text-green-400 transition-colors">Projects</a>
