@@ -27,10 +27,14 @@ function Webhome() {
       <nav className="fixed w-screen bg-gray-900/90 backdrop-blur-sm z-50 border-b border-gray-800">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
-            <div className="flex items-center">
-              {/* < className="h-8 w-8 text-green-400" /> */}
-              <span className="ml-2 text-xl font-bold uppercase text-green-300">Verdant</span>
-            </div>
+          <div className="flex items-center">
+           <img
+              src="/logo.png"
+              alt="Verdant Logo"
+              className="h-8 w-8 mr-2"
+            />
+            <span className="text-xl font-bold uppercase text-green-300">Verdant</span>
+          </div>
             
             {/* Desktop Navigation */}
             <div className="hidden md:block">
