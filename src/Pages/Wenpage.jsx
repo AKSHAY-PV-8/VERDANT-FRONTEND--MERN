@@ -31,7 +31,7 @@ function Webhome() {
            <img
               src="/logo.png"
               alt="Verdant Logo"
-              className="h-8 w-8 mr-2"
+              className="h-20 w-20 mr-2"
             />
             <span className="text-xl font-bold uppercase text-green-300">Verdant</span>
           </div>
