@@ -23,9 +23,15 @@ const Signup = () => {
         password,
       });
       setsuccess("Successfully Signed Up");
-      setTimeout(() => navigate("/login"), 2000); // Redirect to login after delay
+      setTimeout(() => navigate("/login"), 2000);
     } catch (err) {
-      seterror("Error in Signup",err);
+      if (err.response && err.response.status === 409) {
+        seterror("There is already an account with this email. Try another one.");
+      } else if (err.response?.data?.message) {
+        seterror(err.response.data.message);
+      } else {
+        seterror("Something went wrong during signup.");
+      }
     }
   };
 
@@ -96,7 +102,9 @@ const Signup = () => {
 
         <p className="mt-4 text-center text-gray-400">
           Already have an account?{" "}
-          <a onClick={() => navigate("/login")}  className="text-green-400 hover:text-green-300">Sign in</a>
+          <span onClick={() => navigate("/login")} className="text-green-400 hover:text-green-300 cursor-pointer">
+            Sign in
+          </span>
         </p>
       </div>
     </div>
