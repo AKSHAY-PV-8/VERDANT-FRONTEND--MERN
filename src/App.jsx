@@ -18,6 +18,9 @@ import Dashboard from "./Pages/userDashBoard";
 import AddAdvisor from "./Pages/AddAdvisors";
 import Advisors from "./Pages/AboutAdvisors";
 import AttendExam from "./CouresComp/CourseExamTake";
+import CourseListPage from "./CouresComp/CourseListAdmin";
+import CourseEditPage from "./CouresComp/CourseEdit";
+import ComingSoon from "./Pages/ComingSoon";
 
 
 
@@ -42,9 +45,13 @@ function App() {
         <Route path="/courseDescription/:id" element={<CourseDescription />} />
         <Route path="/admin-dashboard" element={<AdminDashboard />} />
         <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/courses" element={<CourseListPage />} />
+        <Route path="/edit-course/:id" element={<CourseEditPage />} />
 
         <Route path="/addAdvisors" element={<AddAdvisor/>} />
         <Route path="/advisors" element={<Advisors/>} />
+
+        <Route path="/comingSoon" element={<ComingSoon/>} />
 
 
 

@@ -13,49 +13,55 @@ const AttendExam = () => {
   const [timeLeft, setTimeLeft] = useState(null);
   const ServerURL = import.meta.env.VITE_SERVER_URL;
 
-
+  // Fetch the exam data
   useEffect(() => {
-    axios.get(`${ServerURL}/api/examCourse/courses/${id}`)
-      .then(res => {
+    axios
+      .get(`${ServerURL}/api/examCourse/courses/${id}`)
+      .then((res) => {
         const exam = res.data.course.exams[examIndex];
         setExamData(exam);
         setTimeLeft(exam.duration * 60);
       })
-      .catch(err => console.error(err));
+      .catch((err) => console.error(err));
   }, [id, examIndex]);
 
+  // Handle option selection
   const handleOptionChange = (qIndex, value) => {
     setResponses({ ...responses, [qIndex]: value });
   };
 
+  // Auto-submit when time is up
   useEffect(() => {
     if (!submitted && timeLeft !== null) {
       if (timeLeft === 0) {
-        handleSubmit(); // Auto-submit when time is up
+        handleSubmit(); // Auto-submit
       }
-  
+
       const timer = setInterval(() => {
-        setTimeLeft(prev => prev > 0 ? prev - 1 : 0);
+        setTimeLeft((prev) => (prev > 0 ? prev - 1 : 0));
       }, 1000);
-  
-      return () => clearInterval(timer); // cleanup
+
+      return () => clearInterval(timer); // Cleanup
     }
   }, [timeLeft, submitted]);
 
+  // Format time in MM:SS
   const formatTime = (seconds) => {
     const m = String(Math.floor(seconds / 60)).padStart(2, '0');
     const s = String(seconds % 60).padStart(2, '0');
     return `${m}:${s}`;
   };
 
+  // Clear the selected answer for the current question
   const handleClear = () => {
-    setResponses(prev => {
+    setResponses((prev) => {
       const updated = { ...prev };
       delete updated[currentQuestion];
       return updated;
     });
   };
 
+  // Submit the exam and calculate the score
   const handleSubmit = () => {
     let score = 0;
     let answerList = [];
@@ -76,123 +82,136 @@ const AttendExam = () => {
 
     setSubmitted(true);
     setResult({ score, answers: answerList });
-
     window.alert("Exam is over! Your results are now visible.");
   };
 
+  // Check if a question is answered
   const isAnswered = (index) => responses.hasOwnProperty(index);
 
   return (
     <div>
-      <NavBar/>
-    <div className="flex flex-col md:flex-row p-4">
+      <NavBar />
+      <div className="flex flex-col md:flex-row p-4">
+        {/* Timer */}
         <div className="text-lg font-bold text-red-600 mb-4">
           Time Left: {formatTime(timeLeft)}
-       </div>
-      {examData ? (
-        <>
-          {/* Sidebar with question status */}
-          <div className="md:w-1/4 mb-4 md:mb-0 md:mr-4">
-            <h3 className="text-lg font-semibold mb-2">Question Status</h3>
-            <div className="grid grid-cols-5 gap-2">
-              {examData.questions.map((_, idx) => (
-                <button
-                  key={idx}
-                  onClick={() => setCurrentQuestion(idx)}
-                  className={`w-10 h-10 rounded-full text-white font-bold ${
-                    isAnswered(idx) ? 'bg-green-500' : 'bg-gray-400'
-                  } ${currentQuestion === idx ? 'ring-4 ring-blue-500' : ''}`}
-                >
-                  {idx + 1}
-                </button>
-              ))}
+        </div>
+
+        {examData ? (
+          <>
+            {/* Sidebar with question status */}
+            <div className="md:w-1/4 mb-4 md:mb-0 md:mr-4">
+              <h3 className="text-lg font-semibold mb-2">Question Status</h3>
+              <div className="grid grid-cols-5 gap-2">
+                {examData.questions.map((_, idx) => (
+                  <button
+                    key={idx}
+                    onClick={() => setCurrentQuestion(idx)}
+                    className={`w-10 h-10 rounded-full text-white font-bold ${
+                      isAnswered(idx) ? 'bg-green-500' : 'bg-gray-400'
+                    } ${currentQuestion === idx ? 'ring-4 ring-blue-500' : ''}`}
+                  >
+                    {idx + 1}
+                  </button>
+                ))}
+              </div>
             </div>
-          </div>
 
-          {/* Question and navigation */}
-          <div className="md:w-3/4">
-            <h2 className="text-xl font-bold mb-4">{examData.sectionTitle}</h2>
+            {/* Question and options */}
+            <div className="md:w-3/4">
+              <h2 className="text-xl font-bold mb-4">{examData.sectionTitle}</h2>
 
-            {!submitted ? (
-              <div>
-                {/* Single question display */}
-                <div className="mb-4 border p-4 rounded">
-                  <p className="font-semibold">
-                    {currentQuestion + 1}. {examData.questions[currentQuestion].question}
-                  </p>
-                  {examData.questions[currentQuestion].option.map((opt, i) => (
-                    <div key={i}>
-                      <label>
-                        <input
-                          type="radio"
-                          name={`q-${currentQuestion}`}
-                          value={opt}
-                          checked={responses[currentQuestion] === opt}
-                          onChange={() => handleOptionChange(currentQuestion, opt)}
-                          className="mr-2"
-                        />
-                        {opt}
-                      </label>
+              {!submitted ? (
+                <div>
+                  {/* Single question display */}
+                  <div className="mb-4 border p-4 rounded bg-gray-50 shadow">
+                    <p className="font-semibold mb-2">
+                      {currentQuestion + 1}. {examData.questions[currentQuestion].question}
+                    </p>
+
+                    {/* Image Display (Only if present) */}
+                    {examData.questions[currentQuestion].image && (
+                      <img
+                        src={examData.questions[currentQuestion].image}
+                        alt="Question"
+                        className="w-full h-64 object-contain mb-4 rounded border"
+                      />
+                    )}
+
+                    {/* Options */}
+                    {examData.questions[currentQuestion].option.map((opt, i) => (
+                      <div key={i}>
+                        <label>
+                          <input
+                            type="radio"
+                            name={`q-${currentQuestion}`}
+                            value={opt}
+                            checked={responses[currentQuestion] === opt}
+                            onChange={() => handleOptionChange(currentQuestion, opt)}
+                            className="mr-2"
+                          />
+                          {opt}
+                        </label>
+                      </div>
+                    ))}
+                  </div>
+
+                  {/* Navigation Buttons */}
+                  <div className="flex items-center space-x-4 mb-4">
+                    <button
+                      disabled={currentQuestion === 0}
+                      onClick={() => setCurrentQuestion((prev) => prev - 1)}
+                      className="bg-gray-600 text-white px-4 py-2 rounded disabled:opacity-50"
+                    >
+                      Previous
+                    </button>
+
+                    <button
+                      onClick={handleClear}
+                      className="bg-yellow-500 text-white px-4 py-2 rounded"
+                    >
+                      Clear
+                    </button>
+
+                    <button
+                      disabled={currentQuestion === examData.questions.length - 1}
+                      onClick={() => setCurrentQuestion((prev) => prev + 1)}
+                      className="bg-gray-600 text-white px-4 py-2 rounded disabled:opacity-50"
+                    >
+                      Next
+                    </button>
+                  </div>
+
+                  {/* Submit Button */}
+                  <button
+                    onClick={handleSubmit}
+                    className="bg-blue-600 text-white px-6 py-2 rounded"
+                  >
+                    Submit Exam
+                  </button>
+                </div>
+              ) : (
+                <div>
+                  <h3 className="text-xl text-green-600 font-bold">Your Score: {result.score}</h3>
+                  <h4 className="mt-4 text-lg font-semibold">Answer Review</h4>
+                  {result.answers.map((a, i) => (
+                    <div key={i} className="p-2 border mt-2 rounded">
+                      <p><strong>Q:</strong> {a.question}</p>
+                      <p><strong>Your Answer:</strong> {a.user || "Not Answered"}</p>
+                      <p><strong>Correct Answer:</strong> {a.correct}</p>
+                      <p className={a.isCorrect ? "text-green-600" : "text-red-600"}>
+                        {a.isCorrect ? "Correct" : "Incorrect"}
+                      </p>
                     </div>
                   ))}
                 </div>
-
-                {/* Navigation Buttons */}
-                <div className="flex items-center space-x-4 mb-4">
-                  <button
-                    disabled={currentQuestion === 0}
-                    onClick={() => setCurrentQuestion(prev => prev - 1)}
-                    className="bg-gray-600 text-white px-4 py-2 rounded disabled:opacity-50"
-                  >
-                    Previous
-                  </button>
-
-                  <button
-                    onClick={handleClear}
-                    className="bg-yellow-500 text-white px-4 py-2 rounded"
-                  >
-                    Clear
-                  </button>
-
-                  <button
-                    disabled={currentQuestion === examData.questions.length - 1}
-                    onClick={() => setCurrentQuestion(prev => prev + 1)}
-                    className="bg-gray-600 text-white px-4 py-2 rounded disabled:opacity-50"
-                  >
-                    Next
-                  </button>
-                </div>
-
-                {/* Submit Button */}
-                <button
-                  onClick={handleSubmit}
-                  className="bg-blue-600 text-white px-6 py-2 rounded"
-                >
-                  Submit Exam
-                </button>
-              </div>
-            ) : (
-              <div>
-                <h3 className="text-xl text-green-600 font-bold">Your Score: {result.score}</h3>
-                <h4 className="mt-4 text-lg font-semibold">Answer Review</h4>
-                {result.answers.map((a, i) => (
-                  <div key={i} className="p-2 border mt-2 rounded">
-                    <p><strong>Q:</strong> {a.question}</p>
-                    <p><strong>Your Answer:</strong> {a.user || "Not Answered"}</p>
-                    <p><strong>Correct Answer:</strong> {a.correct}</p>
-                    <p className={a.isCorrect ? "text-green-600" : "text-red-600"}>
-                      {a.isCorrect ? "Correct" : "Incorrect"}
-                    </p>
-                  </div>
-                ))}
-              </div>
-            )}
-          </div>
-        </>
-      ) : (
-        <p>Loading Exam...</p>
-      )}
-    </div>
+              )}
+            </div>
+          </>
+        ) : (
+          <p>Loading Exam...</p>
+        )}
+      </div>
     </div>
   );
 };

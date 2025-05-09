@@ -97,8 +97,9 @@ const Advisors = () => {
                 key={advisor._id}
                 className="relative h-[500px] w-full overflow-hidden group rounded-2xl"
               >
+                {/* Use Full Cloudinary URL */}
                 <img
-                  src={`${ServerURL}${advisor.imageUrl}`}
+                  src={advisor.imageUrl}
                   alt={advisor.name}
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                 />

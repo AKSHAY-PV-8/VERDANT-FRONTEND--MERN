@@ -31,9 +31,9 @@ function Webhome() {
            <img
               src="/logo.png"
               alt="Verdant Logo"
-              className="h-20 w-20 mr-2"
+              className="h-30 w-30 mr-2"
             />
-            <span className="text-xl font-bold uppercase text-green-300">Verdant</span>
+            <span className="text-xl font-bold uppercase text-green-300"></span>
           </div>
             
             {/* Desktop Navigation */}
@@ -214,7 +214,7 @@ function Webhome() {
                 <p className="text-gray-300"></p>
                 <div className='pt-6'>
                 <a
-                href=""
+                onClick={() => navigate("/comingSoon")}
                 className="inline-flex items-center px-6 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors"
               >
                 Learn More
@@ -234,7 +234,7 @@ function Webhome() {
                 <p className="text-gray-300"></p>
                 <div className='pt-6'>
                 <a
-                href=""
+                onClick={() => navigate("/comingSoon")}
                 className="inline-flex items-center px-6 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors"
               >
                 Learn More 
@@ -254,7 +254,7 @@ function Webhome() {
                 <p className="text-gray-300"></p>
                 <div className='pt-6'>
                 <a
-                href=""
+                onClick={() => navigate("/comingSoon")}
                 className="inline-flex items-center px-6 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors"
               >
                 Learn More

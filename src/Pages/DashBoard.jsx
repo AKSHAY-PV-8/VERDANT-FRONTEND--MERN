@@ -48,6 +48,15 @@ const AdminDashboard = () => {
             <Book className="w-5 h-5" />
             <span>Add Course</span>
           </Link>
+
+          <Link
+            to="/courses"
+            className="flex items-center space-x-3 p-3 bg-gray-700 hover:bg-gray-600 rounded-lg transition"
+          >
+            <Book className="w-5 h-5" />
+            <span>Edit Course</span>
+          </Link>
+
           <Link
             to="/addAdvisors"
             className="flex items-center space-x-3 p-3 bg-gray-700 hover:bg-gray-600 rounded-lg transition"
