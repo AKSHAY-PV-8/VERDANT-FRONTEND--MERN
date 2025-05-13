@@ -154,14 +154,14 @@ const CourseEditPage = () => {
                     {exam.questions.map((q, qIdx) => (
                         <div key={qIdx} className="border p-3 mb-3 bg-white rounded shadow-sm">
                             <h4 className="font-medium mb-1">Question {qIdx + 1}</h4>
-                            <input
+                            <textarea
                                 value={q.question}
                                 onChange={(e) => handleQuestionChange(examIdx, qIdx, 'question', e.target.value)}
                                 className="w-full mb-2 p-2 border"
                                 placeholder="Question"
                             />
                             {q.option.map((opt, optIdx) => (
-                                <input
+                                <textarea
                                     key={optIdx}
                                     value={opt}
                                     onChange={(e) => handleOptionChange(examIdx, qIdx, optIdx, e.target.value)}
@@ -169,7 +169,7 @@ const CourseEditPage = () => {
                                     placeholder={`Option ${optIdx + 1}`}
                                 />
                             ))}
-                            <input
+                            <textarea
                                 value={q.answer}
                                 onChange={(e) => handleQuestionChange(examIdx, qIdx, 'answer', e.target.value)}
                                 className="w-full mb-2 p-2 border"
