@@ -70,16 +70,7 @@ function HomePage() {
 }, []);
 
 
-// const Images = [
-//   { image: "https://images.unsplash.com/photo-1464226184884-fa280b87c399?auto=format&fit=crop&w=800&q=80" },
-//   { image: "https://images.unsplash.com/photo-1625246333195-78d9c38ad449?auto=format&fit=crop&w=800&q=80" },
-//   { image: "https://images.unsplash.com/photo-1576319155264-99536e0be1ee?auto=format&fit=crop&w=800&q=80" },
-//   { image: "https://images.unsplash.com/photo-1472141521881-95d0e87e2e39?auto=format&fit=crop&w=800&q=80" },
-//   { image: "https://images.unsplash.com/photo-1559935384-3b5b2e7a5204?auto=format&fit=crop&w=800&q=80" },
-//   { image: "https://images.unsplash.com/photo-1561553873-e8491a564fd0?auto=format&fit=crop&w=800&q=80" },
-//   { image: "https://images.unsplash.com/photo-1518531933037-91b2f5f229cc?auto=format&fit=crop&w=800&q=80" },
-//   { image: "https://images.unsplash.com/photo-1495107334309-fcf20504a5ab?auto=format&fit=crop&w=800&q=80" }
-// ];
+
 
 
 
@@ -123,6 +114,26 @@ function HomePage() {
     return () => document.removeEventListener('click', handleClickOutside);
   }, []);
 
+  const handleLogout = async () => {
+    try {
+      const response = await fetch(`${ServerURL}/api/auth/logout`, {
+        method: 'POST',
+        credentials: 'include',
+      });
+      const data = await response.json();
+      if (data.success) {
+        alert("Logged out successfully!");
+        navigate("/intro");
+        localStorage.removeItem("token");
+      } else {
+        alert(data.message || "Failed to logout");
+      }
+    } catch (error) {
+      console.error("Logout error:", error);
+      alert("Failed to logout. Please try again.");
+    }
+  };
+
 
   return (
     <div className="min-h-screen bg-gray-50 overflow-hidden">
@@ -133,46 +144,32 @@ function HomePage() {
         />
       )}
 
-      <div
+       <div
         id="sidebar"
         className={`fixed inset-y-0 left-0 transform ${
           isSidebarOpen ? 'translate-x-0' : '-translate-x-full'
         } transition-transform duration-300 ease-in-out z-30 w-72 bg-white shadow-2xl`}
       >
         <div className="flex items-center justify-between p-6 border-b">
-          <div className="flex items-center space-x-3">
-            <span className="text-2xl font-bold text-gray-800">VERDANT</span>
-          </div>
+          <span className="text-2xl font-bold text-gray-800">VERDANT</span>
           <button
             onClick={() => setIsSidebarOpen(false)}
-            className="p-2 rounded-full hover:bg-gray-100 transition-colors"
+            className="p-2 rounded-full hover:bg-gray-100"
           >
             <X className="h-6 w-6 text-gray-600" />
           </button>
         </div>
-        <nav className="mt-6 px-3">
-          {[
-            { icon: BookOpen, text: 'Courses', link: '/course'},
-            { icon: FileText, text: 'Exams', link: '/examList' },
-            // { icon: PlusCircle, text: 'Create Course' , link: '/courseCreation'},
-            // { icon: PlusCircle, text: 'Create Exam', link: '/examCreation' },
-            { icon: BookDashed, text: 'Dashboard', link: '/dashboard' },
-            // { icon: LogOut, text: 'Logout' },
-          ].map((item, index) => (
-            <a
-              key={index}
-              href="#"
-              className="flex items-center px-4 py-3 my-1 rounded-xl text-gray-600 hover:bg-green-50 hover:text-green-700 transition-all duration-200 group"
-            >
-              <item.icon className="h-5 w-5 mr-3 group-hover:scale-110 transition-transform" />
-              <span onClick={() => navigate(item.link)} className="font-medium">{item.text}</span>
-              {item.badge && (
-                <span onClick={() => navigate(item.link)} className="ml-auto bg-green-100 text-green-600 px-2.5 py-1 rounded-full text-xs font-medium">
-                  {item.badge}
-                </span>
-              )}
-            </a>
-          ))}
+        {/* Mobile Nav Links */}
+        <nav className="flex flex-col space-y-4 p-6 text-gray-700 font-medium">
+          <a href="/home" className="hover:text-green-600">Home</a>
+          <a href="/course" className="hover:text-green-600">Courses</a>
+          <a href="/examList" className="hover:text-green-600">Exams</a>
+          <button
+            onClick={handleLogout}
+            className="text-left hover:text-green-600"
+          >
+            Logout
+          </button>
         </nav>
       </div>
 
@@ -185,7 +182,7 @@ function HomePage() {
                 onClick={() => setIsSidebarOpen(!isSidebarOpen)}
                 className="p-2 rounded-xl hover:bg-gray-100 transition-colors"
               >
-                <Menu className="h-6 w-6 text-gray-600" />
+                <Menu className="h-6 w-6 text-gray-900" />
               </button>
               <nav className="hidden md:flex items-center space-x-8">
   <a href="/home" className="text-green-600 font-medium hover:text-green-700 transition-colors">Home</a>
@@ -217,17 +214,7 @@ function HomePage() {
     Logout
   </button>
 </nav>
-              {/* <div className="flex items-center space-x-6">
-                <button className="relative p-2 hover:bg-gray-100 rounded-xl transition-colors">
-                  <Bell className="h-6 w-6 text-gray-600" />
-                  <span className="absolute top-2 right-2 h-2.5 w-2.5 bg-red-500 rounded-full ring-2 ring-white"></span>
-                </button>
-                <img
-                  src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=facearea&facepad=2&w=48&h=48&q=80"
-                  alt="User"
-                  className="h-10 w-10 rounded-full ring-2 ring-gray-200 hover:ring-green-400 transition-all cursor-pointer"
-                />
-              </div> */}
+        
             </div>
           </div>
         </header>
@@ -428,40 +415,7 @@ function HomePage() {
           </div>
         </section>
 
-        {/* <section id="courses" className="py-20 px-4">
-          <div className="max-w-7xl mx-auto">
-            <h2 className="text-4xl font-bold mb-16">Top Rated Courses</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {topCourses.map((course, index) => (
-                  <div key={course.id} onClick={() => {
-                    if (course.isEnrolled) {
-                      navigate(`/courseDetails/${course._id}`);
-                    } else {
-                      navigate(`/courseDescription/${course._id}`);
-                    }
-                  }} className="bg-white rounded-xl shadow-lg overflow-hidden transform hover:-translate-y-1 transition-all duration-300"
-                  >
-                    <img  style={{ backgroundImage: `url(${Images[index % Images.length].image})` }} className="w-full h-48 " />
-                    <div className="p-6">
-                      <h3 className="text-xl font-bold text-gray-800 mb-2">{course.title}</h3>
-                      <p className="text-gray-600 mb-4">{course.instructor}</p>
-                      <div className="flex items-center justify-between">
-                        <div className="flex items-center">
-                         
-                          <span className="ml-1 font-medium">{course.rating}</span>
-                        </div>
-                        <div className="flex items-center text-gray-500">
-                         
-                          <span>{course.students}</span>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                ))}
-                </div>
-          </div>
-        </section> */}
-
+        
         <section id="cta" className="py-20 bg-green-600">
           <div className="max-w-4xl mx-auto text-center px-4">
             <h2 className="text-4xl font-bold text-white mb-6">Ready to Start Your Agricultural Journey?</h2>
