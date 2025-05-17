@@ -29,7 +29,7 @@ const IntroNav = () => {
               onClick={() => navigate('/')}
               className="text-white hover:text-green-600 transition px-3 py-2"
             >
-              Home
+              Main Home Page
             </button>
             <button
               onClick={() => navigate('/login')}
