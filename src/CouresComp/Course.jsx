@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { CheckCircle, ArrowRight } from 'lucide-react';
+import { CheckCircle } from 'lucide-react';
 import { useParams, useNavigate } from "react-router-dom";
 import NavBar from "../Components/Auth/NavBar";
 
@@ -10,9 +10,10 @@ const CourseDescription = () => {
     const [course, setCourse] = useState(null);
     const navigate = useNavigate();
     const ServerURL = import.meta.env.VITE_SERVER_URL;
+    const RazorpayKey = import.meta.env.VITE_RAZORPAY_KEY_ID;
 
     const userId = localStorage.getItem("userId");
-    
+
     useEffect(() => {
         fetch(`${ServerURL}/api/examCourse/courses/${id}`)
             .then((res) => res.json())
@@ -30,6 +31,11 @@ const CourseDescription = () => {
 
     const handlePayment = async () => {
         try {
+            if (!window.Razorpay) {
+                alert("Razorpay SDK not loaded.");
+                return;
+            }
+
             const response = await fetch(`${ServerURL}/api/payment/create-order`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
@@ -40,18 +46,14 @@ const CourseDescription = () => {
             });
 
             const data = await response.json();
-            if (!data.success) {
-                alert("Error creating order");
-                return;
-            }
 
-            if (!window.Razorpay) {
-                alert("Razorpay SDK failed to load. Check your internet connection.");
+            if (!data.success) {
+                alert("Error creating Razorpay order");
                 return;
             }
 
             const options = {
-                key: "rzp_test_tYHYoN9x7s83km",
+                key: RazorpayKey || "rzp_test_placeholder", // fallback for dev
                 amount: data.order.amount,
                 currency: data.order.currency,
                 name: course.title,
@@ -72,26 +74,28 @@ const CourseDescription = () => {
 
                     const verifyData = await verifyResponse.json();
                     if (verifyData.success) {
-                        alert("Payment Successful! Course Enrolled.");
+                        alert("Payment successful! Course enrolled.");
                         navigate(`/dashboard`);
                     } else {
-                        alert("Payment Verification Failed");
+                        alert("Payment verification failed.");
                     }
                 },
                 prefill: {
-                    name: "User Name",
-                    email: "user@example.com",
-                    contact: "9876543210",
+                    name: "Your Name",
+                    email: "your-email@example.com",
+                    contact: "9999999999",
                 },
                 theme: {
-                    color: "#3399cc",
+                    color: "#34d399",
                 },
             };
 
             const razorpay = new window.Razorpay(options);
             razorpay.open();
+
         } catch (error) {
-            console.error("Error processing payment:", error);
+            console.error("Payment Error:", error);
+            alert("Payment process failed. Please try again.");
         }
     };
 
@@ -138,7 +142,7 @@ const CourseDescription = () => {
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
                                 <div className="bg-green-50 p-6 rounded-xl">
                                     <h3 className="text-lg font-semibold text-gray-900 mb-4">What you will learn</h3>
-                                    {course.exams && course.exams.length > 0 ? (
+                                    {course.exams?.length > 0 ? (
                                         course.exams.map((sec, index) => (
                                             <div key={index} className="flex items-center mb-3">
                                                 <CheckCircle className="w-5 h-5 text-green-600 mr-3" />
@@ -164,20 +168,15 @@ const CourseDescription = () => {
                             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between bg-green-50 p-6 rounded-xl space-y-4 sm:space-y-0">
                                 <div>
                                     <p className="text-sm text-green-600 font-medium">Limited Time Offer</p>
-                                    <div className="flex items-baseline">
-                                        <span className="text-3xl sm:text-4xl font-bold text-gray-900">{course.price}₹</span>
-                                        <span className="ml-2 text-gray-500 line-through">{course.originalPrice}</span>
+                                    <div className="flex items-baseline gap-2">
+                                        <span className="text-2xl font-bold text-green-800">₹{course.price}</span>
                                     </div>
                                 </div>
                                 <button
-                                // onClick={() => navigate(`/course/${id}`)}
                                     onClick={handlePayment}
-                                    onMouseEnter={() => setIsHovered(true)}
-                                    onMouseLeave={() => setIsHovered(false)}
-                                    className="relative inline-flex items-center justify-center px-6 sm:px-8 py-3 sm:py-4 bg-green-600 text-white font-semibold rounded-xl transition-all duration-300 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2"
+                                    className="bg-green-600 hover:bg-green-700 text-white font-semibold py-3 px-6 rounded-xl transition-colors duration-300"
                                 >
                                     Enroll Now
-                                    <ArrowRight className={`ml-2 w-5 h-5 transition-transform duration-300 ${isHovered ? 'translate-x-1' : ''}`} />
                                 </button>
                             </div>
                         </div>
