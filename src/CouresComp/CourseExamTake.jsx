@@ -10,10 +10,10 @@ const AttendExam = () => {
   const [submitted, setSubmitted] = useState(false);
   const [result, setResult] = useState({ score: 0, answers: [] });
   const [currentQuestion, setCurrentQuestion] = useState(0);
+  const [visitedQuestions, setVisitedQuestions] = useState(new Set());
   const [timeLeft, setTimeLeft] = useState(null);
   const ServerURL = import.meta.env.VITE_SERVER_URL;
 
-  // Fetch the exam data
   useEffect(() => {
     axios
       .get(`${ServerURL}/api/examCourse/courses/${id}`)
@@ -25,34 +25,30 @@ const AttendExam = () => {
       .catch((err) => console.error(err));
   }, [id, examIndex]);
 
-  // Handle option selection
-  const handleOptionChange = (qIndex, value) => {
-    setResponses({ ...responses, [qIndex]: value });
-  };
-
-  // Auto-submit when time is up
   useEffect(() => {
     if (!submitted && timeLeft !== null) {
       if (timeLeft === 0) {
-        handleSubmit(); // Auto-submit
+        handleSubmit();
       }
 
       const timer = setInterval(() => {
         setTimeLeft((prev) => (prev > 0 ? prev - 1 : 0));
       }, 1000);
 
-      return () => clearInterval(timer); // Cleanup
+      return () => clearInterval(timer);
     }
   }, [timeLeft, submitted]);
 
-  // Format time in MM:SS
   const formatTime = (seconds) => {
     const m = String(Math.floor(seconds / 60)).padStart(2, '0');
     const s = String(seconds % 60).padStart(2, '0');
     return `${m}:${s}`;
   };
 
-  // Clear the selected answer for the current question
+  const handleOptionChange = (qIndex, value) => {
+    setResponses({ ...responses, [qIndex]: value });
+  };
+
   const handleClear = () => {
     setResponses((prev) => {
       const updated = { ...prev };
@@ -61,7 +57,6 @@ const AttendExam = () => {
     });
   };
 
-  // Submit the exam and calculate the score
   const handleSubmit = () => {
     let score = 0;
     let answerList = [];
@@ -74,62 +69,75 @@ const AttendExam = () => {
 
       answerList.push({
         question: q.question,
+        image: q.image,
         correct: q.answer,
         user: userAns,
         isCorrect,
+        options: q.option,
       });
     });
 
     setSubmitted(true);
     setResult({ score, answers: answerList });
-    window.alert("Exam is over! Your results are now visible.");
+    window.alert('Exam submitted! View your answers.');
   };
 
-  // Check if a question is answered
   const isAnswered = (index) => responses.hasOwnProperty(index);
+
+  const handleQuestionClick = (idx) => {
+    setCurrentQuestion(idx);
+    setVisitedQuestions((prev) => new Set(prev).add(idx));
+  };
 
   return (
     <div>
       <NavBar />
       <div className="flex flex-col md:flex-row p-4">
         {/* Timer */}
-        <div className="text-lg font-bold text-red-600 mb-4">
-          Time Left: {formatTime(timeLeft)}
-        </div>
+        {!submitted && (
+          <div className="text-lg font-bold text-red-600 mb-4">
+            Time Left: {formatTime(timeLeft)}
+          </div>
+        )}
 
         {examData ? (
           <>
-            {/* Sidebar with question status */}
+            {/* Sidebar */}
             <div className="md:w-1/4 mb-4 md:mb-0 md:mr-4">
               <h3 className="text-lg font-semibold mb-2">Question Status</h3>
               <div className="grid grid-cols-5 gap-2">
-                {examData.questions.map((_, idx) => (
-                  <button
-                    key={idx}
-                    onClick={() => setCurrentQuestion(idx)}
-                    className={`w-10 h-10 rounded-full text-white font-bold ${
-                      isAnswered(idx) ? 'bg-green-500' : 'bg-gray-400'
-                    } ${currentQuestion === idx ? 'ring-4 ring-blue-500' : ''}`}
-                  >
-                    {idx + 1}
-                  </button>
-                ))}
+                {examData.questions.map((_, idx) => {
+                  let bgColor = 'bg-gray-400';
+                  if (isAnswered(idx)) bgColor = 'bg-green-500';
+                  else if (visitedQuestions.has(idx)) bgColor = 'bg-red-500';
+
+                  return (
+                    <button
+                      key={idx}
+                      onClick={() => handleQuestionClick(idx)}
+                      className={`w-10 h-10 rounded-full text-white font-bold ${bgColor} ${
+                        currentQuestion === idx ? 'ring-4 ring-blue-500' : ''
+                      }`}
+                    >
+                      {idx + 1}
+                    </button>
+                  );
+                })}
               </div>
             </div>
 
-            {/* Question and options */}
+            {/* Main Content */}
             <div className="md:w-3/4">
               <h2 className="text-xl font-bold mb-4">{examData.sectionTitle}</h2>
 
+              {/* Before submission */}
               {!submitted ? (
                 <div>
-                  {/* Single question display */}
                   <div className="mb-4 border p-4 rounded bg-gray-50 shadow">
                     <p className="font-semibold mb-2">
                       {currentQuestion + 1}. {examData.questions[currentQuestion].question}
                     </p>
 
-                    {/* Image Display (Only if present) */}
                     {examData.questions[currentQuestion].image && (
                       <img
                         src={examData.questions[currentQuestion].image}
@@ -138,7 +146,6 @@ const AttendExam = () => {
                       />
                     )}
 
-                    {/* Options */}
                     {examData.questions[currentQuestion].option.map((opt, i) => (
                       <div key={i}>
                         <label>
@@ -156,11 +163,15 @@ const AttendExam = () => {
                     ))}
                   </div>
 
-                  {/* Navigation Buttons */}
+                  {/* Controls */}
                   <div className="flex items-center space-x-4 mb-4">
                     <button
                       disabled={currentQuestion === 0}
-                      onClick={() => setCurrentQuestion((prev) => prev - 1)}
+                      onClick={() => {
+                        const prev = currentQuestion - 1;
+                        setCurrentQuestion(prev);
+                        setVisitedQuestions((prevSet) => new Set(prevSet).add(prev));
+                      }}
                       className="bg-gray-600 text-white px-4 py-2 rounded disabled:opacity-50"
                     >
                       Previous
@@ -175,14 +186,17 @@ const AttendExam = () => {
 
                     <button
                       disabled={currentQuestion === examData.questions.length - 1}
-                      onClick={() => setCurrentQuestion((prev) => prev + 1)}
+                      onClick={() => {
+                        const next = currentQuestion + 1;
+                        setCurrentQuestion(next);
+                        setVisitedQuestions((prevSet) => new Set(prevSet).add(next));
+                      }}
                       className="bg-gray-600 text-white px-4 py-2 rounded disabled:opacity-50"
                     >
                       Next
                     </button>
                   </div>
 
-                  {/* Submit Button */}
                   <button
                     onClick={handleSubmit}
                     className="bg-blue-600 text-white px-6 py-2 rounded"
@@ -191,19 +205,75 @@ const AttendExam = () => {
                   </button>
                 </div>
               ) : (
+                // After submission: One-by-one question result view
                 <div>
-                  <h3 className="text-xl text-green-600 font-bold">Your Score: {result.score}</h3>
-                  <h4 className="mt-4 text-lg font-semibold">Answer Review</h4>
-                  {result.answers.map((a, i) => (
-                    <div key={i} className="p-2 border mt-2 rounded">
-                      <p><strong>Q:</strong> {a.question}</p>
-                      <p><strong>Your Answer:</strong> {a.user || "Not Answered"}</p>
-                      <p><strong>Correct Answer:</strong> {a.correct}</p>
-                      <p className={a.isCorrect ? "text-green-600" : "text-red-600"}>
-                        {a.isCorrect ? "Correct" : "Incorrect"}
-                      </p>
+                  <h3 className="text-xl text-green-600 font-bold mb-4">
+                    Your Score: {result.score}
+                  </h3>
+
+                  <div className="p-4 border rounded bg-white shadow">
+                    <p className="font-semibold mb-2">
+                      {currentQuestion + 1}. {result.answers[currentQuestion].question}
+                    </p>
+
+                    {result.answers[currentQuestion].image && (
+                      <img
+                        src={result.answers[currentQuestion].image}
+                        alt="Question"
+                        className="w-full h-64 object-contain mb-4 rounded border"
+                      />
+                    )}
+
+                    <div className="mb-2">
+                      <strong>Options:</strong>
+                      <ul className="list-disc ml-6">
+                        {result.answers[currentQuestion].options.map((opt, idx) => (
+                          <li key={idx}>{opt}</li>
+                        ))}
+                      </ul>
                     </div>
-                  ))}
+
+                    <p>
+                      <strong>Your Answer:</strong>{' '}
+                      <span
+                        className={
+                          result.answers[currentQuestion].isCorrect
+                            ? 'text-green-600'
+                            : 'text-red-600'
+                        }
+                      >
+                        {result.answers[currentQuestion].user || 'Not Answered'}
+                      </span>
+                    </p>
+
+                    <p>
+                      <strong>Correct Answer:</strong>{' '}
+                      <span className="text-green-700">
+                        {result.answers[currentQuestion].correct}
+                      </span>
+                    </p>
+
+                    {!result.answers[currentQuestion].isCorrect && (
+                      <p className="text-red-600 font-semibold">Incorrect Answer</p>
+                    )}
+                  </div>
+
+                  <div className="flex items-center space-x-4 mt-4">
+                    <button
+                      disabled={currentQuestion === 0}
+                      onClick={() => setCurrentQuestion(currentQuestion - 1)}
+                      className="bg-gray-600 text-white px-4 py-2 rounded disabled:opacity-50"
+                    >
+                      Previous
+                    </button>
+                    <button
+                      disabled={currentQuestion === result.answers.length - 1}
+                      onClick={() => setCurrentQuestion(currentQuestion + 1)}
+                      className="bg-gray-600 text-white px-4 py-2 rounded disabled:opacity-50"
+                    >
+                      Next
+                    </button>
+                  </div>
                 </div>
               )}
             </div>

@@ -102,9 +102,41 @@ const CourseCreationPage = () => {
     }
   };
 
+
+  const handlePDFUpload = async (file) => {
+  const formData = new FormData();
+  formData.append("pdf", file);
+
+  try {
+    const response = await axios.post(`${ServerURL}/api/examCourse/generate-from-pdf`, formData, {
+      headers: { "Content-Type": "multipart/form-data" },
+    });
+
+    const { courseData } = response.data;
+    setTitle(courseData.title || "");
+    setDescription(courseData.description || "");
+    setPrerequisites(courseData.prerequisites?.join(", ") || "");
+    setPrice(courseData.price || "");
+    setExams(courseData.exams || []);
+
+    alert("Course data generated from PDF successfully!");
+  } catch (error) {
+    console.error("Failed to process PDF", error);
+    alert("PDF processing failed.");
+  }
+};
+
+
   return (
     <div className="p-6 max-w-4xl mx-auto">
       <h2 className="text-2xl font-bold mb-4">Create New Course</h2>
+      <input
+  type="file"
+  accept="application/pdf"
+  onChange={(e) => handlePDFUpload(e.target.files[0])}
+  className="mb-4"
+/>
+
 
       <input
         type="text"

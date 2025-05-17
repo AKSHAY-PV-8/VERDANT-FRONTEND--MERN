@@ -24,7 +24,7 @@ function Webhome() {
   return (
     <div className="min-h-screen w-full bg-gray-900 text-gray-100 overflow-x-hidden">
       {/* Navigation */}
-      <nav className="fixed w-screen bg-gray-900/90 backdrop-blur-sm z-50 border-b border-gray-800">
+      <nav className="fixed w-screen bg-gray-200/90 backdrop-blur-sm z-50 border-b border-gray-800 ">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
           <div className="flex items-center">
@@ -39,8 +39,8 @@ function Webhome() {
             {/* Desktop Navigation */}
             <div className="hidden md:block">
               <div className="flex items-center space-x-8">
-                <a onClick={() => navigate("/")} className="text-gray-300 hover:text-green-400 transition-colors">Home</a>
-                <a onClick={() => {navigate("/intro")}} className="text-gray-300 hover:text-green-400 transition-colors">Education</a>
+                <a onClick={() => navigate("/")} className="text-gray-900 font-bold hover:text-green-400 transition-colors">Home</a>
+                <a onClick={() => {navigate("/intro")}} className="text-gray-900 font-bold hover:text-green-400 transition-colors">Education</a>
                 {/* <a href="#technology" className="text-gray-300 hover:text-green-400 transition-colors">Technology</a>
                 <a href="#projects" className="text-gray-300 hover:text-green-400 transition-colors">Projects</a>
                 <a href="#contact" className="text-gray-300 hover:text-green-400 transition-colors">Contact</a> */}

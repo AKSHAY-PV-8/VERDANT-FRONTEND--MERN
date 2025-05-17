@@ -188,10 +188,35 @@ function HomePage() {
                 <Menu className="h-6 w-6 text-gray-600" />
               </button>
               <nav className="hidden md:flex items-center space-x-8">
-                <a href="/home" className="text-green-600 font-medium hover:text-green-700 transition-colors">Home</a>
-                <a href="/course" className="text-gray-600 hover:text-green-600 transition-colors">Course</a>
-                <a href="/examList" className="text-gray-600 hover:text-green-600 transition-colors">Exams</a>
-              </nav>
+  <a href="/home" className="text-green-600 font-medium hover:text-green-700 transition-colors">Home</a>
+  <a href="/course" className="text-gray-600 hover:text-green-600 transition-colors">Course</a>
+  <a href="/examList" className="text-gray-600 hover:text-green-600 transition-colors">Exams</a>
+  <button
+    onClick={async () => {
+      try {
+        const response = await fetch(`${ServerURL}/api/auth/logout`, {
+          method: 'POST',
+          credentials: 'include',
+        });
+        const data = await response.json();
+        if (data.success) {
+          alert("Logged out successfully!");
+          navigate("/intro");
+          localStorage.removeItem("token");
+
+        } else {
+          alert(data.message || "Failed to logout");
+        }
+      } catch (error) {
+        console.error("Logout error:", error);
+        alert("Failed to logout. Please try again.");
+      }
+    }}
+    className="text-gray-600 hover:text-green-600 transition-colors"
+  >
+    Logout
+  </button>
+</nav>
               {/* <div className="flex items-center space-x-6">
                 <button className="relative p-2 hover:bg-gray-100 rounded-xl transition-colors">
                   <Bell className="h-6 w-6 text-gray-600" />
