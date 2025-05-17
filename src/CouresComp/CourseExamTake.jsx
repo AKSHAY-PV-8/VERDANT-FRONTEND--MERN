@@ -90,81 +90,98 @@ const AttendExam = () => {
   };
 
   return (
-    <div>
+    <div className="bg-gray-100 min-h-screen">
       <NavBar />
-      <div className="flex flex-col md:flex-row p-4">
-        {/* Timer */}
-        {!submitted && (
-          <div className="text-lg font-bold text-red-600 mb-4">
-            Time Left: {formatTime(timeLeft)}
-          </div>
-        )}
 
+      {/* Timer */}
+      {!submitted && (
+        <div className="fixed top-4 right-6 bg-white shadow-md border text-red-600 font-bold px-4 py-2 rounded z-50">
+          ⏱ Time Left: {formatTime(timeLeft)}
+        </div>
+      )}
+
+      <div className="flex flex-col md:flex-row p-4">
         {examData ? (
           <>
             {/* Sidebar */}
             <div className="md:w-1/4 mb-4 md:mb-0 md:mr-4">
-              <h3 className="text-lg font-semibold mb-2">Question Status</h3>
-              <div className="grid grid-cols-5 gap-2">
-                {examData.questions.map((_, idx) => {
-                  let bgColor = 'bg-gray-400';
-                  if (isAnswered(idx)) bgColor = 'bg-green-500';
-                  else if (visitedQuestions.has(idx)) bgColor = 'bg-red-500';
+              <div className="bg-white shadow-md rounded-lg p-4">
+                <h3 className="text-lg font-semibold mb-2">📝 Question Status</h3>
 
-                  return (
-                    <button
-                      key={idx}
-                      onClick={() => handleQuestionClick(idx)}
-                      className={`w-10 h-10 rounded-full text-white font-bold ${bgColor} ${
-                        currentQuestion === idx ? 'ring-4 ring-blue-500' : ''
-                      }`}
-                    >
-                      {idx + 1}
-                    </button>
-                  );
-                })}
+                <div className="mb-3 text-sm">
+                  <p>
+                    ✅{' '}
+                    <span className="text-green-600 font-medium">
+                      Attended: {Object.keys(responses).length}
+                    </span>
+                    <br />
+                    ❌{' '}
+                    <span className="text-red-600 font-medium">
+                      Not Attended: {examData.questions.length - Object.keys(responses).length}
+                    </span>
+                  </p>
+                </div>
+
+                <div className="h-72 overflow-y-auto border rounded-md p-2 bg-gray-50">
+                  <div className="grid grid-cols-5 gap-2">
+                    {examData.questions.map((_, idx) => {
+                      let bgColor = 'bg-gray-300';
+                      if (isAnswered(idx)) bgColor = 'bg-green-200';
+                      else if (visitedQuestions.has(idx)) bgColor = 'bg-red-200';
+
+                      return (
+                        <button
+                          key={idx}
+                          onClick={() => handleQuestionClick(idx)}
+                          className={`w-10 h-10 rounded-full font-bold text-sm ${bgColor} ${
+                            currentQuestion === idx ? 'ring-2 ring-blue-500' : ''
+                          }`}
+                        >
+                          {idx + 1}
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
               </div>
             </div>
 
-            {/* Main Content */}
+            {/* Main Question Panel */}
             <div className="md:w-3/4">
               <h2 className="text-xl font-bold mb-4">{examData.sectionTitle}</h2>
 
-              {/* Before submission */}
               {!submitted ? (
-                <div>
-                  <div className="mb-4 border p-4 rounded bg-gray-50 shadow">
-                    <p className="font-semibold mb-2">
-                      {currentQuestion + 1}. {examData.questions[currentQuestion].question}
-                    </p>
+                <div className="bg-white shadow-md rounded-lg p-6">
+                  <p className="font-semibold text-lg mb-4">
+                    {currentQuestion + 1}. {examData.questions[currentQuestion].question}
+                  </p>
 
-                    {examData.questions[currentQuestion].image && (
-                      <img
-                        src={examData.questions[currentQuestion].image}
-                        alt="Question"
-                        className="w-full h-64 object-contain mb-4 rounded border"
-                      />
-                    )}
+                  {examData.questions[currentQuestion].image && (
+                    <img
+                      src={examData.questions[currentQuestion].image}
+                      alt="Question"
+                      className="w-full h-64 object-contain mb-4 rounded border"
+                    />
+                  )}
 
-                    {examData.questions[currentQuestion].option.map((opt, i) => (
-                      <div key={i}>
-                        <label>
-                          <input
-                            type="radio"
-                            name={`q-${currentQuestion}`}
-                            value={opt}
-                            checked={responses[currentQuestion] === opt}
-                            onChange={() => handleOptionChange(currentQuestion, opt)}
-                            className="mr-2"
-                          />
-                          {opt}
-                        </label>
-                      </div>
-                    ))}
-                  </div>
+                  {examData.questions[currentQuestion].option.map((opt, i) => (
+                    <div key={i} className="mb-2">
+                      <label className="inline-flex items-center">
+                        <input
+                          type="radio"
+                          name={`q-${currentQuestion}`}
+                          value={opt}
+                          checked={responses[currentQuestion] === opt}
+                          onChange={() => handleOptionChange(currentQuestion, opt)}
+                          className="mr-2"
+                        />
+                        {opt}
+                      </label>
+                    </div>
+                  ))}
 
-                  {/* Controls */}
-                  <div className="flex items-center space-x-4 mb-4">
+                  {/* Navigation Buttons */}
+                  <div className="flex flex-wrap items-center gap-4 mt-6">
                     <button
                       disabled={currentQuestion === 0}
                       onClick={() => {
@@ -179,9 +196,9 @@ const AttendExam = () => {
 
                     <button
                       onClick={handleClear}
-                      className="bg-yellow-500 text-white px-4 py-2 rounded"
+                      className="bg-red-400 text-white px-4 py-2 rounded"
                     >
-                      Clear
+                      Clear Answer
                     </button>
 
                     <button
@@ -197,68 +214,68 @@ const AttendExam = () => {
                     </button>
                   </div>
 
-                  <button
-                    onClick={handleSubmit}
-                    className="bg-blue-600 text-white px-6 py-2 rounded"
-                  >
-                    Submit Exam
-                  </button>
+                  <div className="mt-6">
+                    <button
+                      onClick={handleSubmit}
+                      className="bg-green-500 text-white px-6 py-2 rounded hover:bg-green-700"
+                    >
+                      Submit Exam
+                    </button>
+                  </div>
                 </div>
               ) : (
-                // After submission: One-by-one question result view
-                <div>
+                // Submitted View
+                <div className="bg-white shadow-md rounded-lg p-6">
                   <h3 className="text-xl text-green-600 font-bold mb-4">
                     Your Score: {result.score}
                   </h3>
 
-                  <div className="p-4 border rounded bg-white shadow">
-                    <p className="font-semibold mb-2">
-                      {currentQuestion + 1}. {result.answers[currentQuestion].question}
-                    </p>
+                  <p className="text-lg font-semibold mb-2">
+                    {currentQuestion + 1}. {result.answers[currentQuestion].question}
+                  </p>
 
-                    {result.answers[currentQuestion].image && (
-                      <img
-                        src={result.answers[currentQuestion].image}
-                        alt="Question"
-                        className="w-full h-64 object-contain mb-4 rounded border"
-                      />
-                    )}
+                  {result.answers[currentQuestion].image && (
+                    <img
+                      src={result.answers[currentQuestion].image}
+                      alt="Question"
+                      className="w-full h-64 object-contain mb-4 rounded border"
+                    />
+                  )}
 
-                    <div className="mb-2">
-                      <strong>Options:</strong>
-                      <ul className="list-disc ml-6">
-                        {result.answers[currentQuestion].options.map((opt, idx) => (
-                          <li key={idx}>{opt}</li>
-                        ))}
-                      </ul>
-                    </div>
-
-                    <p>
-                      <strong>Your Answer:</strong>{' '}
-                      <span
-                        className={
-                          result.answers[currentQuestion].isCorrect
-                            ? 'text-green-600'
-                            : 'text-red-600'
-                        }
-                      >
-                        {result.answers[currentQuestion].user || 'Not Answered'}
-                      </span>
-                    </p>
-
-                    <p>
-                      <strong>Correct Answer:</strong>{' '}
-                      <span className="text-green-700">
-                        {result.answers[currentQuestion].correct}
-                      </span>
-                    </p>
-
-                    {!result.answers[currentQuestion].isCorrect && (
-                      <p className="text-red-600 font-semibold">Incorrect Answer</p>
-                    )}
+                  <div className="mb-2">
+                    <strong>Options:</strong>
+                    <ul className="list-disc ml-6">
+                      {result.answers[currentQuestion].options.map((opt, idx) => (
+                        <li key={idx}>{opt}</li>
+                      ))}
+                    </ul>
                   </div>
 
-                  <div className="flex items-center space-x-4 mt-4">
+                  <p>
+                    <strong>Your Answer:</strong>{' '}
+                    <span
+                      className={
+                        result.answers[currentQuestion].isCorrect
+                          ? 'text-green-600'
+                          : 'text-red-600'
+                      }
+                    >
+                      {result.answers[currentQuestion].user || 'Not Answered'}
+                    </span>
+                  </p>
+
+                  <p>
+                    <strong>Correct Answer:</strong>{' '}
+                    <span className="text-green-700">
+                      {result.answers[currentQuestion].correct}
+                    </span>
+                  </p>
+
+                  {!result.answers[currentQuestion].isCorrect && (
+                    <p className="text-red-600 font-semibold">Incorrect Answer</p>
+                  )}
+
+                  <div className="flex items-center space-x-4 mt-6">
                     <button
                       disabled={currentQuestion === 0}
                       onClick={() => setCurrentQuestion(currentQuestion - 1)}
@@ -279,7 +296,7 @@ const AttendExam = () => {
             </div>
           </>
         ) : (
-          <p>Loading Exam...</p>
+          <p className="text-center text-lg text-gray-600">Loading Exam...</p>
         )}
       </div>
     </div>

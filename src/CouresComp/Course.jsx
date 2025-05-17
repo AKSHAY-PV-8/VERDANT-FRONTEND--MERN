@@ -170,6 +170,7 @@ const CourseDescription = () => {
                                     </div>
                                 </div>
                                 <button
+                                // onClick={() => navigate(`/course/${id}`)}
                                     onClick={handlePayment}
                                     onMouseEnter={() => setIsHovered(true)}
                                     onMouseLeave={() => setIsHovered(false)}

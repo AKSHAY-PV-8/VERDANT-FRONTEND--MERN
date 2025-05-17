@@ -87,25 +87,25 @@ const CreateExam = () => {
                 {questions.map((q, index) => (
                     <div key={index} className="bg-white border border-green-200 p-4 rounded-lg mb-4 shadow-sm">
                         <h3 className="text-lg font-semibold text-green-600">Question {index + 1}</h3>
-                        <input
-                            type="text"
+                        <textarea
+                           
                             placeholder="Enter Question"
                             className="border border-gray-300 p-2 rounded w-full mt-2 focus:ring focus:ring-green-100"
                             value={q.question}
                             onChange={(e) => handleChange(index, "question", e.target.value)}
                         />
                         {q.option.map((opt, optIndex) => (
-                            <input
+                            <textarea
                                 key={optIndex}
-                                type="text"
+                                
                                 placeholder={`Option ${optIndex + 1}`}
                                 className="border border-gray-300 p-2 rounded w-full mt-2 focus:ring focus:ring-green-100"
                                 value={opt}
                                 onChange={(e) => handleChange(index, optIndex, e.target.value)}
                             />
                         ))}
-                        <input
-                            type="text"
+                        <textarea
+                            
                             placeholder="Correct Answer"
                             className="border border-gray-300 p-2 rounded w-full mt-2 focus:ring focus:ring-green-100"
                             value={q.answer}

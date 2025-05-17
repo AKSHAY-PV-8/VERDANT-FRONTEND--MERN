@@ -1,20 +1,38 @@
 
-import { Sprout, Leaf } from 'lucide-react';
+import { Sprout, Leaf, Sun, Cloud, Droplets } from 'lucide-react';
 
-const ComingSoon = () => {
+const ComingSoon2 = () => {
   const features = [
     {
-      image: "https://i.pinimg.com/736x/a7/8e/f9/a78ef986c21bb9d215a7206c90bf9e30.jpg",
-      title: "Completed Works",
+      image: "https://i.pinimg.com/736x/82/c3/5d/82c35d83be1686344586fe221045e5f4.jpg",
+      title: "Agri-Business DPRs",
+      description: "A document for agri-business ventures, providing a comprehensive blueprint for planning, implementation, and securing funding for agricultural projects",
     },
     {
-      image: "https://i.pinimg.com/736x/27/67/40/276740394d576c8d21000d6082315101.jpg",
-      title: "Upcoming Works",
+      image: "https://i.pinimg.com/736x/53/8d/31/538d31dd2fd07bd0cf0fa5ab3030fd60.jpg",
+      title: "Startup Project Report",
+      description: "A successful startup project report in agriculture should detail the venture's mission, product or service, target market, operational plan, and financial projections.",
     },
     {
-      image: "https://i.pinimg.com/736x/63/2b/08/632b080957975157ec3c3198d3c5d158.jpg",
-      title: "Detailed Project Reports",
+      image: "https://i.pinimg.com/736x/76/ba/9d/76ba9d7f368379e839faa110653a0c2c.jpg",
+      title: "Farm Development Plans",
+      description: "Comprehensive strategies for managing agricultural resources and operations to maximize output and profitability while considering environmental and economic factors.",
     },
+    {
+      image: "https://i.pinimg.com/736x/8a/b4/b8/8ab4b84b6886ac290cf36965a32c95ec.jpg",
+      title: "FPO Growth Strategies",
+      description: "Empowering farmers by enabling them to enhance their income and social conditions through collective action and improved market access.",
+    },
+    {
+      image: "https://i.pinimg.com/736x/86/88/c5/8688c5a2db996ca26452b35a087ad6ed.jpg",
+      title: "Financial & Market Insights",
+      description: "Services involved in moving an agricultural product from the farm to the consumer.Planning, organizing, directing and handling of agricultural produce in such a way as to satisfy farmers, intermediaries and consumers.",
+    },
+    {
+      image: "https://i.pinimg.com/736x/31/57/11/315711da494451bfd4a9588d7e6ac48d.jpg",
+      title: "Field Assistance",
+      description: "A professional who supports agricultural research, extension, and operations in the field.",
+    }
   ];
 
   return (
@@ -24,7 +42,7 @@ const ComingSoon = () => {
         <div 
           className="absolute inset-0 z-0"
           style={{
-            backgroundImage: 'url("https://images.unsplash.com/photo-1472214103451-9374bd1c798e?ixlib=rb-1.2.1&auto=format&fit=crop&w=2000&q=80")',
+            backgroundImage: 'url("https://i.pinimg.com/736x/0c/5b/21/0c5b21181c1f9f7bb684995d6e672f69.jpg")',
             backgroundSize: 'cover',
             backgroundPosition: 'center',
           }}
@@ -40,13 +58,10 @@ const ComingSoon = () => {
             VERDANT ELEVATORS
           </h1>
           <p className="text-xl md:text-2xl text-gray-300 mb-8">
-            Elevating Agriculture to New Heights
+            Our team Agriculture graduates, MBAs and Economists collaborates to deliver expertly crafted Detailed Project Reports, tailored to empower agri-business success
           </p>
           <div className="flex items-center justify-center gap-2">
-            <span className="text-2xl font-semibold bg-gradient-to-r from-green-400 via-emerald-500 to-green-400 bg-clip-text text-transparent animate-pulse">
-              Coming Soon
-            </span>
-            <Leaf className="w-6 h-6 text-green-400 animate-pulse" />
+            
           </div>
         </div>
       </div>
@@ -88,4 +103,4 @@ const ComingSoon = () => {
   );
 };
 
-export default ComingSoon;
+export default ComingSoon2;

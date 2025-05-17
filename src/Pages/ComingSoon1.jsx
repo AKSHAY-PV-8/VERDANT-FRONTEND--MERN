@@ -1,19 +1,23 @@
 
-import { Sprout, Leaf } from 'lucide-react';
+import { Sprout, Leaf} from 'lucide-react';
 
-const ComingSoon = () => {
+const ComingSoon1 = () => {
   const features = [
     {
-      image: "https://i.pinimg.com/736x/a7/8e/f9/a78ef986c21bb9d215a7206c90bf9e30.jpg",
-      title: "Completed Works",
+      image: "https://i.pinimg.com/736x/ba/0b/8f/ba0b8fe07c766a1984d28a339dede5d7.jpg",
+      
+      title: "Mapping",
+      description: "Enabling farmers to analyze and visualize spatial data to make informed decisions about crop management, irrigation, and land use",
     },
     {
-      image: "https://i.pinimg.com/736x/27/67/40/276740394d576c8d21000d6082315101.jpg",
-      title: "Upcoming Works",
+      image: "https://i.pinimg.com/736x/95/40/7a/95407a2c8e9990bf3929cd8c565621df.jpg",
+      title: "Data Interpolation",
+      description: "Estimating values at unsampled locations based on known data points, creating a continuous surface or map of agricultural properties",
     },
     {
-      image: "https://i.pinimg.com/736x/63/2b/08/632b080957975157ec3c3198d3c5d158.jpg",
-      title: "Detailed Project Reports",
+      image: "https://i.pinimg.com/736x/f9/50/a4/f950a4401c91e23f824f31d0abff747e.jpg",
+      title: "Other GIS Works",
+      description: "Monitoring crop health, optimizing irrigation, managing livestock, predicting crop yields, and supporting precision farming techniques",
     },
   ];
 
@@ -24,7 +28,7 @@ const ComingSoon = () => {
         <div 
           className="absolute inset-0 z-0"
           style={{
-            backgroundImage: 'url("https://images.unsplash.com/photo-1472214103451-9374bd1c798e?ixlib=rb-1.2.1&auto=format&fit=crop&w=2000&q=80")',
+            backgroundImage: 'url("https://www.esri.com/is/image/esri/how-gis-is-used-2-1:43w?wid=1440&hei=1080")',
             backgroundSize: 'cover',
             backgroundPosition: 'center',
           }}
@@ -43,10 +47,7 @@ const ComingSoon = () => {
             Elevating Agriculture to New Heights
           </p>
           <div className="flex items-center justify-center gap-2">
-            <span className="text-2xl font-semibold bg-gradient-to-r from-green-400 via-emerald-500 to-green-400 bg-clip-text text-transparent animate-pulse">
-              Coming Soon
-            </span>
-            <Leaf className="w-6 h-6 text-green-400 animate-pulse" />
+           
           </div>
         </div>
       </div>
@@ -88,4 +89,4 @@ const ComingSoon = () => {
   );
 };
 
-export default ComingSoon;
+export default ComingSoon1;

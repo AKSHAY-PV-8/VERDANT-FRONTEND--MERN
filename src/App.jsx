@@ -21,6 +21,8 @@ import AttendExam from "./CouresComp/CourseExamTake";
 import CourseListPage from "./CouresComp/CourseListAdmin";
 import CourseEditPage from "./CouresComp/CourseEdit";
 import ComingSoon from "./Pages/ComingSoon";
+import ComingSoon1 from "./Pages/ComingSoon1";
+import ComingSoon2 from "./Pages/ComingSoon2";
 
 
 
@@ -52,6 +54,8 @@ function App() {
         <Route path="/advisors" element={<Advisors/>} />
 
         <Route path="/comingSoon" element={<ComingSoon/>} />
+        <Route path="/comingSoon1" element={<ComingSoon1/>} />
+        <Route path="/comingSoon2" element={<ComingSoon2/>} />
 
 
 
