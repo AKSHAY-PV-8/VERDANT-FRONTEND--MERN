@@ -150,47 +150,47 @@ function Webhome() {
             <p className="text-lg text-gray-300 uppercase">Verdant</p>
           </div> */}
 
-<div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+<div className="grid grid-cols-1 md:grid-cols-2 gap-8 p-4">
   <div className="space-y-6">
     <div
-  className="bg-gray-700 p-6 sm:p-8 rounded-lg shadow-xl h-80 w-[600px] bg-cover bg-center flex items-center justify-center text-center"
-  style={{
-    backgroundImage: `url(https://i.pinimg.com/736x/f8/40/87/f84087424ffc2eb2efd09f755adbaa9a.jpg)`
-  }}
->
-  <h4 className="text-white text-lg sm:text-xl font-semibold px-4">
-    Sowing innovation for a sustainable and tech driven agricultural future
-  </h4>
-</div>
-    
+      className="bg-gray-700 p-6 sm:p-8 rounded-lg shadow-xl h-72 sm:h-80 w-full bg-cover bg-center flex items-center justify-center text-center"
+      style={{
+        backgroundImage: `url(https://i.pinimg.com/736x/f8/40/87/f84087424ffc2eb2efd09f755adbaa9a.jpg)`
+      }}
+    >
+      <h4 className="text-white text-base sm:text-lg font-semibold px-2 sm:px-4">
+        Sowing innovation for a sustainable and tech driven agricultural future
+      </h4>
+    </div>
 
-    
     <img
       src="https://plus.unsplash.com/premium_photo-1678344170545-c3edef92a16e?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8YWdyaWN1bHR1cmV8ZW58MHx8MHx8fDA%3D"
       alt="Agricultural Education"
       className="w-full h-auto rounded-lg shadow-xl"
     />
-    
-    <div className="bg-gray-700 p-6 sm:p-8 rounded-lg shadow-xl h-80 w-[600px] bg-cover bg-center flex items-center justify-center text-center "
-    style={{ backgroundImage: `url(https://i.pinimg.com/736x/b5/44/0a/b5440abc8184059bcfa50028195e5253.jpg)` }}>
-     
-          <p className="text-gray-300 pt-50">
-            Harvesting hope from every field
-          </p>
 
+    <div
+      className="bg-gray-700 p-6 sm:p-8 rounded-lg shadow-xl h-72 sm:h-80 w-full bg-cover bg-center flex items-center justify-center text-center"
+      style={{
+        backgroundImage: `url(https://i.pinimg.com/736x/b5/44/0a/b5440abc8184059bcfa50028195e5253.jpg)`
+      }}
+    >
+      <p className="text-gray-300 text-base sm:text-lg">
+        Harvesting hope from every field
+      </p>
     </div>
   </div>
 
   <div className="space-y-6">
-     <div className="bg-gray-700 p-6 sm:p-8 rounded-lg shadow-xl h-80 w-[600px] bg-cover bg-center flex items-center justify-center text-center "
-    style={{ backgroundImage: `url(https://i.pinimg.com/736x/a0/9c/7a/a09c7ac658db8a3e64791e43c08c06e9.jpg)` }}>
-     
-    
-          <p className="text-gray-300">
-            Rooted in agriculture, growing towards impact.
-          </p>
-   
-     
+    <div
+      className="bg-gray-700 p-6 sm:p-8 rounded-lg shadow-xl h-72 sm:h-80 w-full bg-cover bg-center flex items-center justify-center text-center"
+      style={{
+        backgroundImage: `url(https://i.pinimg.com/736x/a0/9c/7a/a09c7ac658db8a3e64791e43c08c06e9.jpg)`
+      }}
+    >
+      <p className="text-gray-300 text-base sm:text-lg">
+        Rooted in agriculture, growing towards impact.
+      </p>
     </div>
 
     <div className="bg-gray-700 p-6 sm:p-8 rounded-lg shadow-xl">
@@ -199,10 +199,9 @@ function Webhome() {
         <Sprout className="h-6 w-6 text-green-400 flex-shrink-0 mt-1" />
         <div>
           <h4 className="text-xl font-bold text-white mb-2">Welcome to Verdant Elevate</h4>
-          <p className="text-gray-300">Led by passionate agricultural graduates, we are your gateway to agricultural education and technology. One stop for all your agri-related needs.
-
-  
-       </p>
+          <p className="text-gray-300">
+            Led by passionate agricultural graduates, we are your gateway to agricultural education and technology. One stop for all your agri-related needs.
+          </p>
         </div>
       </div>
       <a
@@ -215,6 +214,7 @@ function Webhome() {
     </div>
   </div>
 </div>
+
 
 
         </div>
