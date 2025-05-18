@@ -7,17 +7,14 @@ const ComingSoon1 = () => {
       image: "https://i.pinimg.com/736x/ba/0b/8f/ba0b8fe07c766a1984d28a339dede5d7.jpg",
       
       title: "Mapping",
-      description: "Enabling farmers to analyze and visualize spatial data to make informed decisions about crop management, irrigation, and land use",
     },
     {
       image: "https://i.pinimg.com/736x/95/40/7a/95407a2c8e9990bf3929cd8c565621df.jpg",
       title: "Data Interpolation",
-      description: "Estimating values at unsampled locations based on known data points, creating a continuous surface or map of agricultural properties",
     },
     {
       image: "https://i.pinimg.com/736x/f9/50/a4/f950a4401c91e23f824f31d0abff747e.jpg",
       title: "Other GIS Works",
-      description: "Monitoring crop health, optimizing irrigation, managing livestock, predicting crop yields, and supporting precision farming techniques",
     },
   ];
 
@@ -41,7 +38,7 @@ const ComingSoon1 = () => {
             <Sprout className="w-12 h-12 text-green-400 animate-bounce" />
           </div>
           <h1 className="text-5xl md:text-7xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-green-400 to-emerald-600">
-            VERDANT ELEVATORS
+            VERDANT GIS
           </h1>
           <p className="text-xl md:text-2xl text-gray-300 mb-8">
             Elevating Agriculture to New Heights
@@ -56,7 +53,7 @@ const ComingSoon1 = () => {
       <div className="py-24 bg-gradient-to-br from-gray-800/50 via-gray-900/50 to-gray-800/50">
         <div className="max-w-6xl mx-auto px-4">
           <h2 className="text-3xl md:text-4xl font-bold text-center mb-16 bg-gradient-to-r from-green-400 to-emerald-500 bg-clip-text text-transparent">
-            Future of Agriculture
+            OUR SERVICES
           </h2>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">

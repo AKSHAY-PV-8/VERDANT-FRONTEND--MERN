@@ -257,9 +257,9 @@ function HomePage() {
           <div className="max-w-7xl mx-auto px-4">
             <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
               {[
-                { number: "10,000+", label: "Students", icon: GraduationCap },
-                { number: "500+", label: "Courses", icon: BookOpen },
-                { number: "50+", label: "Countries", icon: Globe },
+                { number: "1000+", label: "Students", icon: GraduationCap },
+                { number: "10+",label: "Courses", icon: BookOpen },
+                { number: "14", label: "Districts", icon: Globe },
                 { number: "95%", label: "Success Rate", icon: Award },
               ].map((stat, index) => (
                 <div

@@ -6,32 +6,26 @@ const ComingSoon2 = () => {
     {
       image: "https://i.pinimg.com/736x/82/c3/5d/82c35d83be1686344586fe221045e5f4.jpg",
       title: "Agri-Business DPRs",
-      description: "A document for agri-business ventures, providing a comprehensive blueprint for planning, implementation, and securing funding for agricultural projects",
     },
     {
       image: "https://i.pinimg.com/736x/53/8d/31/538d31dd2fd07bd0cf0fa5ab3030fd60.jpg",
       title: "Startup Project Report",
-      description: "A successful startup project report in agriculture should detail the venture's mission, product or service, target market, operational plan, and financial projections.",
     },
     {
       image: "https://i.pinimg.com/736x/76/ba/9d/76ba9d7f368379e839faa110653a0c2c.jpg",
       title: "Farm Development Plans",
-      description: "Comprehensive strategies for managing agricultural resources and operations to maximize output and profitability while considering environmental and economic factors.",
     },
     {
       image: "https://i.pinimg.com/736x/8a/b4/b8/8ab4b84b6886ac290cf36965a32c95ec.jpg",
       title: "FPO Growth Strategies",
-      description: "Empowering farmers by enabling them to enhance their income and social conditions through collective action and improved market access.",
     },
     {
       image: "https://i.pinimg.com/736x/86/88/c5/8688c5a2db996ca26452b35a087ad6ed.jpg",
       title: "Financial & Market Insights",
-      description: "Services involved in moving an agricultural product from the farm to the consumer.Planning, organizing, directing and handling of agricultural produce in such a way as to satisfy farmers, intermediaries and consumers.",
     },
     {
       image: "https://i.pinimg.com/736x/31/57/11/315711da494451bfd4a9588d7e6ac48d.jpg",
       title: "Field Assistance",
-      description: "A professional who supports agricultural research, extension, and operations in the field.",
     }
   ];
 
@@ -55,7 +49,7 @@ const ComingSoon2 = () => {
             <Sprout className="w-12 h-12 text-green-400 animate-bounce" />
           </div>
           <h1 className="text-5xl md:text-7xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-green-400 to-emerald-600">
-            VERDANT ELEVATORS
+            VERDANT DPRs
           </h1>
           <p className="text-xl md:text-2xl text-gray-300 mb-8">
             Our team Agriculture graduates, MBAs and Economists collaborates to deliver expertly crafted Detailed Project Reports, tailored to empower agri-business success
@@ -70,7 +64,7 @@ const ComingSoon2 = () => {
       <div className="py-24 bg-gradient-to-br from-gray-800/50 via-gray-900/50 to-gray-800/50">
         <div className="max-w-6xl mx-auto px-4">
           <h2 className="text-3xl md:text-4xl font-bold text-center mb-16 bg-gradient-to-r from-green-400 to-emerald-500 bg-clip-text text-transparent">
-            Future of Agriculture
+            OUR SERVICES
           </h2>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">

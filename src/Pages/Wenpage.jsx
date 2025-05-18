@@ -152,25 +152,16 @@ function Webhome() {
 
 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
   <div className="space-y-6">
-    <div className="bg-gray-700 p-6 sm:p-8 rounded-lg shadow-xl "
-    style={{ backgroundImage: `url(https://images.unsplash.com/photo-1464226184884-fa280b87c399?auto=format&fit=crop&q=80&w=1920)` }}>
-      <h3 className="text-2xl font-semibold text-green-300 mb-4">ABOUT US</h3>
-      <div className="flex items-start space-x-4">
-        <Sprout className="h-6 w-6 text-green-400 flex-shrink-0 mt-1" />
-        <div>
-          <h4 className="text-xl  text-white mb-2">Empowering the Future of Farming
-Our agriculture startup is dedicated to transforming traditional farming through innovation, technology, and sustainability. We provide farmers with smart solutions—from precision agriculture tools and data-driven insights to eco-friendly practices—that help increase productivity, reduce waste, and ensure long-term soil health. By bridging the gap between technology and the field, we aim to build a more resilient, efficient, and sustainable agricultural ecosystem for generations to come.s</h4>
-          
-        </div>
-      </div>
-      <a
-        onClick={() => navigate("/intro")}
-        className="mt-6 inline-flex items-center px-6 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors"
-      >
-        Get Started Learning
-        <ChevronRight className="ml-2 h-5 w-5" />
-      </a>
-    </div>
+    <div
+  className="bg-gray-700 p-6 sm:p-8 rounded-lg shadow-xl h-80 w-[600px] bg-cover bg-center flex items-center justify-center text-center"
+  style={{
+    backgroundImage: `url(https://i.pinimg.com/736x/f8/40/87/f84087424ffc2eb2efd09f755adbaa9a.jpg)`
+  }}
+>
+  <h4 className="text-white text-lg sm:text-xl font-semibold px-4">
+    Sowing innovation for a sustainable and tech driven agricultural future
+  </h4>
+</div>
     
 
     
@@ -180,48 +171,26 @@ Our agriculture startup is dedicated to transforming traditional farming through
       className="w-full h-auto rounded-lg shadow-xl"
     />
     
-    <div className="bg-gray-700 p-6 sm:p-8 rounded-lg shadow-xl "
-    style={{ backgroundImage: `url(https://images.unsplash.com/photo-1464226184884-fa280b87c399?auto=format&fit=crop&q=80&w=1920)` }}>
-      <h3 className="text-2xl font-semibold text-green-300 mb-4">ABOUT US</h3>
-      <div className="flex items-start space-x-4">
-        <Sprout className="h-6 w-6 text-green-400 flex-shrink-0 mt-1" />
-        <div>
-          <h4 className="text-xl font-bold text-white mb-2">Welcome to Verdant Elevate</h4>
-          <p className="text-gray-300">
-            Led by passionate agricultural graduates, we are your gateway to agricultural education and technology. One stop for all your agri-related needs.
+    <div className="bg-gray-700 p-6 sm:p-8 rounded-lg shadow-xl h-80 w-[600px] bg-cover bg-center flex items-center justify-center text-center "
+    style={{ backgroundImage: `url(https://i.pinimg.com/736x/b5/44/0a/b5440abc8184059bcfa50028195e5253.jpg)` }}>
+     
+          <p className="text-gray-300 pt-50">
+            Harvesting hope from every field
           </p>
-        </div>
-      </div>
-      <a
-        onClick={() => navigate("/intro")}
-        className="mt-6 inline-flex items-center px-6 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors"
-      >
-        Get Started Learning
-        <ChevronRight className="ml-2 h-5 w-5" />
-      </a>
+
     </div>
   </div>
 
   <div className="space-y-6">
-     <div className="bg-gray-700 p-6 sm:p-8 rounded-lg shadow-xl "
-    style={{ backgroundImage: `url(https://images.unsplash.com/photo-1464226184884-fa280b87c399?auto=format&fit=crop&q=80&w=1920)` }}>
-      <h3 className="text-2xl font-semibold text-green-300 mb-4">ABOUT US</h3>
-      <div className="flex items-start space-x-4">
-        <Sprout className="h-6 w-6 text-green-400 flex-shrink-0 mt-1" />
-        <div>
-          <h4 className="text-xl font-bold text-white mb-2">Welcome to Verdant Elevate</h4>
+     <div className="bg-gray-700 p-6 sm:p-8 rounded-lg shadow-xl h-80 w-[600px] bg-cover bg-center flex items-center justify-center text-center "
+    style={{ backgroundImage: `url(https://i.pinimg.com/736x/a0/9c/7a/a09c7ac658db8a3e64791e43c08c06e9.jpg)` }}>
+     
+    
           <p className="text-gray-300">
-            Led by passionate agricultural graduates, we are your gateway to agricultural education and technology. One stop for all your agri-related needs.
+            Rooted in agriculture, growing towards impact.
           </p>
-        </div>
-      </div>
-      <a
-        onClick={() => navigate("/intro")}
-        className="mt-6 inline-flex items-center px-6 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors"
-      >
-        Get Started Learning
-        <ChevronRight className="ml-2 h-5 w-5" />
-      </a>
+   
+     
     </div>
 
     <div className="bg-gray-700 p-6 sm:p-8 rounded-lg shadow-xl">
@@ -230,9 +199,10 @@ Our agriculture startup is dedicated to transforming traditional farming through
         <Sprout className="h-6 w-6 text-green-400 flex-shrink-0 mt-1" />
         <div>
           <h4 className="text-xl font-bold text-white mb-2">Welcome to Verdant Elevate</h4>
-          <p className="text-gray-300">
-            Led by passionate agricultural graduates, we are your gateway to agricultural education and technology. One stop for all your agri-related needs.
-          </p>
+          <p className="text-gray-300">Led by passionate agricultural graduates, we are your gateway to agricultural education and technology. One stop for all your agri-related needs.
+
+  
+       </p>
         </div>
       </div>
       <a
@@ -261,7 +231,7 @@ Our agriculture startup is dedicated to transforming traditional farming through
           <div className="grid md:grid-cols-4 gap-8">
             <div className="bg-gray-800 rounded-lg shadow-xl overflow-hidden hover:transform hover:scale-105 transition-all duration-300">
               <img
-                src="https://images.unsplash.com/photo-1563201515-adbe35c669c5?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OHx8YWdyaWN1bHR1cmUlMjBlZHVjYXRpb258ZW58MHx8MHx8fDA%3D"
+                src="https://i.pinimg.com/736x/3e/4f/a3/3e4fa3b71209c94a58005ce2869ff5ec.jpg"
                 alt="Precision Farming"
                 className="w-full h-48 object-cover"
               />
@@ -282,7 +252,7 @@ Our agriculture startup is dedicated to transforming traditional farming through
             </div>
             <div className="bg-gray-800 rounded-lg shadow-xl overflow-hidden hover:transform hover:scale-105 transition-all duration-300">
               <img
-                src="https://images.unsplash.com/photo-1518994603110-1912b3272afd?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MjB8fGFncmljdWx0dXJlfGVufDB8fDB8fHww"
+                src="https://i.pinimg.com/736x/86/f6/fe/86f6fe20168fb3d1d93db6e6f147add8.jpg"
                 alt="Smart Irrigation"
                 className="w-full h-48 object-cover"
               />
@@ -302,7 +272,7 @@ Our agriculture startup is dedicated to transforming traditional farming through
             </div>
             <div className="bg-gray-800 rounded-lg shadow-xl overflow-hidden hover:transform hover:scale-105 transition-all duration-300">
               <img
-                src="https://plus.unsplash.com/premium_photo-1661900547591-80ee79e20d1c?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTd8fGFncmljdWx0dXJlfGVufDB8fDB8fHww"
+                src="https://i.pinimg.com/736x/8f/d9/43/8fd943f1424ef3c994a6c43e6451a939.jpg"
                 alt="Drone Technology"
                 className="w-full h-48 object-cover"
               />
@@ -322,7 +292,7 @@ Our agriculture startup is dedicated to transforming traditional farming through
             </div>
             <div className="bg-gray-800 rounded-lg shadow-xl overflow-hidden hover:transform hover:scale-105 transition-all duration-300">
               <img
-                src="https://images.unsplash.com/photo-1586771107445-d3ca888129ff?auto=format&fit=crop&q=80&w=800"
+                src="https://i.pinimg.com/736x/8a/c0/7d/8ac07d3458444a1cc6d850791cd3f902.jpg"
                 alt="Drone Technology"
                 className="w-full h-48 object-cover"
               />
@@ -439,7 +409,7 @@ Our agriculture startup is dedicated to transforming traditional farming through
               </div>
               <div className="flex items-center">
                 <Mail className="h-6 w-6 text-green-400 mr-4" />
-                <span className="text-gray-300">88akshayappu@gmail.com</span>
+                <span className="text-gray-300">verdantelevate@gmail.com</span>
               </div>
               <div className="flex items-start">
                 <MapPin className="h-6 w-6 text-green-400 mr-4 mt-1" />
