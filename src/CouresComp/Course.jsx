@@ -173,10 +173,10 @@ const CourseDescription = () => {
                                     </div>
                                 </div>
                                 <button
-                                    onClick={handlePayment}
+                                    // onClick={handlePayment}
                                     className="bg-green-600 hover:bg-green-700 text-white font-semibold py-3 px-6 rounded-xl transition-colors duration-300"
                                 >
-                                    Enroll Now
+                                    Coming Soon
                                 </button>
                             </div>
                         </div>
