@@ -130,15 +130,7 @@ const CourseDescription = () => {
                         </div>
 
                         <div className="p-6 sm:p-8">
-                            <div className="flex flex-wrap gap-2 mb-6">
-                                <span className="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm font-medium">
-                                    {course.category || "Web Development"}
-                                </span>
-                                <span className="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm font-medium">
-                                    {course.level || "Advanced"}
-                                </span>
-                            </div>
-
+                           
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
                                 <div className="bg-green-50 p-6 rounded-xl">
                                     <h3 className="text-lg font-semibold text-gray-900 mb-4">What you will learn</h3>
@@ -153,16 +145,7 @@ const CourseDescription = () => {
                                         <p className="text-gray-700">Course content will be updated soon.</p>
                                     )}
                                 </div>
-                                <div className="bg-green-50 p-6 rounded-xl">
-                                    <h3 className="text-lg font-semibold text-gray-900 mb-4">Prerequisites</h3>
-                                    <ul className="space-y-3 text-gray-700">
-                                        {course.prerequisites?.length > 0 ? (
-                                            course.prerequisites.map((item, index) => <li key={index}>• {item}</li>)
-                                        ) : (
-                                            <p className="text-gray-700">No prerequisites specified.</p>
-                                        )}
-                                    </ul>
-                                </div>
+                                
                             </div>
 
                             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between bg-green-50 p-6 rounded-xl space-y-4 sm:space-y-0">

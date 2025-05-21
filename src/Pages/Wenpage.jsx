@@ -26,29 +26,33 @@ function Webhome() {
 
   const formRef = useRef();
 
-  const sendEmail = (e) => {
-    e.preventDefault();
+const sendEmail = (e) => {
+  e.preventDefault();
 
-    emailjs.sendForm(
-      'service_tvb1rfc',
-      'YOUR_TEMPLATE_ID',
+  emailjs
+    .sendForm(
+      'service_07fjdzs',     // replace with your actual Service ID
+      'template_he1h55j',    // replace with your actual Template ID
       formRef.current,
-      'idyxPeFznX-j6BBU0'
+      'O314exJoSrICapswI'      // replace with your actual Public Key
     )
-    .then(() => {
-      alert('Message sent successfully!');
-      formRef.current.reset();
-    })
-    .catch((error) => {
-      console.error(error);
-      alert('Failed to send message. Please try again later.');
-    });
-  };
+    .then(
+      (result) => {
+        console.log('Message Sent:', result.text);
+        alert('Message sent successfully!');
+        formRef.current.reset();
+      },
+      (error) => {
+        console.error('Error:', error.text);
+        alert('Failed to send message. Please try again.');
+      }
+    );
+};
 
   return (
     <div className="min-h-screen w-full bg-gray-900 text-gray-200 overflow-x-hidden">
       {/* Navigation */}
-      <nav className="fixed w-screen bg-gray-300/90 backdrop-blur-sm z-50 border-b border-gray-800 ">
+      <nav className="fixed w-screen bg-gray-300/90 backdrop-blur-sm z-50 border-b border-gray-800 opacity-60  ">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
           <div className="flex items-center">
@@ -446,14 +450,14 @@ function Webhome() {
           >
             <input
               type="text"
-              name="from_name"
+              name="name"
               placeholder="Your Name"
               required
               className="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg focus:ring-2 focus:ring-green-400 focus:border-transparent text-white placeholder-gray-400"
             />
             <input
               type="email"
-              name="reply_to"
+              name="email"
               placeholder="Your Email"
               required
               className="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg focus:ring-2 focus:ring-green-400 focus:border-transparent text-white placeholder-gray-400"
