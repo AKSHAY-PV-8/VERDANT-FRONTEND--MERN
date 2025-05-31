@@ -104,7 +104,7 @@ const AttendExam = () => {
       <NavBar />
 
       {!submitted && (
-        <div className="fixed top-4 right-6 bg-white shadow-md border text-red-600 font-bold px-4 py-2 rounded z-50">
+        <div className="fixed top-4 right-6 mt-12 bg-white shadow-md border text-red-600 font-bold px-4 py-2 rounded z-50">
           ⏱ Time Left: {formatTime(timeLeft)}
         </div>
       )}
