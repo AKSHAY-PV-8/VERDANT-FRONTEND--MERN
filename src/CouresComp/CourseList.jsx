@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import {GraduationCap,} from "lucide-react";
+import { GraduationCap } from "lucide-react";
 import NavBar from "../Components/Auth/NavBar";
 
 const Images = [
@@ -8,7 +8,6 @@ const Images = [
     { image: "https://images.unsplash.com/photo-1625246333195-78d9c38ad449?auto=format&fit=crop&w=800&q=80" },
     { image: "https://images.unsplash.com/photo-1576319155264-99536e0be1ee?auto=format&fit=crop&w=800&q=80" },
     { image: "https://images.unsplash.com/photo-1472141521881-95d0e87e2e39?auto=format&fit=crop&w=800&q=80" },
-    // { image: "https://images.unsplash.com/photo-1559935384-3b5b2e7a5204?auto=format&fit=crop&w=800&q=80" },
     { image: "https://images.unsplash.com/photo-1561553873-e8491a564fd0?auto=format&fit=crop&w=800&q=80" },
     { image: "https://images.unsplash.com/photo-1518531933037-91b2f5f229cc?auto=format&fit=crop&w=800&q=80" },
     { image: "https://images.unsplash.com/photo-1495107334309-fcf20504a5ab?auto=format&fit=crop&w=800&q=80" }
@@ -19,24 +18,28 @@ const Courses = () => {
     const [enrolledCourses, setEnrolledCourses] = useState([]);
     const navigate = useNavigate();
     const userId = localStorage.getItem("userId");
-   
+
     const ServerURL = import.meta.env.VITE_SERVER_URL;
 
     useEffect(() => {
         // Fetch all courses
-        // fetch(`${ServerURL}/api/course/courses`)
         fetch(`${ServerURL}/api/examCourse/courses`)
             .then(res => res.json())
-            .then(data => setCourses(data.courses))
+            .then(data => {
+                if (data.courses) {
+                    // Reverse to make newest first
+                    setCourses(data.courses.reverse());
+                }
+            })
             .catch(err => console.error(err));
 
-        // Fetch enrolled courses for the logged-in user
+        // Fetch enrolled courses
         if (userId) {
             fetch(`${ServerURL}/api/dashboard/user-courses/${userId}`)
                 .then(res => res.json())
                 .then(data => {
                     if (data.success) {
-                        setEnrolledCourses(data.enrolledCourses.map(course => course._id)); // Store only course IDs
+                        setEnrolledCourses(data.enrolledCourses.map(course => course._id));
                     }
                 })
                 .catch(err => console.error("Error fetching enrolled courses:", err));
@@ -44,20 +47,15 @@ const Courses = () => {
     }, [userId]);
 
     return (
-      
         <div>
-          <NavBar/>
-      
-
-
+            <NavBar />
             <div className="max-w-7xl mx-auto text-center mb-12">
                 <h2 className="text-5xl font-bold text-gray-800 mb-4">Courses</h2>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
                 {courses.map((course, index) => {
-                    const isEnrolled = enrolledCourses.includes(course._id); 
-
+                    const isEnrolled = enrolledCourses.includes(course._id);
                     return (
                         <div
                             key={course._id}
@@ -78,12 +76,12 @@ const Courses = () => {
                                 <button
                                     className={`px-4 py-2 rounded-lg text-white font-semibold w-full transition 
                                         ${isEnrolled 
-                                            ? "bg-blue-500 hover:bg-blue-600"  // Enrolled - Go to course details
-                                            : "bg-emerald-500 hover:bg-emerald-600"}`} // Not enrolled - Go to course description
-                                    onClick={() => 
-                                        navigate(isEnrolled 
-                                            ? `/course/${course._id}`  // If enrolled, go to course details
-                                            : `/courseDescription/${course._id}` // If not, go to course description
+                                            ? "bg-blue-500 hover:bg-blue-600" 
+                                            : "bg-emerald-500 hover:bg-emerald-600"}`}
+                                    onClick={() =>
+                                        navigate(isEnrolled
+                                            ? `/course/${course._id}`
+                                            : `/courseDescription/${course._id}`
                                         )
                                     }
                                 >
@@ -95,11 +93,7 @@ const Courses = () => {
                 })}
             </div>
         </div>
-       
-   
-        
     );
 };
 
 export default Courses;
- 
