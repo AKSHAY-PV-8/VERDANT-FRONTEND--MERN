@@ -157,6 +157,7 @@ const CourseDescription = () => {
                                 </div>
                                 <button
                                     // onClick={handlePayment}
+                                    // onClick={() => navigate(`/course/${course._id}`)}
                                     className="bg-green-600 hover:bg-green-700 text-white font-semibold py-3 px-6 rounded-xl transition-colors duration-300"
                                 >
                                     Coming Soon

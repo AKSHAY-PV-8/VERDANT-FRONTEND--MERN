@@ -8,7 +8,7 @@ const AttendExam = () => {
   const [examData, setExamData] = useState(null);
   const [responses, setResponses] = useState({});
   const [submitted, setSubmitted] = useState(false);
-  const [result, setResult] = useState({ score: 0, answers: [] });
+  const [result, setResult] = useState({ score: 0, answers: [], correctCount: 0, wrongCount: 0 });
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [visitedQuestions, setVisitedQuestions] = useState(new Set());
   const [timeLeft, setTimeLeft] = useState(null);
@@ -59,13 +59,22 @@ const AttendExam = () => {
 
   const handleSubmit = () => {
     let score = 0;
+    let correctCount = 0;
+    let wrongCount = 0;
     let answerList = [];
 
     examData.questions.forEach((q, i) => {
       const userAns = responses[i];
       const isCorrect = userAns === q.answer;
-      if (isCorrect) score += q.marks;
-      else if (userAns && userAns !== q.answer) score -= examData.negativeMarking;
+      if (isCorrect) {
+        score += q.marks;
+        correctCount++;
+      } else if (userAns && userAns !== q.answer) {
+        score -= examData.negativeMarking;
+        wrongCount++;
+      } else if (!userAns) {
+        wrongCount++;
+      }
 
       answerList.push({
         question: q.question,
@@ -78,7 +87,8 @@ const AttendExam = () => {
     });
 
     setSubmitted(true);
-    setResult({ score, answers: answerList });
+    setCurrentQuestion(0); // 👈 Start answer review from first question
+    setResult({ score, answers: answerList, correctCount, wrongCount });
     window.alert('Exam submitted! View your answers.');
   };
 
@@ -90,68 +100,69 @@ const AttendExam = () => {
   };
 
   return (
-    <div className="bg-gray-100 min-h-screen">
+    <div className="bg-gray-100 min-h-screen flex flex-col">
       <NavBar />
 
-      {/* Timer */}
       {!submitted && (
         <div className="fixed top-4 right-6 bg-white shadow-md border text-red-600 font-bold px-4 py-2 rounded z-50">
           ⏱ Time Left: {formatTime(timeLeft)}
         </div>
       )}
 
-      <div className="flex flex-col md:flex-row p-4">
+      <div className="flex flex-col md:flex-row flex-1 p-4">
         {examData ? (
           <>
             {/* Sidebar */}
-            <div className="md:w-1/4 mb-4 md:mb-0 md:mr-4">
-              <div className="bg-white shadow-md rounded-lg p-4">
-                <h3 className="text-lg font-semibold mb-2">📝 Question Status</h3>
+            {!submitted && (
+              <div className="md:w-1/4 mb-4 md:mb-0 md:mr-4">
+                <div className="bg-white shadow-md rounded-lg p-4 h-full">
+                  <h3 className="text-lg font-semibold mb-2">📝 Question Status</h3>
 
-                <div className="mb-3 text-sm">
-                  <p>
-                    ✅{' '}
-                    <span className="text-green-600 font-medium">
-                      Attended: {Object.keys(responses).length}
-                    </span>
-                    <br />
-                    ❌{' '}
-                    <span className="text-red-600 font-medium">
-                      Not Attended: {examData.questions.length - Object.keys(responses).length}
-                    </span>
-                  </p>
-                </div>
+                  <div className="mb-3 text-sm">
+                    <p>
+                      ✅{' '}
+                      <span className="text-green-600 font-medium">
+                        Attended: {Object.keys(responses).length}
+                      </span>
+                      <br />
+                      ❌{' '}
+                      <span className="text-red-600 font-medium">
+                        Not Attended: {examData.questions.length - Object.keys(responses).length}
+                      </span>
+                    </p>
+                  </div>
 
-                <div className="h-72 overflow-y-auto border rounded-md p-2 bg-gray-50">
-                  <div className="grid grid-cols-5 gap-2">
-                    {examData.questions.map((_, idx) => {
-                      let bgColor = 'bg-gray-300';
-                      if (isAnswered(idx)) bgColor = 'bg-green-200';
-                      else if (visitedQuestions.has(idx)) bgColor = 'bg-red-200';
+                  <div className="h-72 overflow-y-auto border rounded-md p-2 bg-gray-50">
+                    <div className="grid grid-cols-5 gap-2">
+                      {examData.questions.map((_, idx) => {
+                        let bgColor = 'bg-gray-300';
+                        if (isAnswered(idx)) bgColor = 'bg-green-200';
+                        else if (visitedQuestions.has(idx)) bgColor = 'bg-red-200';
 
-                      return (
-                        <button
-                          key={idx}
-                          onClick={() => handleQuestionClick(idx)}
-                          className={`w-10 h-10 rounded-full font-bold text-sm ${bgColor} ${
-                            currentQuestion === idx ? 'ring-2 ring-blue-500' : ''
-                          }`}
-                        >
-                          {idx + 1}
-                        </button>
-                      );
-                    })}
+                        return (
+                          <button
+                            key={idx}
+                            onClick={() => handleQuestionClick(idx)}
+                            className={`w-10 h-10 rounded-full font-bold text-sm ${bgColor} ${
+                              currentQuestion === idx ? 'ring-2 ring-blue-500' : ''
+                            }`}
+                          >
+                            {idx + 1}
+                          </button>
+                        );
+                      })}
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
+            )}
 
             {/* Main Question Panel */}
-            <div className="md:w-3/4">
+            <div className="md:w-3/4 h-[calc(100vh-100px)] overflow-y-auto">
               <h2 className="text-xl font-bold mb-4">{examData.sectionTitle}</h2>
 
               {!submitted ? (
-                <div className="bg-white shadow-md rounded-lg p-6">
+                <div className="bg-white shadow-md rounded-lg p-6 whitespace-pre-line">
                   <p className="font-semibold text-lg mb-4">
                     {currentQuestion + 1}. {examData.questions[currentQuestion].question}
                   </p>
@@ -180,7 +191,6 @@ const AttendExam = () => {
                     </div>
                   ))}
 
-                  {/* Navigation Buttons */}
                   <div className="flex flex-wrap items-center gap-4 mt-6">
                     <button
                       disabled={currentQuestion === 0}
@@ -224,11 +234,16 @@ const AttendExam = () => {
                   </div>
                 </div>
               ) : (
-                // Submitted View
                 <div className="bg-white shadow-md rounded-lg p-6">
                   <h3 className="text-xl text-green-600 font-bold mb-4">
                     Your Score: {result.score}
                   </h3>
+                  <p className="text-md mb-2">
+                    ✅ Correct: <strong className="text-green-600">{result.correctCount}</strong>
+                    <br />
+                    ❌ Wrong / Unanswered:{' '}
+                    <strong className="text-red-600">{result.wrongCount}</strong>
+                  </p>
 
                   <p className="text-lg font-semibold mb-2">
                     {currentQuestion + 1}. {result.answers[currentQuestion].question}
