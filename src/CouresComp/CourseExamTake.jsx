@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import NavBar from '../Components/Auth/NavBar';
@@ -14,6 +14,8 @@ const AttendExam = () => {
   const [timeLeft, setTimeLeft] = useState(null);
   const ServerURL = import.meta.env.VITE_SERVER_URL;
 
+  const hasSubmittedRef = useRef(false); // Prevent multiple submissions
+
   useEffect(() => {
     axios
       .get(`${ServerURL}/api/examCourse/courses/${id}`)
@@ -26,17 +28,23 @@ const AttendExam = () => {
   }, [id, examIndex]);
 
   useEffect(() => {
-    if (!submitted && timeLeft !== null) {
-      if (timeLeft === 0) {
-        handleSubmit();
-      }
+    if (submitted || timeLeft === null || hasSubmittedRef.current) return;
 
-      const timer = setInterval(() => {
-        setTimeLeft((prev) => (prev > 0 ? prev - 1 : 0));
-      }, 1000);
-
-      return () => clearInterval(timer);
+    if (timeLeft === 0) {
+      handleSubmit();
     }
+
+    const timer = setInterval(() => {
+      setTimeLeft((prev) => {
+        if (prev <= 1) {
+          clearInterval(timer);
+          return 0;
+        }
+        return prev - 1;
+      });
+    }, 1000);
+
+    return () => clearInterval(timer);
   }, [timeLeft, submitted]);
 
   const formatTime = (seconds) => {
@@ -58,6 +66,9 @@ const AttendExam = () => {
   };
 
   const handleSubmit = () => {
+    if (hasSubmittedRef.current || !examData) return;
+    hasSubmittedRef.current = true;
+
     let score = 0;
     let correctCount = 0;
     let wrongCount = 0;
@@ -87,7 +98,7 @@ const AttendExam = () => {
     });
 
     setSubmitted(true);
-    setCurrentQuestion(0); // 👈 Start answer review from first question
+    setCurrentQuestion(0);
     setResult({ score, answers: answerList, correctCount, wrongCount });
     window.alert('Exam submitted! View your answers.');
   };
@@ -112,13 +123,13 @@ const AttendExam = () => {
       <div className="flex flex-col md:flex-row flex-1 p-4">
         {examData ? (
           <>
-            {/* Sidebar */}
-            {!submitted && (
-              <div className="md:w-1/4 mb-4 md:mb-0 md:mr-4">
-                <div className="bg-white shadow-md rounded-lg p-4 h-full">
-                  <h3 className="text-lg font-semibold mb-2">📝 Question Status</h3>
+            {/* Side Nav Panel */}
+            <div className="md:w-1/4 mb-4 md:mb-0 md:mr-4">
+              <div className="bg-white shadow-md rounded-lg p-4 h-full">
+                <h3 className="text-lg font-semibold mb-4">📝 Exam Summary</h3>
 
-                  <div className="mb-3 text-sm">
+                {!submitted ? (
+                  <div className="text-sm mb-4">
                     <p>
                       ✅{' '}
                       <span className="text-green-600 font-medium">
@@ -131,33 +142,47 @@ const AttendExam = () => {
                       </span>
                     </p>
                   </div>
+                ) : (
+                  <div className="text-sm mb-4">
+                    <p className="text-green-600 font-semibold">
+                      ✅ Correct: {result.correctCount}
+                    </p>
+                    <p className="text-red-600 font-semibold">
+                      ❌ Wrong/Unanswered: {result.wrongCount}
+                    </p>
+                    <p className="text-blue-600 font-semibold">
+                      🏆 Total Score: {result.score}
+                    </p>
+                  </div>
+                )}
 
-                  <div className="h-72 overflow-y-auto border rounded-md p-2 bg-gray-50">
-                    <div className="grid grid-cols-5 gap-2">
-                      {examData.questions.map((_, idx) => {
-                        let bgColor = 'bg-gray-300';
-                        if (isAnswered(idx)) bgColor = 'bg-green-200';
-                        else if (visitedQuestions.has(idx)) bgColor = 'bg-red-200';
+                <div className="h-72 overflow-y-auto border rounded-md p-2 bg-gray-50">
+                  <div className="grid grid-cols-5 gap-2">
+                    {examData.questions.map((_, idx) => {
+                      let bgColor = 'bg-gray-300';
+                      if (submitted && result.answers[idx].isCorrect) bgColor = 'bg-green-300';
+                      else if (submitted && !result.answers[idx].isCorrect) bgColor = 'bg-red-300';
+                      else if (isAnswered(idx)) bgColor = 'bg-green-200';
+                      else if (visitedQuestions.has(idx)) bgColor = 'bg-red-200';
 
-                        return (
-                          <button
-                            key={idx}
-                            onClick={() => handleQuestionClick(idx)}
-                            className={`w-10 h-10 rounded-full font-bold text-sm ${bgColor} ${
-                              currentQuestion === idx ? 'ring-2 ring-blue-500' : ''
-                            }`}
-                          >
-                            {idx + 1}
-                          </button>
-                        );
-                      })}
-                    </div>
+                      return (
+                        <button
+                          key={idx}
+                          onClick={() => handleQuestionClick(idx)}
+                          className={`w-10 h-10 rounded-full font-bold text-sm ${bgColor} ${
+                            currentQuestion === idx ? 'ring-2 ring-blue-500' : ''
+                          }`}
+                        >
+                          {idx + 1}
+                        </button>
+                      );
+                    })}
                   </div>
                 </div>
               </div>
-            )}
+            </div>
 
-            {/* Main Question Panel */}
+            {/* Main Content Panel */}
             <div className="md:w-3/4 h-[calc(100vh-100px)] overflow-y-auto">
               <h2 className="text-xl font-bold mb-4">{examData.sectionTitle}</h2>
 
@@ -235,16 +260,8 @@ const AttendExam = () => {
                 </div>
               ) : (
                 <div className="bg-white shadow-md rounded-lg p-6">
-                  <h3 className="text-xl text-green-600 font-bold mb-4">
-                    Your Score: {result.score}
-                  </h3>
-                  <p className="text-md mb-2">
-                    ✅ Correct: <strong className="text-green-600">{result.correctCount}</strong>
-                    <br />
-                    ❌ Wrong / Unanswered:{' '}
-                    <strong className="text-red-600">{result.wrongCount}</strong>
-                  </p>
-
+                  
+                  
                   <p className="text-lg font-semibold mb-2">
                     {currentQuestion + 1}. {result.answers[currentQuestion].question}
                   </p>
@@ -311,7 +328,7 @@ const AttendExam = () => {
             </div>
           </>
         ) : (
-          <p className="text-center text-lg text-gray-600">Loading Exam...</p>
+          <p className="text-center text-lg text-gray-600">Loading exam...</p>
         )}
       </div>
     </div>

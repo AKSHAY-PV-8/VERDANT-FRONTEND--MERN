@@ -14,6 +14,8 @@ const CourseDescription = () => {
 
     const userId = localStorage.getItem("userId");
 
+    const FREE_ACCESS_EMAILS = ['67df244160e5e454b2a8b875','6814e208b2d8957624cc7438']
+
     useEffect(() => {
         fetch(`${ServerURL}/api/examCourse/courses/${id}`)
             .then((res) => res.json())
@@ -30,6 +32,11 @@ const CourseDescription = () => {
     }, [id]);
 
     const handlePayment = async () => {
+        if (FREE_ACCESS_EMAILS.includes(userId)) {
+             navigate(`/course/${course._id}`)
+
+        }
+        else{
         try {
             if (!window.Razorpay) {
                 alert("Razorpay SDK not loaded.");
@@ -97,6 +104,8 @@ const CourseDescription = () => {
             console.error("Payment Error:", error);
             alert("Payment process failed. Please try again.");
         }
+
+        }
     };
 
     if (loading) {
@@ -156,11 +165,11 @@ const CourseDescription = () => {
                                     </div>
                                 </div>
                                 <button
-                                    // onClick={handlePayment}
+                                    onClick={handlePayment}
                                     // onClick={() => navigate(`/course/${course._id}`)}
                                     className="bg-green-600 hover:bg-green-700 text-white font-semibold py-3 px-6 rounded-xl transition-colors duration-300"
                                 >
-                                    Coming Soon
+                                    Enroll Now
                                 </button>
                             </div>
                         </div>
