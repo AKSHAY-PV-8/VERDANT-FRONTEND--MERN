@@ -6,6 +6,7 @@ const CourseEditPage = () => {
     const { id } = useParams();
     const navigate = useNavigate();
     const ServerURL = import.meta.env.VITE_SERVER_URL;
+
     const [course, setCourse] = useState({
         title: '',
         description: '',
@@ -80,6 +81,22 @@ const CourseEditPage = () => {
         setCourse({ ...course, exams: updatedExams });
     };
 
+    const deleteExam = (examIdx) => {
+        if (confirm("Are you sure you want to delete this exam section?")) {
+            const updatedExams = [...course.exams];
+            updatedExams.splice(examIdx, 1);
+            setCourse({ ...course, exams: updatedExams });
+        }
+    };
+
+    const deleteQuestion = (examIdx, qIdx) => {
+        if (confirm("Are you sure you want to delete this question?")) {
+            const updatedExams = [...course.exams];
+            updatedExams[examIdx].questions.splice(qIdx, 1);
+            setCourse({ ...course, exams: updatedExams });
+        }
+    };
+
     const handleSave = async () => {
         try {
             await axios.put(`${ServerURL}/api/examCourse/courses/${id}`, course);
@@ -104,13 +121,34 @@ const CourseEditPage = () => {
 
             {course.exams.map((exam, examIdx) => (
                 <div key={examIdx} className="border p-4 mb-6 bg-gray-50 rounded-lg">
-                    <h3 className="text-xl font-semibold mb-2">Exam Section {examIdx + 1}</h3>
+                    <div className="flex justify-between items-center">
+                        <h3 className="text-xl font-semibold mb-2">Exam Section {examIdx + 1}</h3>
+                        <button
+                            onClick={() => deleteExam(examIdx)}
+                            className="bg-red-600 text-white px-3 py-1 rounded"
+                        >
+                            🗑️ Delete Section
+                        </button>
+                    </div>
+
                     <input value={exam.sectionTitle} onChange={(e) => handleExamChange(examIdx, 'sectionTitle', e.target.value)} className="w-full mb-2 p-2 border" placeholder="Section Title" />
                     <input type="number" value={exam.duration} onChange={(e) => handleExamChange(examIdx, 'duration', e.target.value)} className="w-full mb-2 p-2 border" placeholder="Duration (minutes)" />
                     <input type="number" value={exam.negativeMarking} onChange={(e) => handleExamChange(examIdx, 'negativeMarking', e.target.value)} className="w-full mb-4 p-2 border" placeholder="Negative Marking" />
+
                     <button onClick={() => addQuestion(examIdx)} className="bg-purple-600 text-white px-3 py-1 rounded mb-4">➕ Add Question</button>
+
                     {exam.questions.map((q, qIdx) => (
                         <div key={qIdx} className="border p-3 mb-3 bg-white rounded shadow-sm">
+                            <div className="flex justify-between items-center">
+                                <h4 className="font-semibold">Question {qIdx + 1}</h4>
+                                <button
+                                    onClick={() => deleteQuestion(examIdx, qIdx)}
+                                    className="bg-red-500 text-white px-3 py-1 rounded"
+                                >
+                                    🗑️ Delete Question
+                                </button>
+                            </div>
+
                             <textarea value={q.question} onChange={(e) => handleQuestionChange(examIdx, qIdx, 'question', e.target.value)} className="w-full mb-2 p-2 border" placeholder="Question" />
                             <input type="file" accept="image/*" onChange={(e) => handleImageUpload(examIdx, qIdx, e.target.files[0])} className="mb-2" />
                             {q.image && <img src={q.image} alt="Uploaded" className="w-32 h-32 object-cover mb-2 rounded border" />}
