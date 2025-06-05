@@ -27,7 +27,7 @@ const Intro = () => {
               Join our community of farmers, students, and experts to learn modern agricultural practices and sustainable farming techniques.
             </p>
             <button onClick={() =>navigate("/login")} className="bg-green-600 text-white px-8 py-3 rounded-md text-lg font-medium hover:bg-green-700 transition duration-200 flex items-center mx-auto">
-              Start Learning
+              Go to Courses
               <ChevronRight className="ml-2 h-5 w-5" />
             </button>
           </div>

@@ -4,7 +4,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import NavBar from "../Components/Auth/NavBar";
 
 const CourseDescription = () => {
-    const [isHovered, setIsHovered] = useState(false);
+    // const [isHovered, setIsHovered] = useState(false);
     const { id } = useParams();
     const [loading, setLoading] = useState(true);
     const [course, setCourse] = useState(null);
@@ -17,6 +17,13 @@ const CourseDescription = () => {
     const FREE_ACCESS_EMAILS = ['67df244160e5e454b2a8b875','6814e208b2d8957624cc7438']
 
     useEffect(() => {
+
+        if (!userId) {
+            alert("Please login to view this course.");
+            navigate("/login");
+            return;
+        }
+
         fetch(`${ServerURL}/api/examCourse/courses/${id}`)
             .then((res) => res.json())
             .then((data) => {

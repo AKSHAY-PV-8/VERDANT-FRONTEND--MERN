@@ -148,7 +148,10 @@ const AttendExam = () => {
                       ✅ Correct: {result.correctCount}
                     </p>
                     <p className="text-red-600 font-semibold">
-                      ❌ Wrong/Unanswered: {result.wrongCount}
+                      ❌ Wrong: {result.answers.filter((a) => a.user && !a.isCorrect).length}
+                    </p>
+                    <p className="text-yellow-600 font-semibold">
+                      ⚠️ Unanswered: {result.answers.filter((a) => !a.user).length}
                     </p>
                     <p className="text-blue-600 font-semibold">
                       🏆 Total Score: {result.score}
@@ -160,17 +163,30 @@ const AttendExam = () => {
                   <div className="grid grid-cols-5 gap-2">
                     {examData.questions.map((_, idx) => {
                       let bgColor = 'bg-gray-300';
-                      if (submitted && result.answers[idx].isCorrect) bgColor = 'bg-green-300';
-                      else if (submitted && !result.answers[idx].isCorrect) bgColor = 'bg-red-300';
-                      else if (isAnswered(idx)) bgColor = 'bg-green-200';
-                      else if (visitedQuestions.has(idx)) bgColor = 'bg-red-200';
+
+                      if (submitted) {
+                        const answer = result.answers[idx];
+                        if (!answer.user) {
+                          bgColor = 'bg-yellow-300'; // Unanswered
+                        } else if (answer.isCorrect) {
+                          bgColor = 'bg-green-300'; // Correct
+                        } else {
+                          bgColor = 'bg-red-300'; // Wrong
+                        }
+                      } else {
+                        if (isAnswered(idx)) {
+                          bgColor = 'bg-green-200';
+                        } else if (visitedQuestions.has(idx)) {
+                          bgColor = 'bg-red-200';
+                        }
+                      }
 
                       return (
                         <button
                           key={idx}
                           onClick={() => handleQuestionClick(idx)}
                           className={`w-10 h-10 rounded-full font-bold text-sm ${bgColor} ${
-                            currentQuestion === idx ? 'ring-2 ring-blue-500' : ''
+                            currentQuestion === idx ? 'ring-4 ring-purple-500' : ''
                           }`}
                         >
                           {idx + 1}
@@ -178,6 +194,14 @@ const AttendExam = () => {
                       );
                     })}
                   </div>
+                </div>
+
+                <div className="mt-4 text-xs text-gray-600 space-y-1">
+                  <p><span className="inline-block w-4 h-4 bg-green-300 rounded-full mr-2"></span> Correct</p>
+                  <p><span className="inline-block w-4 h-4 bg-red-300 rounded-full mr-2"></span> Wrong</p>
+                  <p><span className="inline-block w-4 h-4 bg-yellow-300 rounded-full mr-2"></span> Unanswered</p>
+                  <p><span className="inline-block w-4 h-4 bg-gray-300 rounded-full mr-2"></span> Not Visited</p>
+                  <p><span className="inline-block w-4 h-4 bg-purple-500 rounded-full ring-2 ring-purple-300 mr-2"></span> Selected</p>
                 </div>
               </div>
             </div>
@@ -260,8 +284,6 @@ const AttendExam = () => {
                 </div>
               ) : (
                 <div className="bg-white shadow-md rounded-lg p-6">
-                  
-                  
                   <p className="text-lg font-semibold mb-2">
                     {currentQuestion + 1}. {result.answers[currentQuestion].question}
                   </p>

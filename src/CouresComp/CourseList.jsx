@@ -17,34 +17,38 @@ const Courses = () => {
     const [courses, setCourses] = useState([]);
     const [enrolledCourses, setEnrolledCourses] = useState([]);
     const navigate = useNavigate();
-    const userId = localStorage.getItem("userId");
-
     const ServerURL = import.meta.env.VITE_SERVER_URL;
 
     useEffect(() => {
+        const userId = localStorage.getItem("userId");
+
+        // ✅ Redirect to login if user is not logged in
+        if (!userId) {
+            alert("Please login to view the course.");
+            navigate("/login");
+            return;
+        }
+
         // Fetch all courses
         fetch(`${ServerURL}/api/examCourse/courses`)
             .then(res => res.json())
             .then(data => {
                 if (data.courses) {
-                    // Reverse to make newest first
                     setCourses(data.courses.reverse());
                 }
             })
             .catch(err => console.error(err));
 
         // Fetch enrolled courses
-        if (userId) {
-            fetch(`${ServerURL}/api/dashboard/user-courses/${userId}`)
-                .then(res => res.json())
-                .then(data => {
-                    if (data.success) {
-                        setEnrolledCourses(data.enrolledCourses.map(course => course._id));
-                    }
-                })
-                .catch(err => console.error("Error fetching enrolled courses:", err));
-        }
-    }, [userId]);
+        fetch(`${ServerURL}/api/dashboard/user-courses/${userId}`)
+            .then(res => res.json())
+            .then(data => {
+                if (data.success) {
+                    setEnrolledCourses(data.enrolledCourses.map(course => course._id));
+                }
+            })
+            .catch(err => console.error("Error fetching enrolled courses:", err));
+    }, [navigate, ServerURL]);
 
     return (
         <div>
