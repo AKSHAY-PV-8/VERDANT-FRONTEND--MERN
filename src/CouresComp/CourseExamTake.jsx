@@ -64,45 +64,42 @@ const AttendExam = () => {
       return updated;
     });
   };
+const handleSubmit = async () => {
+  if (hasSubmittedRef.current || !examData) return;
+  hasSubmittedRef.current = true;
 
-  const handleSubmit = () => {
-    if (hasSubmittedRef.current || !examData) return;
-    hasSubmittedRef.current = true;
+  // Prepare answers array for backend
+  const submittedAnswers = examData.questions.map((_, index) => responses[index] || "");
 
-    let score = 0;
-    let correctCount = 0;
-    let wrongCount = 0;
-    let answerList = [];
-
-    examData.questions.forEach((q, i) => {
-      const userAns = responses[i];
-      const isCorrect = userAns === q.answer;
-      if (isCorrect) {
-        score += q.marks;
-        correctCount++;
-      } else if (userAns && userAns !== q.answer) {
-        score -= examData.negativeMarking;
-        wrongCount++;
-      } else if (!userAns) {
-        wrongCount++;
-      }
-
-      answerList.push({
-        question: q.question,
-        image: q.image,
-        correct: q.answer,
-        user: userAns,
-        isCorrect,
-        options: q.option,
-      });
+  try {
+    const res = await axios.post(`${ServerURL}/api/examCourse/marks/${examData._id}`, {
+      answers: submittedAnswers,
+      userId: localStorage.getItem("userId") // Ensure you store userId at login
     });
+
+    const { totalMarks, correctAnswers } = res.data;
+
+    const answerList = correctAnswers.map((ans, idx) => ({
+      question: ans.question,
+      correct: ans.correctAnswer,
+      user: ans.submittedAnswer,
+      isCorrect: ans.isCorrect,
+      options: examData.questions[idx].option,
+      image: examData.questions[idx].image || null
+    }));
+
+    const correctCount = correctAnswers.filter(a => a.isCorrect).length;
+    const wrongCount = correctAnswers.filter(a => a.submittedAnswer !== "Not Answered" && !a.isCorrect).length;
 
     setSubmitted(true);
     setCurrentQuestion(0);
-    setResult({ score, answers: answerList, correctCount, wrongCount });
+    setResult({ score: totalMarks, answers: answerList, correctCount, wrongCount });
     window.alert('Exam submitted! View your answers.');
-  };
-
+  } catch (error) {
+    console.error("Error submitting exam:", error);
+    alert("Failed to submit exam. Please try again.");
+  }
+};
   const isAnswered = (index) => responses.hasOwnProperty(index);
 
   const handleQuestionClick = (idx) => {
