@@ -4,20 +4,18 @@ import { useParams, useNavigate } from "react-router-dom";
 import NavBar from "../Components/Auth/NavBar";
 
 const CourseDescription = () => {
-    // const [isHovered, setIsHovered] = useState(false);
     const { id } = useParams();
     const [loading, setLoading] = useState(true);
     const [course, setCourse] = useState(null);
+    const [showAlert, setShowAlert] = useState(false);
     const navigate = useNavigate();
     const ServerURL = import.meta.env.VITE_SERVER_URL;
     const RazorpayKey = import.meta.env.VITE_RAZORPAY_KEY_ID;
-
     const userId = localStorage.getItem("userId");
 
-    const FREE_ACCESS_EMAILS = ['67df244160e5e454b2a8b875','6814e208b2d8957624cc7438']
+    const FREE_ACCESS_EMAILS = ['67df244160e5e454b2a8b875','6814e208b2d8957624cc7438'];
 
     useEffect(() => {
-
         if (!userId) {
             alert("Please login to view this course.");
             navigate("/login");
@@ -39,80 +37,82 @@ const CourseDescription = () => {
     }, [id]);
 
     const handlePayment = async () => {
-        if (FREE_ACCESS_EMAILS.includes(userId)) {
-             navigate(`/course/${course._id}`)
+        setShowAlert(true);
 
-        }
-        else{
-        try {
-            if (!window.Razorpay) {
-                alert("Razorpay SDK not loaded.");
-                return;
-            }
+        setTimeout(async () => {
+            setShowAlert(false);
 
-            const response = await fetch(`${ServerURL}/api/payment/create-order`, {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({
-                    amount: course.price,
-                    currency: "INR",
-                }),
-            });
+            if (FREE_ACCESS_EMAILS.includes(userId)) {
+                navigate(`/course/${course._id}`);
+            } else {
+                try {
+                    if (!window.Razorpay) {
+                        alert("Razorpay SDK not loaded.");
+                        return;
+                    }
 
-            const data = await response.json();
-
-            if (!data.success) {
-                alert("Error creating Razorpay order");
-                return;
-            }
-
-            const options = {
-                key: RazorpayKey || "rzp_test_placeholder", // fallback for dev
-                amount: data.order.amount,
-                currency: data.order.currency,
-                name: course.title,
-                description: "Course Enrollment Payment",
-                order_id: data.order.id,
-                handler: async function (response) {
-                    const verifyResponse = await fetch(`${ServerURL}/api/payment/verify-payment`, {
+                    const response = await fetch(`${ServerURL}/api/payment/create-order`, {
                         method: "POST",
                         headers: { "Content-Type": "application/json" },
                         body: JSON.stringify({
-                            razorpay_order_id: response.razorpay_order_id,
-                            razorpay_payment_id: response.razorpay_payment_id,
-                            razorpay_signature: response.razorpay_signature,
-                            userId: userId,
-                            courseId: course._id
+                            amount: course.price,
+                            currency: "INR",
                         }),
                     });
 
-                    const verifyData = await verifyResponse.json();
-                    if (verifyData.success) {
-                        alert("Payment successful! Course enrolled.");
-                        navigate(`/dashboard`);
-                    } else {
-                        alert("Payment verification failed.");
+                    const data = await response.json();
+
+                    if (!data.success) {
+                        alert("Error creating Razorpay order");
+                        return;
                     }
-                },
-                prefill: {
-                    name: "Your Name",
-                    email: "your-email@example.com",
-                    contact: "9999999999",
-                },
-                theme: {
-                    color: "#34d399",
-                },
-            };
 
-            const razorpay = new window.Razorpay(options);
-            razorpay.open();
+                    const options = {
+                        key: RazorpayKey || "rzp_test_placeholder",
+                        amount: data.order.amount,
+                        currency: data.order.currency,
+                        name: course.title,
+                        description: "Course Enrollment Payment",
+                        order_id: data.order.id,
+                        handler: async function (response) {
+                            const verifyResponse = await fetch(`${ServerURL}/api/payment/verify-payment`, {
+                                method: "POST",
+                                headers: { "Content-Type": "application/json" },
+                                body: JSON.stringify({
+                                    razorpay_order_id: response.razorpay_order_id,
+                                    razorpay_payment_id: response.razorpay_payment_id,
+                                    razorpay_signature: response.razorpay_signature,
+                                    userId: userId,
+                                    courseId: course._id
+                                }),
+                            });
 
-        } catch (error) {
-            console.error("Payment Error:", error);
-            alert("Payment process failed. Please try again.");
-        }
+                            const verifyData = await verifyResponse.json();
+                            if (verifyData.success) {
+                                alert("Payment successful! Course enrolled.");
+                                navigate(`/dashboard`);
+                            } else {
+                                alert("Payment verification failed.");
+                            }
+                        },
+                        prefill: {
+                            name: "Your Name",
+                            email: "your-email@example.com",
+                            contact: "9999999999",
+                        },
+                        theme: {
+                            color: "#34d399",
+                        },
+                    };
 
-        }
+                    const razorpay = new window.Razorpay(options);
+                    razorpay.open();
+                } catch (error) {
+                    console.error("Payment Error:", error);
+                    alert("Payment process failed. Please try again.");
+                }
+            }
+        }, 3000);
     };
 
     if (loading) {
@@ -134,6 +134,14 @@ const CourseDescription = () => {
     return (
         <div>
             <NavBar />
+
+            {/* ✅ Floating Alert Message */}
+            {showAlert && (
+                <div className="fixed top-5 left-1/2 transform -translate-x-1/2 bg-gray-900 border border-green-300 text-green-100 px-6 py-3 rounded-xl shadow-lg z-50 transition-opacity duration-300">
+                    Please wait... After successful payment, you’ll be redirected to your dashboard.
+                </div>
+            )}
+
             <div className="min-h-screen bg-gradient-to-b from-white to-green-50">
                 <div className="max-w-6xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
                     <div className="bg-white rounded-2xl shadow-lg overflow-hidden transition-transform duration-300 hover:scale-[1.02]">
@@ -146,7 +154,6 @@ const CourseDescription = () => {
                         </div>
 
                         <div className="p-6 sm:p-8">
-                           
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
                                 <div className="bg-green-50 p-6 rounded-xl">
                                     <h3 className="text-lg font-semibold text-gray-900 mb-4">What you will learn</h3>
@@ -161,7 +168,6 @@ const CourseDescription = () => {
                                         <p className="text-gray-700">Course content will be updated soon.</p>
                                     )}
                                 </div>
-                                
                             </div>
 
                             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between bg-green-50 p-6 rounded-xl space-y-4 sm:space-y-0">
@@ -173,7 +179,6 @@ const CourseDescription = () => {
                                 </div>
                                 <button
                                     onClick={handlePayment}
-                                    // onClick={() => navigate(`/course/${course._id}`)}
                                     className="bg-green-600 hover:bg-green-700 text-white font-semibold py-3 px-6 rounded-xl transition-colors duration-300"
                                 >
                                     Enroll Now
