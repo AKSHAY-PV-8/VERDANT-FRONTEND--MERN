@@ -13,7 +13,13 @@ const CourseDescription = () => {
     const RazorpayKey = import.meta.env.VITE_RAZORPAY_KEY_ID;
     const userId = localStorage.getItem("userId");
 
-    const FREE_ACCESS_EMAILS = ['67df244160e5e454b2a8b875','6814e208b2d8957624cc7438'];
+    const FREE_ACCESS_EMAILS = ['67df244160e5e454b2a8b875', '6814e208b2d8957624cc7438'];
+
+    // ✅ Static list of course IDs that allow enrollment
+    const ENROLL_ALLOWED_COURSE_IDS = [
+        '68449967d3517112d83c4755', // Example course ID
+        '68405a10925f122d5b8aafa8'  // Add your actual course IDs here
+    ];
 
     useEffect(() => {
         if (!userId) {
@@ -135,7 +141,7 @@ const CourseDescription = () => {
         <div>
             <NavBar />
 
-            {/* ✅ Floating Alert Message */}
+            {/* Floating Alert Message */}
             {showAlert && (
                 <div className="fixed top-5 left-1/2 transform -translate-x-1/2 bg-gray-900 border border-green-300 text-green-100 px-6 py-3 rounded-xl shadow-lg z-50 transition-opacity duration-300">
                     Please wait... After successful payment, you’ll be redirected to your dashboard.
@@ -177,12 +183,23 @@ const CourseDescription = () => {
                                         <span className="text-2xl font-bold text-green-800">₹{course.price}</span>
                                     </div>
                                 </div>
-                                <button
-                                    onClick={handlePayment}
-                                    className="bg-green-600 hover:bg-green-700 text-white font-semibold py-3 px-6 rounded-xl transition-colors duration-300"
-                                >
-                                    Enroll Now
-                                </button>
+
+                                {/* Enroll or Coming Soon button */}
+                                {ENROLL_ALLOWED_COURSE_IDS.includes(course._id) ? (
+                                    <button
+                                        onClick={handlePayment}
+                                        className="bg-green-600 hover:bg-green-700 text-white font-semibold py-3 px-6 rounded-xl transition-colors duration-300"
+                                    >
+                                        Enroll Now
+                                    </button>
+                                ) : (
+                                    <button
+                                        disabled
+                                        className="bg-gray-400 text-white font-semibold py-3 px-6 rounded-xl cursor-not-allowed"
+                                    >
+                                        Coming Soon
+                                    </button>
+                                )}
                             </div>
                         </div>
                     </div>
