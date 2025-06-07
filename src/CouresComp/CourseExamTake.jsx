@@ -64,42 +64,50 @@ const AttendExam = () => {
       return updated;
     });
   };
-const handleSubmit = async () => {
-  if (hasSubmittedRef.current || !examData) return;
-  hasSubmittedRef.current = true;
+const handleSubmit = async (autoSubmit = false) => {
+    if (hasSubmittedRef.current || !examData) return;
+    
+    if (!autoSubmit) {
+      const confirmSubmit = window.confirm("📝 Are you sure you want to submit the exam?");
+      if (!confirmSubmit) return;
+    }
 
-  // Prepare answers array for backend
-  const submittedAnswers = examData.questions.map((_, index) => responses[index] || "");
+    hasSubmittedRef.current = true;
 
-  try {
-    const res = await axios.post(`${ServerURL}/api/examCourse/marks/${examData._id}`, {
-      answers: submittedAnswers,
-      userId: localStorage.getItem("userId") // Ensure you store userId at login
-    });
+    const submittedAnswers = examData.questions.map((_, index) => responses[index] || "");
 
-    const { totalMarks, correctAnswers } = res.data;
+    try {
+      const res = await axios.post(`${ServerURL}/api/examCourse/marks/${examData._id}`, {
+        answers: submittedAnswers,
+        userId: localStorage.getItem("userId")
+      });
 
-    const answerList = correctAnswers.map((ans, idx) => ({
-      question: ans.question,
-      correct: ans.correctAnswer,
-      user: ans.submittedAnswer,
-      isCorrect: ans.isCorrect,
-      options: examData.questions[idx].option,
-      image: examData.questions[idx].image || null
-    }));
+      const { totalMarks, correctAnswers } = res.data;
 
-    const correctCount = correctAnswers.filter(a => a.isCorrect).length;
-    const wrongCount = correctAnswers.filter(a => a.submittedAnswer !== "Not Answered" && !a.isCorrect).length;
+      const answerList = correctAnswers.map((ans, idx) => ({
+        question: ans.question,
+        correct: ans.correctAnswer,
+        user: ans.submittedAnswer,
+        isCorrect: ans.isCorrect,
+        options: examData.questions[idx].option,
+        image: examData.questions[idx].image || null
+      }));
 
-    setSubmitted(true);
-    setCurrentQuestion(0);
-    setResult({ score: totalMarks, answers: answerList, correctCount, wrongCount });
-    window.alert('Exam submitted! View your answers.');
-  } catch (error) {
-    console.error("Error submitting exam:", error);
-    alert("Failed to submit exam. Please try again.");
-  }
-};
+      const correctCount = correctAnswers.filter(a => a.isCorrect).length;
+      const wrongCount = correctAnswers.filter(a => a.submittedAnswer !== "Not Answered" && !a.isCorrect).length;
+
+      setSubmitted(true);
+      setCurrentQuestion(0);
+      setResult({ score: totalMarks, answers: answerList, correctCount, wrongCount });
+
+      if (!autoSubmit) {
+        window.alert('✅ Exam submitted successfully! You can now view your answers.');
+      }
+    } catch (error) {
+      console.error("Error submitting exam:", error);
+      alert("❌ Failed to submit exam. Please try again.");
+    }
+  };
   const isAnswered = (index) => responses.hasOwnProperty(index);
 
   const handleQuestionClick = (idx) => {
@@ -193,13 +201,7 @@ const handleSubmit = async () => {
                   </div>
                 </div>
 
-                <div className="mt-4 text-xs text-gray-600 space-y-1">
-                  <p><span className="inline-block w-4 h-4 bg-green-300 rounded-full mr-2"></span> Correct</p>
-                  <p><span className="inline-block w-4 h-4 bg-red-300 rounded-full mr-2"></span> Wrong</p>
-                  <p><span className="inline-block w-4 h-4 bg-yellow-300 rounded-full mr-2"></span> Unanswered</p>
-                  <p><span className="inline-block w-4 h-4 bg-gray-300 rounded-full mr-2"></span> Not Visited</p>
-                  <p><span className="inline-block w-4 h-4 bg-purple-500 rounded-full ring-2 ring-purple-300 mr-2"></span> Selected</p>
-                </div>
+                
               </div>
             </div>
 
