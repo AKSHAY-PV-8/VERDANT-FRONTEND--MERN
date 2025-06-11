@@ -19,7 +19,9 @@ const CourseDescription = () => {
     const ENROLL_ALLOWED_COURSE_IDS = [
         '682d4f6954bb2a564a232de0', // Example course ID
         '681f917f1c9fc1ea279ac8b1',
-        '682d647120274ad4cbd4843b'  // Add your actual course IDs here
+        '682d647120274ad4cbd4843b',
+        '6849a5ae09df946673271375',
+        '6849b72fc1e6ed2eb1994188'  // Add your actual course IDs here
     ];
     
 
