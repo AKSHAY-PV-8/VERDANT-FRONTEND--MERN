@@ -4,9 +4,9 @@ import { GraduationCap } from "lucide-react";
 import NavBar from "../Components/Auth/NavBar";
 
 const Images = [
-    { image: "https://images.unsplash.com/photo-1464226184884-fa280b87c399?auto=format&fit=crop&w=800&q=80" },
-    { image: "https://images.unsplash.com/photo-1625246333195-78d9c38ad449?auto=format&fit=crop&w=800&q=80" },
-    { image: "https://images.unsplash.com/photo-1576319155264-99536e0be1ee?auto=format&fit=crop&w=800&q=80" },
+    { image: "http://ogden_images.s3.amazonaws.com/www.motherearthnews.com/images/2023/06/28194539/introduction-to-soil.jpg" },
+    { image: "https://www.getmyuni.com/assets/images/articles/nurropm-tec2ht2ul2a0oeci7to6fri8001-.jpg" },
+    { image: "https://wallpapercave.com/wp/wp1886337.jpg" },
     { image: "https://images.unsplash.com/photo-1472141521881-95d0e87e2e39?auto=format&fit=crop&w=800&q=80" },
     { image: "https://images.unsplash.com/photo-1561553873-e8491a564fd0?auto=format&fit=crop&w=800&q=80" },
     { image: "https://images.unsplash.com/photo-1518531933037-91b2f5f229cc?auto=format&fit=crop&w=800&q=80" },
@@ -22,7 +22,8 @@ const Courses = () => {
     // ✅ Priority order course IDs
     const PRIORITY_COURSE_IDS = [
         "682d4f6954bb2a564a232de0",
-        "681f917f1c9fc1ea279ac8b1"
+        "681f917f1c9fc1ea279ac8b1",
+        '682d647120274ad4cbd4843b'
     ];
 
     useEffect(() => {
