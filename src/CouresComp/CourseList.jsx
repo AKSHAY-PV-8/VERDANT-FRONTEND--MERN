@@ -19,10 +19,15 @@ const Courses = () => {
     const navigate = useNavigate();
     const ServerURL = import.meta.env.VITE_SERVER_URL;
 
+    // ✅ Priority order course IDs
+    const PRIORITY_COURSE_IDS = [
+        "682d4f6954bb2a564a232de0",
+        "681f917f1c9fc1ea279ac8b1"
+    ];
+
     useEffect(() => {
         const userId = localStorage.getItem("userId");
 
-        // ✅ Redirect to login if user is not logged in
         if (!userId) {
             alert("Please login to view the course.");
             navigate("/login");
@@ -34,7 +39,16 @@ const Courses = () => {
             .then(res => res.json())
             .then(data => {
                 if (data.courses) {
-                    setCourses(data.courses.reverse());
+                    const sortedCourses = [...data.courses].sort((a, b) => {
+                        const aIndex = PRIORITY_COURSE_IDS.indexOf(a._id);
+                        const bIndex = PRIORITY_COURSE_IDS.indexOf(b._id);
+
+                        if (aIndex === -1 && bIndex === -1) return 0;
+                        if (aIndex === -1) return 1;
+                        if (bIndex === -1) return -1;
+                        return aIndex - bIndex;
+                    });
+                    setCourses(sortedCourses);
                 }
             })
             .catch(err => console.error(err));
@@ -79,8 +93,8 @@ const Courses = () => {
 
                                 <button
                                     className={`px-4 py-2 rounded-lg text-white font-semibold w-full transition 
-                                        ${isEnrolled 
-                                            ? "bg-blue-500 hover:bg-blue-600" 
+                                        ${isEnrolled
+                                            ? "bg-blue-500 hover:bg-blue-600"
                                             : "bg-emerald-500 hover:bg-emerald-600"}`}
                                     onClick={() =>
                                         navigate(isEnrolled

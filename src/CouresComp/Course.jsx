@@ -17,9 +17,10 @@ const CourseDescription = () => {
 
     // ✅ Static list of course IDs that allow enrollment
     const ENROLL_ALLOWED_COURSE_IDS = [
-        '68449967d3517112d83c4755', // Example course ID
-        '68405a10925f122d5b8aafa8'  // Add your actual course IDs here
+        '682d4f6954bb2a564a232de0', // Example course ID
+        '681f917f1c9fc1ea279ac8b1'  // Add your actual course IDs here
     ];
+    
 
     useEffect(() => {
         if (!userId) {

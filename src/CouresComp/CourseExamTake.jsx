@@ -8,13 +8,13 @@ const AttendExam = () => {
   const [examData, setExamData] = useState(null);
   const [responses, setResponses] = useState({});
   const [submitted, setSubmitted] = useState(false);
-  const [result, setResult] = useState({ score: 0, answers: [], correctCount: 0, wrongCount: 0 });
+  const [result, setResult] = useState({ score: 0, answers: [], correctCount: 0, wrongCount: 0, unansweredCount: 0 });
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [visitedQuestions, setVisitedQuestions] = useState(new Set());
   const [timeLeft, setTimeLeft] = useState(null);
   const ServerURL = import.meta.env.VITE_SERVER_URL;
 
-  const hasSubmittedRef = useRef(false); // Prevent multiple submissions
+  const hasSubmittedRef = useRef(false);
 
   useEffect(() => {
     axios
@@ -31,7 +31,7 @@ const AttendExam = () => {
     if (submitted || timeLeft === null || hasSubmittedRef.current) return;
 
     if (timeLeft === 0) {
-      handleSubmit();
+      handleSubmit(true);
     }
 
     const timer = setInterval(() => {
@@ -64,9 +64,10 @@ const AttendExam = () => {
       return updated;
     });
   };
-const handleSubmit = async (autoSubmit = false) => {
+
+  const handleSubmit = async (autoSubmit = false) => {
     if (hasSubmittedRef.current || !examData) return;
-    
+
     if (!autoSubmit) {
       const confirmSubmit = window.confirm("📝 Are you sure you want to submit the exam?");
       if (!confirmSubmit) return;
@@ -93,12 +94,14 @@ const handleSubmit = async (autoSubmit = false) => {
         image: examData.questions[idx].image || null
       }));
 
-      const correctCount = correctAnswers.filter(a => a.isCorrect).length;
-      const wrongCount = correctAnswers.filter(a => a.submittedAnswer !== "Not Answered" && !a.isCorrect).length;
+      const correctCount = answerList.filter(a => a.isCorrect).length;
+const unansweredCount = answerList.filter(a => a.user === "Not Answered").length;
+const wrongCount = answerList.filter(a => a.user !== "Not Answered" && !a.isCorrect).length;
+
 
       setSubmitted(true);
       setCurrentQuestion(0);
-      setResult({ score: totalMarks, answers: answerList, correctCount, wrongCount });
+      setResult({ score: totalMarks, answers: answerList, correctCount, wrongCount, unansweredCount });
 
       if (!autoSubmit) {
         window.alert('✅ Exam submitted successfully! You can now view your answers.');
@@ -108,6 +111,7 @@ const handleSubmit = async (autoSubmit = false) => {
       alert("❌ Failed to submit exam. Please try again.");
     }
   };
+
   const isAnswered = (index) => responses.hasOwnProperty(index);
 
   const handleQuestionClick = (idx) => {
@@ -128,7 +132,6 @@ const handleSubmit = async (autoSubmit = false) => {
       <div className="flex flex-col md:flex-row flex-1 p-4">
         {examData ? (
           <>
-            {/* Side Nav Panel */}
             <div className="md:w-1/4 mb-4 md:mb-0 md:mr-4">
               <div className="bg-white shadow-md rounded-lg p-4 h-full">
                 <h3 className="text-lg font-semibold mb-4">📝 Exam Summary</h3>
@@ -153,10 +156,10 @@ const handleSubmit = async (autoSubmit = false) => {
                       ✅ Correct: {result.correctCount}
                     </p>
                     <p className="text-red-600 font-semibold">
-                      ❌ Wrong: {result.answers.filter((a) => a.user && !a.isCorrect).length}
+                      ❌ Wrong: {result.wrongCount}
                     </p>
                     <p className="text-yellow-600 font-semibold">
-                      ⚠️ Unanswered: {result.answers.filter((a) => !a.user).length}
+                      ⚠️ Unanswered: {result.unansweredCount}
                     </p>
                     <p className="text-blue-600 font-semibold">
                       🏆 Total Score: {result.score}
@@ -171,12 +174,12 @@ const handleSubmit = async (autoSubmit = false) => {
 
                       if (submitted) {
                         const answer = result.answers[idx];
-                        if (!answer.user) {
-                          bgColor = 'bg-yellow-300'; // Unanswered
+                        if (!answer.user || answer.user === "Not Answered") {
+                          bgColor = 'bg-yellow-300';
                         } else if (answer.isCorrect) {
-                          bgColor = 'bg-green-300'; // Correct
+                          bgColor = 'bg-green-300';
                         } else {
-                          bgColor = 'bg-red-300'; // Wrong
+                          bgColor = 'bg-red-300';
                         }
                       } else {
                         if (isAnswered(idx)) {
@@ -200,12 +203,9 @@ const handleSubmit = async (autoSubmit = false) => {
                     })}
                   </div>
                 </div>
-
-                
               </div>
             </div>
 
-            {/* Main Content Panel */}
             <div className="md:w-3/4 h-[calc(100vh-100px)] overflow-y-auto">
               <h2 className="text-xl font-bold mb-4">{examData.sectionTitle}</h2>
 
