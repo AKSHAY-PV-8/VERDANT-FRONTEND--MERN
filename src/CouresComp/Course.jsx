@@ -60,7 +60,6 @@ const CourseDescription = () => {
           return;
         }
 
-        // 1. Create Razorpay order
         const res = await fetch(`${ServerURL}/api/payment/create-order`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -78,7 +77,6 @@ const CourseDescription = () => {
 
         const { order } = data;
 
-        // 2. Configure Razorpay options
         const options = {
           key: RazorpayKey,
           amount: order.amount,
@@ -87,7 +85,6 @@ const CourseDescription = () => {
           description: "Course Enrollment Payment",
           order_id: order.id,
           handler: async function (response) {
-            // 3. Handle normal (non-QR) payment
             const verifyRes = await fetch(`${ServerURL}/api/payment/verify-payment`, {
               method: "POST",
               headers: { "Content-Type": "application/json" },
@@ -108,38 +105,6 @@ const CourseDescription = () => {
               alert("Payment verification failed.");
             }
           },
-          modal: {
-            ondismiss: async () => {
-              // 4. Handle QR dismiss (user might have paid via QR)
-              const interval = setInterval(async () => {
-                const statusRes = await fetch(`${ServerURL}/api/payment/check-status/${order.id}`);
-                const statusData = await statusRes.json();
-
-                if (statusData.status === "paid") {
-                  clearInterval(interval);
-                  // Call enroll endpoint
-                  const enrollRes = await fetch(`${ServerURL}/api/payment/enroll-course`, {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({
-                      userId: userId,
-                      courseId: course._id,
-                      orderId: order.id,
-                    }),
-                  });
-
-                  const enrollData = await enrollRes.json();
-                  if (enrollData.success) {
-                    alert("QR Payment successful! Course enrolled.");
-                    navigate(`/dashboard`);
-                  } else {
-                    alert("QR Payment successful, but enrollment failed.");
-                  }
-                }
-              }, 3000); // Poll every 3 sec
-              setTimeout(() => clearInterval(interval), 90000); // Stop after 1 min
-            },
-          },
           prefill: {
             name: "Your Name",
             email: "your-email@example.com",
@@ -148,9 +113,23 @@ const CourseDescription = () => {
           theme: {
             color: "#34d399",
           },
+          method: {
+            upi: true,
+            card: true,
+            netbanking: true,
+            wallet: false,
+          },
+          upi: {
+            flow: "intent", // ✅ This forces UPI app-based flow and DISABLES QR code
+          },
+          modal: {
+            // ✅ Don't handle QR dismiss - since QR won't appear
+            ondismiss: function () {
+              alert("Payment cancelled");
+            },
+          },
         };
 
-        // 5. Open Razorpay payment
         const razorpay = new window.Razorpay(options);
         razorpay.open();
 
