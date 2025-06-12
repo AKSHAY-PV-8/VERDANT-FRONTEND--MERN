@@ -172,7 +172,7 @@ const CourseDescription = () => {
   if (!course) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <p className="text-red-600 text-lg">Error loading course details.</p>
+        <p className="text-red-600 text-lg">Error loading course details......</p>
       </div>
     );
   }
