@@ -44,126 +44,144 @@ const CourseDescription = () => {
   }, [id]);
 
   const handlePayment = async () => {
-  setShowAlert(true);
+    setShowAlert(true);
 
-  setTimeout(async () => {
-    setShowAlert(false);
+    setTimeout(async () => {
+      setShowAlert(false);
 
-    if (FREE_ACCESS_EMAILS.includes(userId)) {
-      navigate(`/course/${course._id}`);
-      return;
-    }
-
-    try {
-      if (!window.Razorpay) {
-        alert("Razorpay SDK not loaded.");
+      if (FREE_ACCESS_EMAILS.includes(userId)) {
+        navigate(`/course/${course._id}`);
         return;
       }
 
-      const res = await fetch(`${ServerURL}/api/payment/create-order`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          amount: course.price,
-          currency: "INR",
-        }),
-      });
+      try {
+        if (!window.Razorpay) {
+          alert("Razorpay SDK not loaded.");
+          return;
+        }
 
-      const data = await res.json();
-      if (!data.success) {
-        alert("Failed to create Razorpay order.");
-        return;
-      }
+        const res = await fetch(`${ServerURL}/api/payment/create-order`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            amount: course.price,
+            currency: "INR",
+          }),
+        });
 
-      const { order } = data;
+        const data = await res.json();
+        if (!data.success) {
+          alert("Failed to create Razorpay order.");
+          return;
+        }
 
-      const options = {
-        key: RazorpayKey,
-        amount: order.amount,
-        currency: order.currency,
-        name: course.title,
-        description: "Course Enrollment Payment",
-        order_id: order.id,
-        handler: async function (response) {
-          const verifyRes = await fetch(`${ServerURL}/api/payment/verify-payment`, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-              razorpay_order_id: response.razorpay_order_id,
-              razorpay_payment_id: response.razorpay_payment_id,
-              razorpay_signature: response.razorpay_signature,
-              userId: userId,
-              courseId: course._id,
-            }),
-          });
+        const { order } = data;
 
-          const verifyData = await verifyRes.json();
-          if (verifyData.success) {
-            alert("Payment successful! Course enrolled.");
-            navigate(`/dashboard`);
-          } else {
-            alert("Payment verification failed.");
-          }
-        },
-        prefill: {
-          name: "Your Name",
-          email: "your-email@example.com",
-          contact: "9999999999",
-        },
-        theme: { color: "#34d399" },
-        method: {
-          upi: true,
-          card: true,
-          netbanking: true,
-          wallet: false,
-        },
-        upi: { flow: "intent" },
-        modal: {
-          ondismiss: async function () {
-            // Fallback: Poll the server to check payment status
-            try {
-              const statusRes = await fetch(`${ServerURL}/api/payment/check-status/${order.id}`);
-              const statusData = await statusRes.json();
+        const options = {
+          key: RazorpayKey,
+          amount: order.amount,
+          currency: order.currency,
+          name: course.title,
+          description: "Course Enrollment Payment",
+          order_id: order.id,
+          handler: async function (response) {
+            const verifyRes = await fetch(`${ServerURL}/api/payment/verify-payment`, {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({
+                razorpay_order_id: response.razorpay_order_id,
+                razorpay_payment_id: response.razorpay_payment_id,
+                razorpay_signature: response.razorpay_signature,
+                userId: userId,
+                courseId: course._id,
+              }),
+            });
 
-              if (statusData.success && statusData.status === "paid") {
-                const enrollRes = await fetch(`${ServerURL}/api/payment/enroll-course`, {
-                  method: "POST",
-                  headers: { "Content-Type": "application/json" },
-                  body: JSON.stringify({
-                    userId,
-                    courseId: course._id,
-                    orderId: order.id,
-                  }),
-                });
-
-                const enrollData = await enrollRes.json();
-                if (enrollData.success) {
-                  alert("Payment successful via QR. Course enrolled!");
-                  navigate("/dashboard");
-                } else {
-                  alert("Enrollment failed after QR payment.");
-                }
-              } else {
-                alert("Payment cancelled or failed.");
-              }
-            } catch (err) {
-              console.error("Error checking fallback payment:", err);
-              alert("Error verifying payment. Try again.");
+            const verifyData = await verifyRes.json();
+            if (verifyData.success) {
+              alert("Payment successful! Course enrolled.");
+              navigate(`/dashboard`);
+            } else {
+              alert("Payment verification failed.");
             }
           },
-        },
-      };
+          prefill: {
+            name: "Your Name",
+            email: "your-email@example.com",
+            contact: "9999999999",
+          },
+          theme: { color: "#34d399" },
+          method: {
+            upi: true,
+            card: true,
+            netbanking: true,
+            wallet: false,
+          },
+          upi: { flow: "intent" },
+          modal: {
+            ondismiss: async function () {
+              alert("Payment is successful but course enrollment may take a few seconds due to technical delay. Please wait...");
 
-      const razorpay = new window.Razorpay(options);
-      razorpay.open();
+              let attempts = 0;
+              const maxAttempts = 5;
+              const delay = 4000;
 
-    } catch (error) {
-      console.error("Payment Error:", error);
-      alert("Payment failed. Please try again.");
-    }
-  }, 3000);
-};
+              const pollEnrollment = async () => {
+                try {
+                  const statusRes = await fetch(`${ServerURL}/api/payment/check-status/${order.id}`);
+                  const statusData = await statusRes.json();
 
+                  if (statusData.success && statusData.status === "paid") {
+                    const enrollRes = await fetch(`${ServerURL}/api/payment/enroll-course`, {
+                      method: "POST",
+                      headers: { "Content-Type": "application/json" },
+                      body: JSON.stringify({
+                        userId,
+                        courseId: course._id,
+                        orderId: order.id,
+                      }),
+                    });
+
+                    const enrollData = await enrollRes.json();
+                    if (enrollData.success) {
+                      alert("Payment successful via QR. Course enrolled!");
+                      navigate("/dashboard");
+                      return;
+                    } else {
+                      alert("Enrollment failed after QR payment.");
+                    }
+                  } else {
+                    attempts++;
+                    if (attempts < maxAttempts) {
+                      setTimeout(pollEnrollment, delay);
+                    } else {
+                      alert("Payment successful but enrollment delayed. Please check your dashboard later or contact support.");
+                    }
+                  }
+                } catch (err) {
+                  console.error("Error in enrollment polling:", err);
+                  attempts++;
+                  if (attempts < maxAttempts) {
+                    setTimeout(pollEnrollment, delay);
+                  } else {
+                    alert("Technical issue during enrollment. Please check back later.");
+                  }
+                }
+              };
+
+              pollEnrollment();
+            },
+          },
+        };
+
+        const razorpay = new window.Razorpay(options);
+        razorpay.open();
+      } catch (error) {
+        console.error("Payment Error:", error);
+        alert("Payment failed. Please try again.");
+      }
+    }, 3000);
+  };
 
   if (loading) {
     return (
