@@ -137,7 +137,7 @@ const CourseDescription = () => {
                   }
                 }
               }, 3000); // Poll every 3 sec
-              setTimeout(() => clearInterval(interval), 60000); // Stop after 1 min
+              setTimeout(() => clearInterval(interval), 90000); // Stop after 1 min
             },
           },
           prefill: {
