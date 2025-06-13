@@ -8,6 +8,7 @@ const CourseDescription = () => {
   const [loading, setLoading] = useState(true);
   const [course, setCourse] = useState(null);
   const [showAlert, setShowAlert] = useState(false);
+  const [showQrWarning, setShowQrWarning] = useState(false);
   const navigate = useNavigate();
   const ServerURL = import.meta.env.VITE_SERVER_URL;
   const RazorpayKey = import.meta.env.VITE_RAZORPAY_KEY_ID;
@@ -44,6 +45,12 @@ const CourseDescription = () => {
   }, [id]);
 
   const handlePayment = async () => {
+    // Show QR warning popup before continuing
+    setShowQrWarning(true);
+  };
+
+  const proceedToPayment = async () => {
+    setShowQrWarning(false);
     setShowAlert(true);
 
     setTimeout(async () => {
@@ -202,9 +209,32 @@ const CourseDescription = () => {
   return (
     <div>
       <NavBar />
+
+      {/* Static alert */}
+      <div className="bg-yellow-100 border border-yellow-400 text-yellow-800 text-sm px-4 py-3 text-center">
+        ⚠️ QR Code payment is under maintenance. Please avoid QR payment and choose another method.
+      </div>
+
+      {/* Toast alert */}
       {showAlert && (
         <div className="fixed top-5 left-1/2 transform -translate-x-1/2 bg-gray-900 border border-green-300 text-green-100 px-6 py-3 rounded-xl shadow-lg z-50 transition-opacity duration-300">
           Please wait... After successful payment, you’ll be redirected to your dashboard.
+        </div>
+      )}
+
+      {/* Modal popup */}
+      {showQrWarning && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-40 z-50">
+          <div className="bg-white rounded-xl shadow-lg p-6 max-w-md text-center">
+            <h2 className="text-lg font-semibold text-red-600 mb-4">⚠ QR Code Payment Warning</h2>
+            <p className="text-gray-800 mb-6">QR code payment is under maintenance. Please avoid using it. Use card or net banking instead.</p>
+            <button
+              onClick={proceedToPayment}
+              className="bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-6 rounded-xl"
+            >
+              OK
+            </button>
+          </div>
         </div>
       )}
 
