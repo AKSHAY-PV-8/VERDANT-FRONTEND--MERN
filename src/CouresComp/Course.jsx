@@ -127,11 +127,8 @@ const CourseDescription = () => {
           upi: { flow: "intent" },
           modal: {
             ondismiss: async function () {
-              alert("Payment is successful but course enrollment may take a few seconds due to technical delay. Please wait...");
+        
 
-              let attempts = 0;
-              const maxAttempts = 5;
-              const delay = 4000;
 
               const pollEnrollment = async () => {
                 try {
@@ -157,22 +154,9 @@ const CourseDescription = () => {
                     } else {
                       alert("Enrollment failed after QR payment.");
                     }
-                  } else {
-                    attempts++;
-                    if (attempts < maxAttempts) {
-                      setTimeout(pollEnrollment, delay);
-                    } else {
-                      alert("Payment successful but enrollment delayed. Please check your dashboard later or contact support.");
-                    }
                   }
                 } catch (err) {
                   console.error("Error in enrollment polling:", err);
-                  attempts++;
-                  if (attempts < maxAttempts) {
-                    setTimeout(pollEnrollment, delay);
-                  } else {
-                    alert("Technical issue during enrollment. Please check back later.");
-                  }
                 }
               };
 
