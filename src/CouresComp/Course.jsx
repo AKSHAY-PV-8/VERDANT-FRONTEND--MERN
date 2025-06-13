@@ -195,7 +195,7 @@ const CourseDescription = () => {
       <NavBar />
 
       {/* Static alert */}
-      <div className="bg-yellow-100 border border-yellow-400 text-yellow-800 text-sm px-4 py-3 text-center">
+      <div className="bg-yellow-100 border border-yellow-400 text-yellow-800 text-sm px-4 py-3 text-center fixed">
         ⚠️ QR Code payment is under maintenance. Please avoid QR payment and choose another method.
       </div>
 
