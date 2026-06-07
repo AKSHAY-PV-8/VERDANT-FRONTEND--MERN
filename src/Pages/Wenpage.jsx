@@ -67,8 +67,8 @@ const sendEmail = (e) => {
             {/* Desktop Navigation */}
             <div className="hidden md:block">
               <div className="flex items-center space-x-8">
-                {/* <a onClick={() => navigate("/advisors")} className="text-gray-900 font-bold hover:text-green-400 transition-colors">About</a>
-                <a onClick={() => {navigate("/intro")}} className="text-gray-900 font-bold hover:text-green-400 transition-colors">Education</a> */}
+                <a onClick={() => navigate("/advisors")} className="text-gray-900 font-bold hover:text-green-400 transition-colors">About</a>
+                <a onClick={() => {navigate("/intro")}} className="text-gray-900 font-bold hover:text-green-400 transition-colors">Education</a>
                 {/* <a href="#technology" className="text-gray-300 hover:text-green-400 transition-colors">Technology</a>
                 <a href="#projects" className="text-gray-300 hover:text-green-400 transition-colors">Projects</a>
                 <a href="#contact" className="text-gray-300 hover:text-green-400 transition-colors">Contact</a> */}
@@ -125,7 +125,7 @@ const sendEmail = (e) => {
             <h3 className= "text-xl md:text-6xl font-bold text-white mb-6">
               VERDANT ELEVATE
             </h3>
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+            {/* <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
               <a
                 onClick={() => navigate("/intro")}
                 className="inline-flex items-center px-6 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors"
@@ -140,7 +140,7 @@ const sendEmail = (e) => {
                 About
                 <Globe className="ml-2 h-5 w-5" />
               </a>
-            </div>
+            </div> */}
           </div>
         </div>
       </section>
