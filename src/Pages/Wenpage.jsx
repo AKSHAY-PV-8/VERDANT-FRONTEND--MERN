@@ -67,8 +67,8 @@ const sendEmail = (e) => {
             {/* Desktop Navigation */}
             <div className="hidden md:block">
               <div className="flex items-center space-x-8">
-                <a onClick={() => navigate("/advisors")} className="text-gray-900 font-bold hover:text-green-400 transition-colors">About</a>
-                <a onClick={() => {navigate("/intro")}} className="text-gray-900 font-bold hover:text-green-400 transition-colors">Education</a>
+                {/* <a onClick={() => navigate("/advisors")} className="text-gray-900 font-bold hover:text-green-400 transition-colors">About</a>
+                <a onClick={() => {navigate("/intro")}} className="text-gray-900 font-bold hover:text-green-400 transition-colors">Education</a> */}
                 {/* <a href="#technology" className="text-gray-300 hover:text-green-400 transition-colors">Technology</a>
                 <a href="#projects" className="text-gray-300 hover:text-green-400 transition-colors">Projects</a>
                 <a href="#contact" className="text-gray-300 hover:text-green-400 transition-colors">Contact</a> */}
@@ -88,8 +88,8 @@ const sendEmail = (e) => {
         {isMenuOpen && (
           <div className="md:hidden bg-gray-800 border-t border-gray-700">
             <div className="px-2 pt-2 pb-3 space-y-1">
-              {/* <a onClick={() => navigate("/advisors")} className="block px-3 py-2 text-gray-300 hover:text-green-400">About</a>
-              <a onClick={() => navigate("/intro")} className="block px-3 py-2 text-gray-300 hover:text-green-400">Education</a> */}
+              <a onClick={() => navigate("/advisors")} className="block px-3 py-2 text-gray-300 hover:text-green-400">About</a>
+              <a onClick={() => navigate("/intro")} className="block px-3 py-2 text-gray-300 hover:text-green-400">Education</a>
               {/* <a href="#technology" className="block px-3 py-2 text-gray-300 hover:text-green-400">Technology</a>
               <a href="#projects" className="block px-3 py-2 text-gray-300 hover:text-green-400">Projects</a>
               <a href="#contact" className="block px-3 py-2 text-gray-300 hover:text-green-400">Contact</a> */}
