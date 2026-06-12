@@ -11,7 +11,14 @@ const IntroNav = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
-          <div className="flex-shrink-0 text-blue-100 text-xl font-bold cursor-pointer" onClick={() => navigate('/')}>VERDANT</div>
+          <div className="flex-shrink-0 text-blue-100 text-xl font-bold cursor-pointer" onClick={() => navigate('/')}>
+            <img
+              src="/logo.png"
+              alt="Verdant Logo"
+              className="h-30 w-30 mr-2"
+            />
+            <span className="text-xl font-bold uppercase text-green-300"></span>
+          </div>
 
           {/* Mobile Menu Button */}
           <div className="md:hidden">

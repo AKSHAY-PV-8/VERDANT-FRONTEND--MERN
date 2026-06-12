@@ -214,24 +214,34 @@ function Webhome() {
               </div>
 
               {/* About Section */}
-              <div className="bg-gray-700 p-6 sm:p-8 rounded-lg shadow-xl w-full h-64 sm:h-80">
-                <h3 className="text-2xl font-semibold text-green-300 mb-4">ABOUT US</h3>
-                <div className="flex items-start space-x-4">
-                  <Sprout className="h-6 w-6 text-green-400 flex-shrink-0 mt-1" />
+              <div className="bg-gray-700 p-5 sm:p-8 rounded-lg shadow-xl w-full">
+                <h3 className="text-xl sm:text-2xl font-semibold text-green-300 mb-4">
+                  ABOUT US
+                </h3>
+
+                <div className="flex flex-col sm:flex-row items-start gap-4">
+                  <Sprout className="h-6 w-6 text-green-400 flex-shrink-0" />
+
                   <div>
-                    <h4 className="text-xl font-bold text-white mb-2">Welcome to Verdant Elevate</h4>
-                    <p className="text-gray-300">
-                      Led by passionate agricultural graduates, we are your gateway to agricultural education and technology. One stop for all your agri-related needs.
+                    <h4 className="text-lg sm:text-xl font-bold text-white mb-2">
+                      Welcome to Verdant Elevate
+                    </h4>
+
+                    <p className="text-gray-300 text-sm sm:text-base leading-relaxed">
+                      Led by passionate agricultural graduates, we are your gateway to
+                      agricultural education and technology. One stop for all your
+                      agri-related needs.
                     </p>
                   </div>
                 </div>
-                <a
+
+                <button
                   onClick={() => navigate("/intro")}
-                  className="mt-6 cursor-pointer inline-flex items-center px-6 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors"
+                  className="mt-6 w-full sm:w-auto inline-flex justify-center items-center px-6 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors"
                 >
                   Get Started Learning
                   <ChevronRight className="ml-2 h-5 w-5" />
-                </a>
+                </button>
               </div>
             </div>
           </div>
