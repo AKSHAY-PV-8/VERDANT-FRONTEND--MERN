@@ -23,12 +23,14 @@ import CourseEditPage from "./CouresComp/CourseEdit";
 import ComingSoon from "./Pages/ComingSoon";
 import ComingSoon1 from "./Pages/ComingSoon1";
 import ComingSoon2 from "./Pages/ComingSoon2";
+import ScrollToTop from "./Components/Utils/ScrollToTop";
 
 
 
 function App() {
   return (
     <Router >
+      <ScrollToTop />
       <Routes>
 
         <Route path="/" element={<Webhome/>}  />

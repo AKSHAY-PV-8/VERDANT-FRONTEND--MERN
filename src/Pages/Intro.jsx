@@ -26,8 +26,17 @@ const Intro = () => {
             <p className="text-xl text-white mb-8 max-w-2xl mx-auto">
               Join our community of farmers, students, and experts to learn modern agricultural practices and sustainable farming techniques.
             </p>
-            <button onClick={() =>navigate("/login")} className="bg-green-600 text-white px-8 py-3 rounded-md text-lg font-medium hover:bg-green-700 transition duration-200 flex items-center mx-auto">
-              Go to Courses
+            {/* <button onClick={() =>navigate("https://drona-453087117184.asia-south1.run.app/")} className="bg-green-600 text-white px-8 py-3 rounded-md text-lg font-medium hover:bg-green-700 transition duration-200 flex items-center mx-auto">
+              Go to Mock Tes
+              <ChevronRight className="ml-2 h-5 w-5" />
+            </button> */}
+            <button
+              onClick={() => {
+                window.location.href = "https://drona-453087117184.asia-south1.run.app/";
+              }}
+              className="bg-green-600 cursor-pointer text-white px-8 py-3 rounded-md text-lg font-medium hover:bg-green-700 transition duration-200 flex items-center mx-auto"
+            >
+              Go to Mock Test
               <ChevronRight className="ml-2 h-5 w-5" />
             </button>
           </div>

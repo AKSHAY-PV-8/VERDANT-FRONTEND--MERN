@@ -11,7 +11,7 @@ const IntroNav = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
-          <div className="flex-shrink-0 text-blue-100 text-xl font-bold">VERDANT</div>
+          <div className="flex-shrink-0 text-blue-100 text-xl font-bold cursor-pointer" onClick={() => navigate('/')}>VERDANT</div>
 
           {/* Mobile Menu Button */}
           <div className="md:hidden">
@@ -27,11 +27,11 @@ const IntroNav = () => {
           <div className="hidden md:flex items-center space-x-4">
             <button
               onClick={() => navigate('/')}
-              className="text-white hover:text-green-600 transition px-3 py-2"
+              className="text-white hover:text-green-600 transition px-3 py-2 cursor-pointer"
             >
               Main Home Page
             </button>
-            <button
+            {/* <button
               onClick={() => navigate('/login')}
               className="flex items-center text-white hover:text-green-600 transition px-3 py-2"
             >
@@ -44,7 +44,7 @@ const IntroNav = () => {
             >
               <UserPlus className="h-5 w-5 mr-1" />
               Sign Up
-            </button>
+            </button> */}
           </div>
         </div>
 
@@ -56,11 +56,12 @@ const IntroNav = () => {
                 navigate('/');
                 setMobileMenuOpen(false);
               }}
-              className="block w-full text-left text-white hover:text-green-600 transition px-4 py-2"
+              className="block w-full text-left text-white hover:text-green-600 transition px-4 py-2 cursor-pointer"
             >
               Home
             </button>
-            <button
+
+            {/* <button
               onClick={() => {
                 navigate('/login');
                 setMobileMenuOpen(false);
@@ -79,7 +80,7 @@ const IntroNav = () => {
             >
               <UserPlus className="h-5 w-5 mr-1" />
               Sign Up
-            </button>
+            </button> */}
           </div>
         )}
       </div>
