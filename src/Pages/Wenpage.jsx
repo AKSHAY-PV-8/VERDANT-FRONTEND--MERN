@@ -178,7 +178,7 @@ function Webhome() {
               </div>
 
               {/* Image */}
-              <div className="w-full overflow-hidden rounded-lg shadow-xl">
+              <div className="bg-gray-700 rounded-lg shadow-xl h-64 sm:h-80 w-full bg-cover bg-center flex items-center justify-center text-center overflow-hidden">
                 <img
                   src="https://plus.unsplash.com/premium_photo-1678344170545-c3edef92a16e?w=600&auto=format&fit=crop&q=60"
                   alt="Agricultural Education"
@@ -187,7 +187,7 @@ function Webhome() {
               </div>
 
               {/* Banner 2 */}
-              <div
+              {/* <div
                 className="bg-gray-700 rounded-lg shadow-xl h-64 sm:h-80 w-full bg-cover bg-center flex items-center justify-center text-center overflow-hidden"
                 style={{
                   backgroundImage: `url(https://i.pinimg.com/736x/b5/44/0a/b5440abc8184059bcfa50028195e5253.jpg)`
@@ -196,7 +196,7 @@ function Webhome() {
                 <p className="text-gray-300 text-base sm:text-lg">
                   Harvesting hope from every field
                 </p>
-              </div>
+              </div> */}
             </div>
 
             {/* Right Column */}
@@ -214,7 +214,7 @@ function Webhome() {
               </div>
 
               {/* About Section */}
-              <div className="bg-gray-700 p-6 sm:p-8 rounded-lg shadow-xl w-full">
+              <div className="bg-gray-700 p-6 sm:p-8 rounded-lg shadow-xl w-full h-64 sm:h-80">
                 <h3 className="text-2xl font-semibold text-green-300 mb-4">ABOUT US</h3>
                 <div className="flex items-start space-x-4">
                   <Sprout className="h-6 w-6 text-green-400 flex-shrink-0 mt-1" />
