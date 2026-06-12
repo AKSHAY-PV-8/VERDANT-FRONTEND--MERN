@@ -239,7 +239,7 @@ function Webhome() {
       </section>
 
       {/* Service section */}
-      <section id="technology"ref={serviceRef} className="py-20 bg-gray-900">
+      <section id="technology" ref={serviceRef} className="py-20 bg-gray-900">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <Cpu className="h-12 w-12 text-green-400 mx-auto mb-4" />
@@ -280,7 +280,9 @@ function Webhome() {
                 <p className="text-gray-300"></p>
                 <div className='pt-6'>
                   <a
-                    onClick={() => navigate("/comingSoon1")}
+                    onClick={() => {
+                      window.location.href = "https://verdant-gis-website.onrender.com/";
+                    }}
                     className="inline-flex cursor-pointer items-center px-6 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors"
                   >
                     Learn More
